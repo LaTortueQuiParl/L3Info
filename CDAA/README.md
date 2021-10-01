@@ -5,7 +5,7 @@
 ## Sommaire
 
 - Présentation
-- Technologie utilisées
+- Technologies utilisées
 - Éléments et fonctionnalitées du projet
 - Membres du projet
 
