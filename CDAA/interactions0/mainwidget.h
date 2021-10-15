@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPushButton>
+#include <QHBoxLayout>
 
 class mainWidget : public QWidget
 {
@@ -12,9 +13,10 @@ class mainWidget : public QWidget
 private:
     QPushButton * activDesac;
     bool ok;
+
 public:
 	mainWidget(QWidget *parent = 0);
-	~mainWidget();
+    ~mainWidget();
 
 	//on surcharge les fonctions d'un widget (cf doc QT)
 	void keyPressEvent(QKeyEvent *);
@@ -26,6 +28,7 @@ public slots:
     void Eradication();
 signals:
     void Change();
+    void Text(QString s);
 };
 
 #endif // MAINWIDGET_H

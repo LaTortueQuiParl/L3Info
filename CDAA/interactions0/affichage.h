@@ -3,7 +3,7 @@
 #include <QTextEdit>
 #include <QLCDNumber>
 #include <QHBoxLayout>
-
+#include <QLCDNumber>
 
 class Affichage : public QWidget
 {
@@ -12,12 +12,13 @@ public :
     explicit Affichage ( QWidget * parent = nullptr ) ;
     QTextEdit * zoneTexte ;
     QLCDNumber * LCDnbEvents ;
-    QHBoxLayout * Hlayout ;
+    QHBoxLayout * Hlayout;
     int nbEvents ;
 
 signals :
     void LCDupdate(int);
     void textAppend(QString);
+
 public slots :
     void recvData(QString);
 };

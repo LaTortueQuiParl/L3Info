@@ -2,6 +2,7 @@
 
 #include "mainwidget.h"
 #include "affichage.h"
+#include <QObject>
 
 int main(int argc, char *argv[])
 {
@@ -9,9 +10,11 @@ int main(int argc, char *argv[])
 
 	//un widget tout simple (vide)
 	mainWidget w;
-    Affichage affich;
+    Affichage affichage;
 	w.show();
-    affich.show();
+    affichage.show();
+
+    QObject::connect(&w,SIGNAL(Text(QString)),&affichage,SLOT(recvData(QString)));
 
 	return a.exec();
 }

@@ -20,13 +20,30 @@ void mainWidget::keyPressEvent(QKeyEvent * event)
 void mainWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	//(0,0) en haut à gauche du widget
-	qDebug() << "souris -> déplacement (position locale) ->" << event->localPos();
+    qDebug() << "souris -> déplacement (position locale) ->" << event->localPos();
+
+    QString x;
+    QString y;
+    emit Text((QString) ("QPointF(" + x.setNum(event->x()) + "," + y.setNum(event->y()))+")");
 }
 
 void mainWidget::mousePressEvent(QMouseEvent *event)
 {
-	qDebug() << "souris -> bouton pressé -> " << event->button();
+    //qDebug() << "souris -> bouton pressé -> " << event->button();
 
+    switch (event->button()){
+    case Qt::LeftButton:
+        emit Text("gauche");
+    break;;
+    case Qt::RightButton:
+        emit Text("droite");
+    break;
+    case Qt::MiddleButton:
+        emit Text("milieu");
+    break;
+    default:
+        emit Text("Unknown");
+    }
 }
 mainWidget::mainWidget(QWidget *parent)
 	: QWidget(parent)
@@ -43,6 +60,7 @@ mainWidget::mainWidget(QWidget *parent)
 
     QObject::connect(activDesac,SIGNAL(clicked()),this,SLOT(Pushed()));
     QObject::connect(this,SIGNAL(Change()),this,SLOT(Eradication()));
+
 }
 
 void mainWidget::Pushed(){
