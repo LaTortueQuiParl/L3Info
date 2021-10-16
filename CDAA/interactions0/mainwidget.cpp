@@ -8,10 +8,12 @@ void mainWidget::keyPressEvent(QKeyEvent * event)
 
 	if( event->key() == Qt::Key_A )
 	{
-		qDebug() << "clavier -> touche A" ;
+        //qDebug() << "clavier -> touche A" ;
+        emit Text(QString::fromStdString( "clavier -> touche A"));
 	}
 	else
-		qDebug() << "clavier -> autre ->" << event->text();
+        //qDebug() << "clavier -> autre ->" << event->text();
+        emit Text(QString::fromStdString( "clavier -> autre -> ") + event->text());
 
 	//permet de ne pas faire remonter ce message clavier aux classes parentes
 	event->setAccepted(true);
@@ -20,11 +22,11 @@ void mainWidget::keyPressEvent(QKeyEvent * event)
 void mainWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	//(0,0) en haut à gauche du widget
-    qDebug() << "souris -> déplacement (position locale) ->" << event->localPos();
+    //qDebug() << "souris -> déplacement (position locale) ->" << event->localPos();
 
     QString x;
     QString y;
-    emit Text((QString) ("QPointF(" + x.setNum(event->x()) + "," + y.setNum(event->y()))+")");
+    emit Text((QString) ("souris -> déplacement -> (localPos)[" + x.setNum(event->x()) + " " + y.setNum(event->y()))+"]");
 }
 
 void mainWidget::mousePressEvent(QMouseEvent *event)
@@ -33,16 +35,16 @@ void mainWidget::mousePressEvent(QMouseEvent *event)
 
     switch (event->button()){
     case Qt::LeftButton:
-        emit Text("gauche");
+        emit Text("souris->bouton pressé->gauche");
     break;;
     case Qt::RightButton:
-        emit Text("droite");
+        emit Text("souris->bouton pressé->droite");
     break;
     case Qt::MiddleButton:
-        emit Text("milieu");
+        emit Text("souris->bouton pressé->milieu");
     break;
     default:
-        emit Text("Unknown");
+        emit Text("souris->bouton pressé->Unknown");
     }
 }
 mainWidget::mainWidget(QWidget *parent)

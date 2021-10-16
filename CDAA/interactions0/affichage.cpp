@@ -1,4 +1,5 @@
 #include "affichage.h"
+#include <QDebug>
 
 Affichage::Affichage(QWidget *parent)
     : QWidget(parent)
@@ -6,6 +7,7 @@ Affichage::Affichage(QWidget *parent)
     //on donne une taille par défaut à notre widget (en pixels) (largeur, hauteur)
     setFixedSize(300,300);
 
+    nbEvents = 0;
     zoneTexte = new QTextEdit();
     LCDnbEvents = new QLCDNumber();
     Hlayout = new QHBoxLayout(this);
@@ -20,7 +22,7 @@ Affichage::Affichage(QWidget *parent)
 
 void Affichage::recvData(QString s){
     this->nbEvents++;
-    QString message = (QString) ("souris -> déplacement (position locale) -> " + s);
-    emit textAppend(message);
+    emit textAppend(s);
+    qDebug() << "Number of events :" << nbEvents;
     LCDnbEvents->display(nbEvents);
 }
