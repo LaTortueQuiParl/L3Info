@@ -12,12 +12,20 @@ SOURCES += \
     contact.cpp \
     interaction.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    lescontacts.cpp \
+    lesinteractions.cpp \
+    lestodos.cpp \
+    todo.cpp
 
 HEADERS += \
     contact.h \
+    mainwindow.h \
+    lescontacts.h \
     interaction.h \
-    mainwindow.h
+    lesinteractions.h \
+    lestodos.h \
+    todo.h
 
 FORMS += \
     mainwindow.ui
