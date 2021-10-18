@@ -4,6 +4,7 @@
 #include <list>
 #include <iostream>
 #include <ctime>
+#include "date.h"
 #include "lesinteractions.h"
 
 using namespace std;
@@ -13,10 +14,10 @@ class Contact
 private:
     string nom, prenom, entreprise, mail, telephone, photo;
     LesInteractions lesInteractions ;
-
-    tm *dateCrea;
+    Date dateCrea;
+    Date dernModif;
 public:
-    Contact(const string &, const string &, const string &, const string &, const string &, const string &);
+    Contact(const string &n, const string &p, const string &e, const string &t, const string &ph, const string &mail);
     ~Contact();
 
     string const getNom();
@@ -26,7 +27,7 @@ public:
     string const getPhoto();
     string const getMail();
     LesInteractions const getInteraction();
-    tm getDateCrea();
+    std::string getDateCrea();
 
     void setNom(const string &);
     void setPrenom(const string &);

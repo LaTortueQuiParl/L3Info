@@ -9,16 +9,16 @@ using namespace std;
 class LesInteractions
 {
 private:
-    list<interaction> lInteractions;
+    list<Interaction> lInteractions;
 
 public:
     LesInteractions();
 
-    list<interaction> const getInteractions();
+    list<Interaction> const getInteractions();
 
-    void setInteractions(const list<interaction> &);
+    void setInteractions(const list<Interaction> &);
 
-    void addInteraction(const interaction &);
+    void addInteraction(const Interaction &);
 };
 
 #endif // LESINTERACTION_H

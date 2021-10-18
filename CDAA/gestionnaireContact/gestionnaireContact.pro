@@ -16,7 +16,8 @@ SOURCES += \
     lescontacts.cpp \
     lesinteractions.cpp \
     lestodos.cpp \
-    todo.cpp
+    todo.cpp \
+    date.cpp
 
 HEADERS += \
     contact.h \
@@ -25,7 +26,8 @@ HEADERS += \
     interaction.h \
     lesinteractions.h \
     lestodos.h \
-    todo.h
+    todo.h \
+    date.h
 
 FORMS += \
     mainwindow.ui
