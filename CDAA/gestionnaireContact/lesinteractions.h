@@ -19,6 +19,8 @@ public:
     void setInteractions(const list<Interaction> &);
 
     void addInteraction(const Interaction &);
+
+    void triInteractions();
 };
 
 #endif // LESINTERACTION_H

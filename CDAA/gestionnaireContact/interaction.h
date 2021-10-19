@@ -4,8 +4,7 @@
 #include <string>
 #include <ctime>
 #include <iostream>
-
-//#include "contact.h"
+#include "date.h"
 
 using namespace std;
 
@@ -13,18 +12,18 @@ class Interaction
 {
 private:
     string contenu;
-    tm* date;
+    Date date;
     //Contact* contact;
 public:
     Interaction();
-    Interaction(const tm &, const string &);
+    Interaction(const string &);
     string getContenu() const;
     void setContenu(const string &);
-    tm* getDate() const;
-    void setDate(const tm &);
+    string getDate();
 
-    friend ostream &operator<<(ostream &os, const Interaction &i){
-        return os << i.getContenu() + "," + asctime(i.getDate());
+    friend ostream &operator<<(ostream &os, Interaction &i)
+    {
+        return os << i.getContenu() << ", " << i.getDate();
     }
 
 };

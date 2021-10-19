@@ -22,7 +22,7 @@ public:
 
     void addContact(const Contact &);
 
-    void supprContact(const Contact &);
+    void supprContact(Contact &);
 };
 
 #endif // LESCONTACTS_H

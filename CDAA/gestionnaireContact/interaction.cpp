@@ -3,22 +3,23 @@
 Interaction::Interaction()
 {
     setContenu("");
-    time_t te= time(0);
-    date = new tm(*localtime(&te));
+    date = Date(time(nullptr));
 }
-Interaction::Interaction(const tm &d, const string &c){
+Interaction::Interaction(const string &c)
+{
     setContenu(c);
-    date = new tm(d);
+    date = Date(time(nullptr));
 }
 
-string Interaction::getContenu() const{
+string Interaction::getContenu() const
+{
     return this->contenu;
 }
-
-void Interaction::setDate(const tm &t){
-    *this->date = t;
-}
-
-void Interaction::setContenu(const string &s){
+void Interaction::setContenu(const string &s)
+{
     this->contenu=s;
+}
+string Interaction::getDate()
+{
+    return to_string(this->date.getJour()) + "/" + to_string(this->date.getMois()) + "/" + to_string(this->date.getAnnee()) + "_" + to_string(this->date.getHeures()) + "_" + to_string(this->date.getMinutes()) + "_" + to_string(this->date.getSecondes());
 }

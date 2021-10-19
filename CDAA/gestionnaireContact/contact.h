@@ -27,7 +27,8 @@ public:
     string const getPhoto();
     string const getMail();
     LesInteractions const getInteraction();
-    std::string getDateCrea();
+    std::string getDateCrea();// On renvoie un string car cette méthide ne sert qu'à afficher la date :)
+    std::string getDernModif();// Pareil (:
 
     void setNom(const string &);
     void setPrenom(const string &);
@@ -37,9 +38,11 @@ public:
     void setPhoto(const string &);
     void setInteration(const Interaction &);
 
-    friend ostream &operator<<(ostream &os, Contact &c){
-        return os << c.getNom() << c.getPrenom() << c.getEntreprise() << c.getMail() << (string) c.getTelephone() << c.getPhoto();
+    friend ostream &operator<<(ostream &os, Contact &c)
+    {
+        return os << c.getNom() << " " << c.getPrenom() << " [" << c.getEntreprise() << "] (" << c.getMail() << ") \"" << (string) c.getTelephone() << "\" " << c.getPhoto() << "\tcree le: " << c.getDateCrea() << "\tderniere modification le: " << c.getDernModif();
     }
+    bool operator==(Contact &);
 };
 
 #endif // CONTACT_H
