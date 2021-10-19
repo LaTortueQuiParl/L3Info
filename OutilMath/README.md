@@ -25,6 +25,21 @@ L'objectif de ce projet est de comprendre le fonctionnement des séries de Fouri
 
 L'utilisation de matlab se fait uniquement dans le cadre d'une démonstration d'utilisation des séries de fourier sur une image.
 
+
+- TF 1D
+- TFI 1D
+- TF 1D Rapide
+- TFI 1D Rapide
+- TF 2D
+- TFI 2D
+- TFI 2D Rapide
+- TF 2D Rapide
+- TFI 2D Rapide
+
+<u>**Rapport** :</u>
+
+12 Pages Max (FORMAT PAPIER !!!)
+
 ## Membres du projet
 
 - Yann MOURELON
