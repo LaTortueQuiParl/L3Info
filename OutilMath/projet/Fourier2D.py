@@ -32,6 +32,8 @@ def IFFT2D(A):
             I[u][v] = (1/(M*N)) * s
     return I
 
+
+
 def Verif2D(A,B):
     dim = A.shape
     x = dim[0]
