@@ -9,6 +9,10 @@
 
 using namespace std;
 
+/**
+ * @brief The Contact class
+ * @class class contact qui représente un contact
+ */
 class Contact
 {
 private:
@@ -17,6 +21,15 @@ private:
     Date dateCrea;
     Date dernModif;
 public:
+    /**
+     * @brief Constructeur de contact
+     * @param n Le nom du contact
+     * @param p Le prénom du contact
+     * @param e L'entreprise du contact
+     * @param t Le téléphone du contact
+     * @param ph La photo du contact
+     * @param mail Le mail du contact
+     */
     Contact(const string &n, const string &p, const string &e, const string &t, const string &ph, const string &mail);
     ~Contact();
 
@@ -27,7 +40,16 @@ public:
     string const getPhoto();
     string const getMail();
     LesInteractions const getInteraction();
+
+    /**
+     * @brief getDateCrea
+     * @return La date sous format de la classe Date
+     */
     std::string getDateCrea();// On renvoie un string car cette méthide ne sert qu'à afficher la date :)
+    /**
+     * @brief getDernModif
+     * @return La date de la dernière modification sous format de la classe Date
+     */
     std::string getDernModif();// Pareil (:
 
     void setNom(const string &);
