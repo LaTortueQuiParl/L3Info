@@ -1,17 +1,13 @@
 #include "interaction.h"
 
-Interaction::Interaction()
+Interaction::Interaction(const string &contenu, Contact &contact)
 {
-    setContenu("");
-    date = Date(time(nullptr));
-}
-Interaction::Interaction(const string &c)
-{
-    setContenu(c);
-    date = Date(time(nullptr));
+    setContenu(contenu);
+    dateCreation = Date(time(nullptr));
+    setContact(&contact);
 }
 
-string Interaction::getContenu() const
+string Interaction::getContenu()
 {
     return this->contenu;
 }
@@ -19,7 +15,15 @@ void Interaction::setContenu(const string &s)
 {
     this->contenu=s;
 }
-string Interaction::getDate()
+string Interaction::getDateCreation()
 {
-    return to_string(this->date.getJour()) + "/" + to_string(this->date.getMois()) + "/" + to_string(this->date.getAnnee()) + "_" + to_string(this->date.getHeures()) + "_" + to_string(this->date.getMinutes()) + "_" + to_string(this->date.getSecondes());
+    return to_string(this->dateCreation.getJour()) + "/" + to_string(this->dateCreation.getMois()) + "/" + to_string(this->dateCreation.getAnnee()) + "_" + to_string(this->dateCreation.getHeures()) + "_" + to_string(this->dateCreation.getMinutes()) + "_" + to_string(this->dateCreation.getSecondes());
+}
+void Interaction::setDateCreation(){
+    this->dateCreation = Date(time(0));
+}
+
+void Interaction::setContact(Contact *newContact)
+{
+    contact = newContact;
 }

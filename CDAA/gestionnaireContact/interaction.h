@@ -4,7 +4,7 @@
 #include <string>
 #include <ctime>
 #include <iostream>
-#include "date.h"
+#include "contact.h"
 
 using namespace std;
 
@@ -12,20 +12,21 @@ class Interaction
 {
 private:
     string contenu;
-    Date date;
-    //Contact* contact;
+    Date dateCreation;
+    Contact* contact;
+
 public:
-    Interaction();
-    Interaction(const string &);
-    string getContenu() const;
+    Interaction(const string &contenu, Contact &contact);
+    string getContenu();
     void setContenu(const string &);
-    string getDate();
+    string getDateCreation();
+    void setDateCreation();
 
     friend ostream &operator<<(ostream &os, Interaction &i)
     {
-        return os << i.getContenu() << ", " << i.getDate();
+        return os << i.getContenu() << ", " << i.getDateCreation();
     }
-
+    void setContact(Contact *newContact);
 };
 
 #endif // INTERACTION_H

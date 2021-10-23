@@ -11,10 +11,12 @@ Contact::Contact(const string &n, const string &p, const string &e, const string
     time_t tmm = time(nullptr);
     this->dateCrea = Date(tmm);
     this->dernModif = Date(tmm);
-    this->lesInteractions = LesInteractions();
+    //this->lesInteractions = LesInteractions();
 }
 
-Contact::~Contact(){lesInteractions.~LesInteractions();}
+Contact::~Contact(){
+    //lesInteractions.~LesInteractions();
+}
 
 string const Contact::getNom()
 {
@@ -48,10 +50,11 @@ std::string Contact::getDernModif()
 {
     return to_string(this->dernModif.getJour()) + "/" + to_string(this->dernModif.getMois()) + "/" + to_string(this->dernModif.getAnnee());
 }
-LesInteractions const Contact::getInteraction()
-{
-    return this->lesInteractions;
-}
+
+//LesInteractions const Contact::getInteraction()
+//{
+//    return this->lesInteractions;
+//}
 
 void Contact::setNom(const string &n)
 {
@@ -88,6 +91,9 @@ void Contact::setPhoto(const string &ph)
     if(!ph.empty())
         this->photo=ph;
     this->dernModif=Date(time(nullptr));
+}
+void Contact::setDateCrea(int j, int m, int a){
+    this->dateCrea = Date(j, m, a);
 }
 
 bool Contact::operator==(Contact &c)

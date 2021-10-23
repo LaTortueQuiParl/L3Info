@@ -2,6 +2,7 @@
 #define LESINTERACTION_H
 
 #include "interaction.h"
+#include "date.h"
 #include <list>
 
 using namespace std;
@@ -9,18 +10,20 @@ using namespace std;
 class LesInteractions
 {
 private:
-    list<Interaction> lInteractions;
+    //list<Interaction> lInteractions;
+    Date dernModif;
 
 public:
     LesInteractions();
 
-    list<Interaction> const getInteractions();
+    //list<Interaction> const getInteractions();
 
-    void setInteractions(const list<Interaction> &);
+    //void setInteractions(const list<Interaction> &);
 
-    void addInteraction(const Interaction &);
+    //void addInteraction(const Interaction &);
 
-    void triInteractions();
+    //Date getDernModif();
+    //void setDernModif(const Date &newDernModif);
 };
 
 #endif // LESINTERACTION_H

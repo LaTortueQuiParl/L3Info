@@ -4,6 +4,10 @@
 #include <time.h>
 #include <string>
 
+/**
+ * @brief The Date class
+ * @class The date from time.h library but gives back int type
+ */
 class Date
 {
 
@@ -11,6 +15,7 @@ public:
     tm *date;
     Date();
     Date(time_t time);
+
     int getJour();
     int getMois();
     int getAnnee();
@@ -18,7 +23,6 @@ public:
     int getMinutes();
     int getSecondes();
 
-    void setDate(int &j, int &m, int &a);
 };
 
 #endif // DATE_H

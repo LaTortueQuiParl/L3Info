@@ -5,19 +5,19 @@
 #include <iostream>
 #include <ctime>
 #include "date.h"
-#include "lesinteractions.h"
+//#include "lesinteractions.h"
 
 using namespace std;
 
 /**
  * @brief The Contact class
- * @class class contact qui représente un contact
+ * @class classe contact qui représente un contact
  */
 class Contact
 {
 private:
     string nom, prenom, entreprise, mail, telephone, photo;
-    LesInteractions lesInteractions ;
+    //LesInteractions lesInteractions ;
     Date dateCrea;
     Date dernModif;
 public:
@@ -39,13 +39,14 @@ public:
     string const getTelephone();
     string const getPhoto();
     string const getMail();
-    LesInteractions const getInteraction();
+    //LesInteractions const getInteraction();
 
     /**
      * @brief getDateCrea
      * @return La date sous format de la classe Date
      */
     std::string getDateCrea();// On renvoie un string car cette méthide ne sert qu'à afficher la date :)
+    void setDateCrea(int j, int m, int a); // Méthode qui est utilisé pour faire des tests
     /**
      * @brief getDernModif
      * @return La date de la dernière modification sous format de la classe Date
@@ -58,7 +59,7 @@ public:
     void setMail(const string &);
     void setTelephone(const string &);
     void setPhoto(const string &);
-    void setInteration(const Interaction &);
+    //void setInteration(const Interaction &);
 
     friend ostream &operator<<(ostream &os, Contact &c)
     {
