@@ -113,7 +113,7 @@ public:
     */
     friend ostream &operator<<(ostream &os, Contact &c)
     {
-        return os << c.getNom() << " " << c.getPrenom() << " [" << c.getEntreprise() << "] (" << c.getMail() << ") \"" << (string) c.getTelephone() << "\" " << c.getPhoto() << " cree le: " << c.getDateCrea() << "\tderniere modification le: " << c.getDernModif();
+        return os << c.getNom() << " " << c.getPrenom() << " [" << c.getEntreprise() << "] (" << c.getMail() << ") \"" << (string) c.getTelephone() << "\" " << c.getPhoto() << " cree le: " << c.getDateCrea() << " derniere modification le: " << c.getDernModif();
     }
     bool operator==(Contact &);
 };

@@ -2,25 +2,30 @@
 
 GestionContacts::GestionContacts()
 {
-
+    this->listContact = {};
+    this->derniereSuppr = Date();
 }
 
 list<Contact> const GestionContacts::getContacts(){
-    return this->lContact;
+    return this->listContact;
+}
+
+string GestionContacts::getDerniereSuppr(){
+    return to_string(this->derniereSuppr.getJour()) + "/" + to_string(this->derniereSuppr.getMois()) + "/" + to_string(this->derniereSuppr.getAnnee());
 }
 
 void  GestionContacts::setContacts(const list<Contact> &lc){
-    this->lContact = lc;
+    this->listContact = lc;
 }
 
 void GestionContacts::addContact(const Contact &c){
-    this->lContact.push_back(c);
+    this->listContact.push_back(c);
 }
 
 void GestionContacts::supprContact(Contact &c){
-    for(auto v=this->lContact.begin() ; v!=this->lContact.end();){
+    for(auto v=this->listContact.begin() ; v!=this->listContact.end();){
         if(*v==c){
-            v = this->lContact.erase(v);
+            v = this->listContact.erase(v);
         }else
             ++v;
     }

@@ -72,6 +72,8 @@ public:
     {
         return os << i.getContenu() << ", " << i.getDateCreation();
     }
+
+    bool operator==(Interaction &i);
 };
 
 #endif // INTERACTION_H

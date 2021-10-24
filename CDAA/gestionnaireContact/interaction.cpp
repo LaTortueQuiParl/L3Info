@@ -24,3 +24,7 @@ void Interaction::setContenu(const string &c){
 void Interaction::setContact(Contact *c){
     this->contact = c;
 }
+
+bool Interaction::operator==(Interaction &i){
+    return i.getContact() == this->getContact() && i.getContenu() == this->getContenu() && i.getDateCreation() == this->getDateCreation();
+}

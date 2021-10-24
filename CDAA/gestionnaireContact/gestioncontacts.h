@@ -15,7 +15,7 @@ using namespace std;
 class GestionContacts
 {
 private:
-    list<Contact> lContact;
+    list<Contact> listContact;
     Date derniereSuppr;
 
 public:
@@ -29,6 +29,12 @@ public:
      * @return La liste de tous les contacts.
      */
     list<Contact> const getContacts();
+
+    /**
+     * @brief getDerniereSuppr permet de récupérer la date de la dernière suppression, vaut par défaut la date de la création de l'instance
+     * @return la date de la dernière suppression
+     */
+    string getDerniereSuppr();
 
     /**
      * @brief setContacts permet de définir une nouvelle liste de contact.
