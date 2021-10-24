@@ -4,7 +4,9 @@
 #include <string>
 #include <ctime>
 #include <iostream>
-#include "contact.h"
+#include "gestiontodos.h"
+
+class Contact;
 
 using namespace std;
 
@@ -19,6 +21,7 @@ private:
     string contenu;
     Date dateCreation;
     Contact* contact;
+    GestionTodos gt;
 
     /**
      * @brief setContact change le contact.
@@ -51,7 +54,7 @@ public:
      * @brief getContact récupère le contact qui est la source de l'interaction.
      * @return Renvoie le contact qui a intéragi.
      */
-    Contact getContact();
+    Contact* getContact();
 
     /**
      * @brief setContenu redéfini le contenu de l'intéraction.

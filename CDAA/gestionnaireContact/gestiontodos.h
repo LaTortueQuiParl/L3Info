@@ -36,6 +36,20 @@ public:
      * @param t est le todo à rajouter dans la liste.
      */
     void addTodo(const Todo &t);
+    /**
+     * @brief supprTodo permet de supprimer un todo dans la liste.
+     * @param t est le todo à supprimer de la liste.
+     */
+    void supprTodo(Todo &t);
+
+    //test
+    friend ostream &operator<<(ostream &os, GestionTodos &gt)
+    {
+        for(auto v:gt.getTodos()){
+            os << v << endl;
+        }
+        return os;
+    }
 };
 
 #endif // GESTIONTODOS_H

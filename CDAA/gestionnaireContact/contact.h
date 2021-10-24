@@ -5,7 +5,7 @@
 #include <iostream>
 #include <ctime>
 #include "date.h"
-//#include "lesinteractions.h"
+#include "gestioninteractions.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ class Contact
 {
 private:
     string nom, prenom, entreprise, mail, telephone, photo;
-    //LesInteractions lesInteractions ;
+    GestionInteractions lesInteractions ;
     Date dateCrea;
     Date dernModif;
 public:

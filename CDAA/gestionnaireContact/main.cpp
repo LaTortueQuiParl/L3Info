@@ -108,7 +108,7 @@ void testInteraction(){
 
     genericTestOutputFormatForString(classTest, "recuperation du contenu,", i.getContenu(), "rdv aujourd'hui par tél., RAS");
     genericTestOutputFormatForString(classTest, "recuperation de la date,", i.getDateCreation(), nowS);
-    genericTestOutputFormatForClass(classTest, "recuperation du contact,", i.getContact(), p);
+    genericTestOutputFormatForClass(classTest, "recuperation du contact,", *i.getContact(), p);
 
     now.~Date();
 

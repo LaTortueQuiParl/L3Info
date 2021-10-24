@@ -24,14 +24,14 @@ public:
      */
     GestionInteractions();
 
-    //list<Interaction> const getInteractions();
+    list<Interaction> const getInteractions();
 
-    //void setInteractions(const list<Interaction> &);
+    void setInteractions(const list<Interaction> &);
 
-    //void addInteraction(const Interaction &);
+    void addInteraction(const Interaction &);
 
-    //Date getDernModif();
-    //void setDernModif(const Date &newDernModif);
+    Date getDernModif();
+    void setDernModif(const Date &newDernModif);
 };
 
 #endif // LESINTERACTION_H

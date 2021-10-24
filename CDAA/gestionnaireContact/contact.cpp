@@ -10,7 +10,7 @@ Contact::Contact(const string &n, const string &p, const string &e, const string
     this->setMail(mail);
     this->dateCrea = Date();
     this->dernModif = Date();
-    //this->lesInteractions = LesInteractions();
+    //this->lesInteractions = GestionInteractions();
 }
 Contact::~Contact(){
     this->dateCrea.~Date();
