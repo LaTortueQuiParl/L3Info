@@ -10,22 +10,22 @@ CONFIG += c++11
 
 SOURCES += \
     contact.cpp \
+    gestioncontacts.cpp \
+    gestioninteractions.cpp \
+    gestiontodos.cpp \
     interaction.cpp \
     main.cpp \
     mainwindow.cpp \
-    lescontacts.cpp \
-    lesinteractions.cpp \
-    lestodos.cpp \
     todo.cpp \
     date.cpp
 
 HEADERS += \
     contact.h \
+    gestioncontacts.h \
+    gestioninteractions.h \
+    gestiontodos.h \
     mainwindow.h \
-    lescontacts.h \
     interaction.h \
-    lesinteractions.h \
-    lestodos.h \
     todo.h \
     date.h
 

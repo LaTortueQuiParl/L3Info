@@ -1,15 +1,17 @@
 #include "todo.h"
 
-Todo::Todo()
-{
+Todo::Todo(){}
 
+string Todo::getContenu(){
+    return this->contenu;
+}
+string Todo::getTime(){
+    return to_string(this->dateCreation.getJour()) + "/" + to_string(this->dateCreation.getMois()) + "/" + to_string(this->dateCreation.getAnnee());
+}
+Interaction* Todo::getInteraction(){
+    return this->owner;
 }
 
-
 void Todo::setContenu(const string &c){this->contenu = c;}
-void Todo::setDate(const tm &t){*this->date = t;}
 void Todo::setInteraction(const Interaction &i){*this->owner = i;}
 
-string const Todo::getContenu(){return this->contenu;}
-tm* Todo::getTime(){return this->date;}
-Interaction* Todo::getInteraction(){return this->owner;}

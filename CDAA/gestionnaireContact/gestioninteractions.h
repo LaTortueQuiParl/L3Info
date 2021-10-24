@@ -7,14 +7,22 @@
 
 using namespace std;
 
-class LesInteractions
+/**
+ * @brief La classe GestionInteractions.
+ * Cette classe contient toutes les interactions souus forme de liste.
+ * @class GestionInteractions
+ */
+class GestionInteractions
 {
 private:
-    //list<Interaction> lInteractions;
+    list<Interaction> lInteractions;
     Date dernModif;
 
 public:
-    LesInteractions();
+    /**
+     * @brief Le constructeur de la classe GestionInteractions.
+     */
+    GestionInteractions();
 
     //list<Interaction> const getInteractions();
 

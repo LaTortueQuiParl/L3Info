@@ -8,14 +8,13 @@ Contact::Contact(const string &n, const string &p, const string &e, const string
     this->setTelephone(t);
     this->setPhoto(ph);
     this->setMail(mail);
-    time_t tmm = time(nullptr);
-    this->dateCrea = Date(tmm);
-    this->dernModif = Date(tmm);
+    this->dateCrea = Date();
+    this->dernModif = Date();
     //this->lesInteractions = LesInteractions();
 }
-
 Contact::~Contact(){
-    //lesInteractions.~LesInteractions();
+    this->dateCrea.~Date();
+    this->dernModif.~Date();
 }
 
 string const Contact::getNom()
@@ -50,50 +49,47 @@ std::string Contact::getDernModif()
 {
     return to_string(this->dernModif.getJour()) + "/" + to_string(this->dernModif.getMois()) + "/" + to_string(this->dernModif.getAnnee());
 }
-
-//LesInteractions const Contact::getInteraction()
-//{
-//    return this->lesInteractions;
-//}
-
+/*
+LesInteractions const Contact::getInteraction()
+{
+    return this->lesInteractions;
+}
+*/
 void Contact::setNom(const string &n)
 {
     if(!n.empty())
         this->nom=n;
-    this->dernModif=Date(time(nullptr));
+    this->dernModif=Date();
 }
 void Contact::setPrenom(const string &p)
 {
     if(!p.empty())
         this->prenom=p;
-    this->dernModif=Date(time(nullptr));
+    this->dernModif=Date();
 }
 void Contact::setEntreprise(const string &e)
 {
     if(!e.empty())
         this->entreprise=e;
-    this->dernModif=Date(time(nullptr));
-}
-void Contact::setMail(const string &m)
-{
-    if(!m.empty())
-        this->mail=m;
-    this->dernModif=Date(time(nullptr));
+    this->dernModif=Date();
 }
 void Contact::setTelephone(const string &t)
 {
     if(!t.empty())
         this->telephone=t;
-    this->dernModif=Date(time(nullptr));
+    this->dernModif=Date();
 }
 void Contact::setPhoto(const string &ph)
 {
     if(!ph.empty())
         this->photo=ph;
-    this->dernModif=Date(time(nullptr));
+    this->dernModif=Date();
 }
-void Contact::setDateCrea(int j, int m, int a){
-    this->dateCrea = Date(j, m, a);
+void Contact::setMail(const string &m)
+{
+    if(!m.empty())
+        this->mail=m;
+    this->dernModif=Date();
 }
 
 bool Contact::operator==(Contact &c)

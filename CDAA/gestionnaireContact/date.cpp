@@ -1,9 +1,9 @@
 #include "date.h"
 
-Date::Date(){}
-Date::Date(time_t time)
+Date::Date()
 {
-    this->date = localtime(&time);
+    time_t t = time(nullptr);
+    this->date = localtime(&t);
 }
 int Date::getJour()
 {
