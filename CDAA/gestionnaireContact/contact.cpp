@@ -10,6 +10,7 @@ Contact::Contact(const string &n, const string &p, const string &e, const string
     this->setMail(mail);
     this->dateCrea = Date();
     this->dernModif = Date();
+    this->gestionInteractions = GestionInteractions();
     //this->lesInteractions = GestionInteractions();
 }
 Contact::~Contact(){
@@ -41,13 +42,13 @@ string const Contact::getMail()
 {
     return this->mail;
 }
-std::string Contact::getDateCrea()
+Date Contact::getDateCrea()
 {
-    return to_string(this->dateCrea.getJour()) + "/" + to_string(this->dateCrea.getMois()) + "/" + to_string(this->dateCrea.getAnnee());
+    return this->dateCrea;
 }
-std::string Contact::getDernModif()
+Date Contact::getDernModif()
 {
-    return to_string(this->dernModif.getJour()) + "/" + to_string(this->dernModif.getMois()) + "/" + to_string(this->dernModif.getAnnee());
+    return this->dernModif;
 }
 /*
 LesInteractions const Contact::getInteraction()

@@ -1,9 +1,10 @@
 #ifndef CONTACT_H
 #define CONTACT_H
+
 #include <string>
 #include <list>
 #include <iostream>
-#include <ctime>
+
 #include "date.h"
 #include "gestioninteractions.h"
 
@@ -18,7 +19,7 @@ class Contact
 {
 private:
     string nom, prenom, entreprise, mail, telephone, photo;
-    GestionInteractions lesInteractions ;
+    GestionInteractions gestionInteractions;
     Date dateCrea;
     Date dernModif;
 public:
@@ -68,12 +69,12 @@ public:
      * @brief getDateCrea renvoie la date de création du contact.
      * @return La date sous format de la classe Date.
      */
-    std::string getDateCrea();
+    Date getDateCrea();
     /**
      * @brief getDernModif renvoie la date de dernière modification de contact.
      * @return La date de la dernière modification sous format de la classe Date.
      */
-    std::string getDernModif();
+    Date getDernModif();
 
     /**
      * @brief setNom modifie le nom du contact.
@@ -113,7 +114,7 @@ public:
     */
     friend ostream &operator<<(ostream &os, Contact &c)
     {
-        return os << c.getNom() << " " << c.getPrenom() << " [" << c.getEntreprise() << "] (" << c.getMail() << ") \"" << (string) c.getTelephone() << "\" " << c.getPhoto() << " cree le: " << c.getDateCrea() << " derniere modification le: " << c.getDernModif();
+        return os << c.getNom() << " " << c.getPrenom() << " [" << c.getEntreprise() << "] (" << c.getMail() << ") \"" << c.getTelephone() << "\" " << c.getPhoto() << " cree le: " << c.getDateCrea() << " modifie le:" << c.getDernModif();
     }
     bool operator==(Contact &);
 };

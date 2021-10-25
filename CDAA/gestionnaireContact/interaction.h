@@ -2,7 +2,6 @@
 #define INTERACTION_H
 
 #include <string>
-#include <ctime>
 #include <iostream>
 #include "gestiontodos.h"
 
@@ -49,7 +48,7 @@ public:
      * @brief getDateCreation récupère la date de création de l'interaction.
      * @return La date de création de l'interaction sous format "dd/mm/aaaa".
      */
-    string getDateCreation();
+    Date getDateCreation();
     /**
      * @brief getContact récupère le contact qui est la source de l'interaction.
      * @return Renvoie le contact qui a intéragi.

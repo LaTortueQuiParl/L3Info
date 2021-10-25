@@ -34,13 +34,18 @@ public:
      * @brief getDerniereSuppr permet de récupérer la date de la dernière suppression, vaut par défaut la date de la création de l'instance
      * @return la date de la dernière suppression
      */
-    string getDerniereSuppr();
+    Date getDerniereSuppr();
 
     /**
      * @brief setContacts permet de définir une nouvelle liste de contact.
      * @param lc est la nouvelle liste de contact.
      */
     void setContacts(const list<Contact> &lc);
+
+    /**
+     * @brief resetDernModif permet de mettre la date de la dernière modification à la date courante
+     */
+    void resetDernSuppr();
 
     /**
      * @brief addContact permet d'insérer un contact dans la liste des contacts.

@@ -11,8 +11,8 @@ Interaction::~Interaction(){}
 string Interaction::getContenu(){
     return this->contenu;
 }
-string Interaction::getDateCreation(){
-    return to_string(this->dateCreation.getJour()) + "/" + to_string(this->dateCreation.getMois()) + "/" + to_string(this->dateCreation.getAnnee());
+Date Interaction::getDateCreation(){
+    return this->dateCreation;
 }
 Contact* Interaction::getContact(){
     return this->contact;

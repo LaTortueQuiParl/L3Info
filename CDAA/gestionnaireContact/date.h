@@ -1,8 +1,9 @@
 #ifndef DATE_H
 #define DATE_H
 
-#include <time.h>
 #include <string>
+#include <iostream>
+#include <time.h>
 
 /**
  * @brief La classe date
@@ -21,6 +22,7 @@ public:
      * La date est toujours la date courante.
      */
     Date();
+    Date(int j, int m, int a);
 
     /**
      * @brief getJour renvoie le jour de la création de la Date.
@@ -53,6 +55,11 @@ public:
      */
     int getSecondes();
 
+    friend std::ostream &operator<<(std::ostream &os, Date d){
+        return os << std::to_string(d.getJour()) + "/" + std::to_string(d.getMois()) + "/" + std::to_string(d.getAnnee());
+    }
+
+    bool operator==(Date d);
 };
 
 #endif // DATE_H

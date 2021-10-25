@@ -3,22 +3,33 @@
 GestionContacts::GestionContacts()
 {
     this->listContact = {};
-    this->derniereSuppr = Date();
+    resetDernSuppr();
 }
 
 list<Contact> const GestionContacts::getContacts(){
     return this->listContact;
 }
 
-string GestionContacts::getDerniereSuppr(){
-    return to_string(this->derniereSuppr.getJour()) + "/" + to_string(this->derniereSuppr.getMois()) + "/" + to_string(this->derniereSuppr.getAnnee());
+Date GestionContacts::getDerniereSuppr(){
+    return this->derniereSuppr;
 }
 
 void  GestionContacts::setContacts(const list<Contact> &lc){
     this->listContact = lc;
 }
 
+void GestionContacts::resetDernSuppr(){
+    this->derniereSuppr = Date();
+}
+
 void GestionContacts::addContact(const Contact &c){
+    Contact cc = c;
+    for(auto v=this->listContact.begin() ; v!=this->listContact.end(); v++){
+        if (*v == cc){
+            std::cerr << "Contact { " << cc << " } is already in the list" << endl;
+            return;
+        }
+    }
     this->listContact.push_back(c);
 }
 

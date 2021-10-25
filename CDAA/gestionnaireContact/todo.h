@@ -18,18 +18,30 @@ class Todo
 {
 private:
     string contenu;
-    string contenuTag;
-    string tag;
-    Date dateCreation;
+    Date deadline;
+    bool tag;
     Interaction* owner;
-public:
+
     /**
-     * @brief constructeur de Todo
-     * @param newContenu nouveau contenu
-     * @param newTag nouveau tag
+     * @brief setTag permet de mettre bool à true et dire que la deadline est autre que la date d'instanciation.
+     * @param newTag le bool pour savoir si la date butoir est différente que la date d'instanciation
+     */
+    void setTag(const bool newTag);
+public:
+
+    /**
+     * @brief Todo est le constructeur d'un todo avec la date d'instanciation pour la date butoir.
+     * @param contenu l'action qu'il y a faire
      * @param own est l'instance de l'interaction à l'origine du Todo.
      */
-    Todo(const string &contenu, const string &newContenu, const string &newTag, Interaction *own);
+    Todo(const string &contenu, Interaction *own);
+    /**
+     * @brief Constructeur de Todo avec une date butoir autre que la date d'instanciation
+     * @param contenu l'action qu'il y a faire
+     * @param own est l'instance de l'interaction à l'origine du Todo.
+     * @param date est la date butoir
+     */
+    Todo(const string &contenu, Interaction *own, const Date *date);
 
     /**
      * @brief getContenu renvoie le contenu du Todo.
@@ -37,25 +49,20 @@ public:
      */
     string getContenu();
     /**
-     * @brief getContenuTag renvoie un contenu additionnel au tag du Todo.
-     * @return Le contenuTag du todo.
+     * @brief getDeadline renvoie la date butoir.
+     * @return La date butoir.
      */
-    const string &getContenuTag();
-    /**
-     * @brief getTime renvoie la date de création du Todo.
-     * @return La date de création du Todo
-     */
-    string getTime();
+    Date getDeadline();
     /**
      * @brief getInteraction renvoie l'interaction dont elle est à l'origine
      * @return Un pointeur sur l'interaction qui justifie le Todo.
      */
     Interaction* getInteraction();
     /**
-     * @brief getTag renvoie le tag du todo
-     * @return un string contenant le tag passé en parametre
+     * @brief getTag permet de savoir si il y a une date butoir autre que la date d'instanciation.
+     * @return le bool qui est true si il y a une date butoir autre que la date d'instanciation.
      */
-    const string &getTag() const;
+    const bool &getTag() const;
 
     /**
      * @brief setContenu modifie le contenu du todo.
@@ -63,15 +70,10 @@ public:
      */
     void setContenu(const string &c);
     /**
-     * @brief setContenuTag modifie le contenuTag du todo.
-     * @param newContenuTag est le nouveau contenuTag du Todo.
+     * @brief setDeadline permet de changer la date butoir.
+     * @param date la nouvelle date butoir.
      */
-    void setContenuTag(const string &newContenuTag);
-    /**
-     * @brief setTag modifie le contenu de tag. Si le tag est différent de "todo" ou de "date" alors il affiche une erreur.
-     * @param newTag un nouveau tag sous forme de string.
-     */
-    void setTag(const string &newTag);
+    void setDeadline(const Date &date);
 
     /**
     * @brief surchage de l'operateur << qui permet d'afficher simplement les informations du todo.
@@ -80,9 +82,9 @@ public:
     */
     friend ostream &operator<<(ostream &os, Todo &t)
     {
-        if(!t.getTag().empty())
+        if(!t.getTag() == false)
             return os << "@todo " << t.getContenu();
-        return os << "@todo " << t.getContenu() << " " << t.getTag() << " " << t.getContenuTag();
+        return os << "@todo " << t.getContenu() << " @date "  << t.getDeadline();
     }
     /**
     * @brief surchage de l'operateur == qui permet de vérifier qu'un todo est égal à un autre todo.

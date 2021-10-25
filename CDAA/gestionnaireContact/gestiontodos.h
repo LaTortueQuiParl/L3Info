@@ -14,7 +14,7 @@ using namespace std;
 class GestionTodos
 {
 private:
-    list<Todo> lTodo;
+    list<Todo> listTodo;
 public:
     /**
      * @brief Le constructeur de GestionTodos.
@@ -42,7 +42,6 @@ public:
      */
     void supprTodo(Todo &t);
 
-    //test
     friend ostream &operator<<(ostream &os, GestionTodos &gt)
     {
         for(auto v:gt.getTodos()){
