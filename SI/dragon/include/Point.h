@@ -5,7 +5,23 @@
 class Point
 {
     public:
-        double x, y, z;
+        Point();
+        Point(double newX, double newY, double newZ);
+        virtual ~Point();
+
+        double getX();
+        double getY();
+        double getZ();
+
+        void setX(double newX);
+        void setY(double newY);
+        void setZ(double newZ);
+
+    protected:
+
+    private:
+
+        double x,y,z;
 };
 
 #endif // POINT_H
