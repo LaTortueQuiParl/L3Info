@@ -82,7 +82,7 @@ public:
     */
     friend ostream &operator<<(ostream &os, Todo &t)
     {
-        if(!t.getTag() == false)
+        if(t.getTag() == false)
             return os << "@todo " << t.getContenu();
         return os << "@todo " << t.getContenu() << " @date "  << t.getDeadline();
     }

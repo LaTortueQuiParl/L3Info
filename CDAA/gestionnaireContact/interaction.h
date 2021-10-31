@@ -62,6 +62,12 @@ public:
     void setContenu(const string &c);
 
     /**
+     * @brief setDateCreation permet de mettre une date de création autre que la date courante pour une interaction, ne sert que pour les tests et n'a pas d'application réelle
+     * @param d la date à laquelle on veut créer une interaction
+     */
+    void setDateCreation(const Date d);
+
+    /**
      * @brief operator << permet de faire la surcharge de l'opérateur << afin de faciliter le débugage.
      * @param os Le stream dans lequel on envoie les informations d'interaction.
      * @param i L'instance d'interaction dont on veut envoyer les informations dans un stream.
@@ -72,7 +78,19 @@ public:
         return os << i.getContenu() << ", " << i.getDateCreation();
     }
 
+    /**
+     * @brief operator == permet de comparer 2 interaction
+     * @param i le deuxième membre à comprarer
+     * @return renvoie vrai si le contact, contenu et date de création sont les mêmes
+     */
     bool operator==(Interaction &i);
+
+    /**
+     * @brief operator < permet de savoir si une interaction a été créée avant une autre
+     * @param i le deuxième membre à comparer
+     * @return renvoie vrai si le membre de gauche est plus petit que le membre de droite
+     */
+    bool operator<(Interaction &i);
 };
 
 #endif // INTERACTION_H

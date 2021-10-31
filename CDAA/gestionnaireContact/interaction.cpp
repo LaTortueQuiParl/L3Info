@@ -25,6 +25,14 @@ void Interaction::setContact(Contact *c){
     this->contact = c;
 }
 
+void Interaction::setDateCreation(const Date d){
+    this->dateCreation = d;
+}
+
 bool Interaction::operator==(Interaction &i){
     return i.getContact() == this->getContact() && i.getContenu() == this->getContenu() && i.getDateCreation() == this->getDateCreation();
+}
+
+bool Interaction::operator<(Interaction &i){
+    return this->getDateCreation() < i.getDateCreation();
 }

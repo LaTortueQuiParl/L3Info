@@ -10,11 +10,12 @@
  * Permet de formater les données de la librairier time.h sous forme de int.
  * Comme il n'est pas possible de modifier les valeurs de la structure renvoyée par time.h, la classe ne contient pas de setteur.
  * @class Date
+ * @todo faire des exceptions lorsque le format de la date n'est pas respecté
  */
 class Date
 {
 private:
-    tm *date;
+    tm date;
 
 public:
     /**
@@ -22,7 +23,14 @@ public:
      * La date est toujours la date courante.
      */
     Date();
-    Date(int j, int m, int a);
+    /**
+     * @brief Date est le constructeur de Date qui permet d'avoir une date autre que la date courante
+     * @param j le jour de la date
+     * @param m le mois de la date
+     * @param a l'année de la date
+     * @todo vérifier que le jour est inférieur à 31...
+     */
+    Date(unsigned int j, unsigned int m, unsigned int a);
 
     /**
      * @brief getJour renvoie le jour de la création de la Date.
@@ -60,6 +68,8 @@ public:
     }
 
     bool operator==(Date d);
+
+    bool operator<(Date d);
 };
 
 #endif // DATE_H

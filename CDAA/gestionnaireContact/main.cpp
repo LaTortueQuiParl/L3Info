@@ -5,6 +5,9 @@
 #include <iostream>
 #include <string>
 
+//#include "mainwindow.h"
+#include <QApplication>
+
 int RATE = 0; // Nombre de tests rate
 int REUSSI = 0; // Nombre de tests reussi
 
@@ -172,6 +175,10 @@ void testInteraction(){
     i.setContenu("rdv interessant");
     genericTestOutputFormat(classTest, "recuperation du contenu", i.getContenu(), "rdv interessant");
 
+    Interaction i2 = Interaction("apel aujourd'hui par tél., interessant", p);
+    i2.setDateCreation(Date(25, 12, 2021));
+    genericTestOutputFormat(classTest, "comparaison entre une intreaction créée aujourd'hui et une le 25/12/2021", i<i2, true);
+
     p.~Contact();
 }
 
@@ -205,6 +212,38 @@ void testTodo(){
     t1.setDeadline(now);
     genericTestOutputFormat(classTest, "recuperation du contenu du tag", t1.getDeadline(), now);
     genericTestOutputFormat(classTest, "modification du tag de t1", t1.getTag(), true);
+}
+
+/**
+ * @brief testDate permet de tester les méthodes de Date
+ */
+void testDate(){
+    string classTest = "Date";
+    time_t t = time(nullptr);
+    tm* date = localtime(&t);
+    Date d = Date();
+    genericTestOutputFormat(classTest, "annee de la date courante", d.getAnnee(), date->tm_year + 1900);
+    genericTestOutputFormat(classTest, "mois de la date courante", d.getMois(), date->tm_mon + 1);
+    genericTestOutputFormat(classTest, "jour de la date courante", d.getJour(), date->tm_mday);
+
+    Date noel2021 = Date(25, 12, 2021);
+    genericTestOutputFormat(classTest, "annee de noel 2021", noel2021.getAnnee(), 2021);
+    genericTestOutputFormat(classTest, "mois de noel 2021", noel2021.getMois(), 12);
+    genericTestOutputFormat(classTest, "jour de noel 2021", noel2021.getJour(), 25);
+
+    Date nouvelAn2022 = Date(01, 01, 2022);
+    genericTestOutputFormat(classTest, "comparaison entre la date de noel 2021 et nouvel an 2022", noel2021 < nouvelAn2022, true);
+    genericTestOutputFormat(classTest, "comparaison entre nouvel an 2022 et la date de noel 2021", nouvelAn2022 < noel2021, false);
+
+    Date premierFevrier2022 = Date(01, 02, 2022);
+    genericTestOutputFormat(classTest, "comparaison entre 01/02/2022 et 01/01/2022", nouvelAn2022 < premierFevrier2022, true);
+
+    Date deuxJanvier2022 = Date(2, 1, 2022);
+    genericTestOutputFormat(classTest, "comparaison entre 01/01/2022 et 02/01/2022", nouvelAn2022 < deuxJanvier2022, true);
+
+    // Date dateImpossible = Date(32, 1, 2021);
+    // Date dateImpossible2 = Date(04, 45, 2021);
+    // Date datePlausible = Date(30, 2, 2021);
 }
 
 /**
@@ -281,7 +320,7 @@ void testGestionTodos(){
     GestionTodos gt = GestionTodos();
     Todo t = Todo("manger", &i);
     Todo t1 = Todo("boire", &i);
-    const Date hier = Date(24, 10, 2021);
+    //const Date hier = Date(24, 10, 2021);
     Todo t2 = Todo("dormir", &i);
 
     genericTestOutputFormat(classTest, "recuperation de la list apres initialisation", gt.getTodos(), {});
@@ -300,14 +339,21 @@ void testGestionTodos(){
     genericTestOutputFormat(classTest, "remplacement de la liste des todos", gt.getTodos(), {t2, t1});
 }
 
-int main()
+int main(int argc, char** argv)
 {
     testContact(); // Tests de la classe contact
     testInteraction(); // Tests de la classe interaction
     testTodo(); // Tests de la classe Todo
+    testDate(); // Tests de la classe Date
     testGestionContacts(); // Tests de la classe GestionContacts
     testGestionInteractions(); // Tests de la classe GestionsInteractions
     testGestionTodos(); // Tests de la class GestionTodos
     cout << "Nombre de tests: " << RATE + REUSSI << "\nNombre de tests valides: " << REUSSI << "\nNombre de tests rate: " << RATE << endl;
     return 0;
+    /*
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
+    */
 }

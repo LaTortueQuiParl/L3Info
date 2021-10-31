@@ -41,6 +41,7 @@ public:
     /**
      * @brief setInteractions permet de définir une nouvelle liste d'intéraction.
      * @param li est la nouvelle liste d'intéraction.
+     * @todo vérifier que la list est triée et la trier si besoin
      */
     void setInteractions(const list<Interaction> &li);
 
@@ -52,7 +53,8 @@ public:
     /**
      * @brief addInteraction permet d'ajouter une interaction à la liste.
      * @param i est l'intéraction à ajouter dans la liste
-     * @todo Vérifier que l'interaction à ajouter n'est pas dans la liste pour éviter les doublons
+     * @todo faire une 'soft' exception pour l'ajout d'un membre déjà dans la liste plutot que d'affier dans cerr
+     * @todo trier les interactions par leurs dates
      */
     void addInteraction(const Interaction &i);
 
