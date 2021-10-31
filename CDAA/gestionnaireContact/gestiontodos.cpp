@@ -18,8 +18,7 @@ void GestionTodos::addTodo(const Todo &t){
     Todo t2 = t;
     for(auto v=this->listTodo.begin() ; v!=this->listTodo.end(); ++v){
         if (*v == t2){
-            cerr << "Todo { " << t2 << " } already in the list" << endl;
-            return;
+            throw invalid_argument("Ce todo est deja dans la liste");
         }
     }
     this->listTodo.push_back(t);

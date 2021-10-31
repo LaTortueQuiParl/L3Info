@@ -53,8 +53,9 @@ public:
     /**
      * @brief addInteraction permet d'ajouter une interaction à la liste.
      * @param i est l'intéraction à ajouter dans la liste
-     * @todo faire une 'soft' exception pour l'ajout d'un membre déjà dans la liste plutot que d'affier dans cerr
      * @todo trier les interactions par leurs dates
+     * La fonction lance une exception 'std::invalid_argument' lorsque l'interaction à ajouter est déjà dans la liste.
+     * La fonction doit donc toujours être dans un try et catch pour pouvoir gérer l'exception sinon quoi le programme se termine
      */
     void addInteraction(const Interaction &i);
 

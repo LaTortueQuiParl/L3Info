@@ -198,7 +198,6 @@ void testTodo(){
     genericTestOutputFormat(classTest, "recuperation de l'interaction", *t.getInteraction(), i);
     genericTestOutputFormat(classTest, "recuperation du tag de t", t.getTag(), true);
 
-
     // Test des setter
     t.setContenu("Rendez-vous");
     genericTestOutputFormat(classTest, "modification du contenu", t.getContenu(), "Rendez-vous");
@@ -263,7 +262,11 @@ void testGestionContacts(){
     genericTestOutputFormat(classTest, "recuperation de la liste de contact", gc.getContacts(), {});
     genericTestOutputFormat(classTest, "récupération de la date de la derniere suppression", gc.getDerniereSuppr(), now);
 
-    gc.addContact(p1);
+    try {
+        gc.addContact(p1);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
     genericTestOutputFormat(classTest, "ajout d'un contact dans la list", gc.getContacts(), {p1});
 
     list<Contact> lp = {p1, p2};
@@ -274,10 +277,14 @@ void testGestionContacts(){
     genericTestOutputFormat(classTest, "suppression du contact p1 de la liste", gc.getContacts(), {p1});
     genericTestOutputFormat(classTest, "vérification de la mise à jour de la date de dernière suppression", gc.getDerniereSuppr(), now);
 
-    gc.addContact(p3);
-    gc.addContact(p2);
-    gc.addContact(p1);
-    genericTestOutputFormat(classTest, "ajout d'un contact dans la list", gc.getContacts(), {p1, p3, p2});
+    try {
+        gc.addContact(p3);
+        gc.addContact(p2);
+        gc.addContact(p1);
+    }  catch (const invalid_argument &e) {
+       cerr << e.what() << endl;
+    }
+    genericTestOutputFormat(classTest, "ajout d'un contact dans la liste", gc.getContacts(), {p1, p3, p2});
 }
 
 /**
@@ -296,7 +303,12 @@ void testGestionInteractions(){
     genericTestOutputFormat(classTest, "recuperation de gestionInteraction apres creation", gi.getInteractions(), {});
     genericTestOutputFormat(classTest, "recuperation de la date de derniere suppression", gi.getDernModif(), now);
 
-    gi.addInteraction(i1);
+    try {
+        gi.addInteraction(i1);
+    } catch(const invalid_argument &e){
+        cerr << e.what() << endl;
+    }
+
     genericTestOutputFormat(classTest, "recuperation d'une interaction ajoutee", gi.getInteractions(), {i1});
 
     gi.setInteractions({i2, i1});
@@ -305,9 +317,13 @@ void testGestionInteractions(){
     gi.supprInteraction(i1);
     genericTestOutputFormat(classTest, "suppression d'une interaction", gi.getInteractions(), {i2});
 
-    gi.addInteraction(i1);
-    gi.addInteraction(i2);
-    genericTestOutputFormat(classTest, "suppression d'une interaction", gi.getInteractions(), {i2, i1});
+    try {
+        gi.addInteraction(i1);
+        gi.addInteraction(i2);
+    }  catch (invalid_argument const &e) {
+        std::cerr << e.what() << std::endl;
+    }
+    genericTestOutputFormat(classTest, "Ajout d'une interaction deja dans la liste", gi.getInteractions(), {i2, i1});
 }
 
 /**
@@ -325,7 +341,11 @@ void testGestionTodos(){
 
     genericTestOutputFormat(classTest, "recuperation de la list apres initialisation", gt.getTodos(), {});
 
-    gt.addTodo(t);
+    try {
+        gt.addTodo(t);
+    } catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
     genericTestOutputFormat(classTest, "ajout d'un todo", gt.getTodos(), {t});
 
     gt.setTodos({t2, t1});
@@ -334,8 +354,17 @@ void testGestionTodos(){
     gt.supprTodo(t1);
     genericTestOutputFormat(classTest, "suppression d'un todo", gt.getTodos(), {t2});
 
-    gt.addTodo(t1);
-    gt.addTodo(t2);
+    try {
+        gt.addTodo(t1);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
+    try {
+        gt.addTodo(t2);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
+
     genericTestOutputFormat(classTest, "remplacement de la liste des todos", gt.getTodos(), {t2, t1});
 }
 

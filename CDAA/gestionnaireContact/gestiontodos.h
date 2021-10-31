@@ -30,10 +30,12 @@ public:
      * @brief setTodos remplace la liste des todos par une nouvelle.
      * @param lt est la nouvelle liste des todos.
      */
-    void setTodos(const list<Todo> &lt);
+    void setTodos(const list<Todo> &l);
     /**
      * @brief addTodo permet d'ajouter un nouveau todo dans la liste.
      * @param t est le todo à rajouter dans la liste.
+     * La fonction lance une exception 'std::invalid_argument' lorsque l'interaction à ajouter est déjà dans la liste.
+     * La fonction doit donc toujours être dans un try et catch pour pouvoir gérer l'exception sinon quoi le programme se termine
      */
     void addTodo(const Todo &t);
     /**

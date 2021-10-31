@@ -28,7 +28,7 @@ public:
      * @param j le jour de la date
      * @param m le mois de la date
      * @param a l'année de la date
-     * @todo vérifier que le jour est inférieur à 31...
+     * @todo vérifier que le jour est inférieur à 31.., utiliser des exceptions.
      */
     Date(unsigned int j, unsigned int m, unsigned int a);
 

@@ -25,7 +25,7 @@ void GestionInteractions::addInteraction(const Interaction &i){
     Interaction i2 = i;
     for(auto v=this->listInteractions.begin() ; v!=this->listInteractions.end();v++){
         if (*v == i2){
-            cerr << "Interaction { " << i2 << " } is already in the list" << endl;
+            throw std::invalid_argument("Ce contact est deja dans la liste");
             return;
         }
     }

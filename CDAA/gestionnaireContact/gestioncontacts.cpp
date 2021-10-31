@@ -26,7 +26,7 @@ void GestionContacts::addContact(const Contact &c){
     Contact cc = c;
     for(auto v=this->listContact.begin() ; v!=this->listContact.end(); v++){
         if (*v == cc){
-            std::cerr << "Contact { " << cc << " } is already in the list" << endl;
+            throw invalid_argument("Ce contact est deja dans la liste");
             return;
         }
     }
