@@ -5,12 +5,8 @@
 #include <math.h>
 #include <iostream>
 #include <jerror.h>
-
-class Point
-{
-    public:
-        double x, y, z;
-};
+#include "Point.h"
+#include "Cylindre.h"
 
 void affichage();
 void axes();
@@ -30,17 +26,14 @@ unsigned char gris[largim * hautim * 3];
 const float h = 0.5; //hauteur cylindre
 const int n = 60;
 const float r = 0.5;
-Point pCylindre[2*n];
 
 void creaCube();
-void creaCylindre();
 void creaSphere(int P, int M, int r);
 
-void textFaceCylindre();
 
 int main(int argc, char** argv) {
 
-    loadJpegImage("./textures/gris.jpg", gris, largim, hautim);
+    loadJpegImage("./textures/gris.jpeg", gris, largim, hautim);
 
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -77,8 +70,9 @@ void affichage() {
     glRotatef(angley,1.0,0.0,0.0);
     glRotatef(anglex,0.0,1.0,0.0);
 
-    creaCylindre();
-    textFaceCylindre();
+    Cylindre cyTest = Cylindre();
+    cyTest.drawPoint();
+    cyTest.appliTexture();
 
     axes();
 
@@ -86,25 +80,6 @@ void affichage() {
     glutSwapBuffers();
 }
 
-void creaCylindre(){
-    Point pCylindre[2*n];
-    for (int i = 0; i < n; i++){
-        double theta = (double) (2.0*i*M_PI/n);
-        pCylindre[i] = {r * cos(theta), r * sin(theta), h/2.0};
-        pCylindre[i+n] = {r * cos(theta), r * sin(theta), -h/2.0};
-    }
-}
-
-void textFaceCylindre(){
-  for (int i = 0; i < n; i++){
-    glBegin(GL_POLYGON);
-    glTexCoord2f(0.0,0.0);   glVertex3f(pCylindre[i].x, pCylindre[i].y, pCylindre[i].z);
-    glTexCoord2f(0.0,1.0);   glVertex3f(pCylindre[(i+1)%n].x, pCylindre[(i+1)%n].y, pCylindre[(i+1)%n].z);
-    glTexCoord2f(1.0,1.0);   glVertex3f(pCylindre[(i+1)%n+n].x, pCylindre[(i+1)%n+n].y, pCylindre[(i+1)%n+n].z);
-    glTexCoord2f(1.0,0.0);   glVertex3f(pCylindre[i+n].x, pCylindre[i+n].y, pCylindre[i+n].z);
-    glEnd();
-  }
-}
 
 void creaCube(){
   glBegin(GL_POLYGON);
@@ -171,14 +146,14 @@ void Init() {
     glPointSize(2.0);
     glEnable(GL_DEPTH_TEST);
 
-      /* Initialisation de l'etat d'OpenGL */
+     /* Initialisation de l'etat d'OpenGL */
     glShadeModel(GL_FLAT);
 
     /* Mise en place de la projection perspective */
-    glMatrixMode(GL_PROJECTION);
+    /*glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0,1,1.0,5.0);
-    glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);*/
 }
 
 void axes(){
