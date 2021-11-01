@@ -86,6 +86,7 @@ public:
             return os << "@todo " << t.getContenu();
         return os << "@todo " << t.getContenu() << " @date "  << t.getDeadline();
     }
+
     /**
     * @brief surchage de l'operateur == qui permet de vérifier qu'un todo est égal à un autre todo.
     * @param t L'instance du todo dont on veut vérifier l'égalitée.

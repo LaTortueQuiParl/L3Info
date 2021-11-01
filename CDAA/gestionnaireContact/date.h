@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <time.h>
+#include <vector>
 
 /**
  * @brief La classe date

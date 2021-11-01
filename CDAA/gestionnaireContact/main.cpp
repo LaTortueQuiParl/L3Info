@@ -38,16 +38,16 @@ template <class C>
  * @param b le second élément à comparer avec le premier
  * @param verbose permet de dire si on affiche tous les tests qui on été validés. les tests raté sont toujours affichés. verbose est mis à "flase" par défaut
  */
-void genericTestOutputFormat(string classTest, string s, C a, C b, bool verbose = false){
+void genericTestOutputFormat(string classTest, string testName, C a, C b, bool verbose = false){
     if (a == b){
         if (verbose == true){
-            cout << "Test de la classe " << classTest << ", " << s << " succeeded" << endl;
+            cout << "Test de la classe " << classTest << ", " << testName << " succeeded" << endl;
             cout << "First member is: " << a << "\nSecond member is: " << b << endl;
         }
         REUSSI++;
         } else {
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        cout << "Test " << classTest << ", " << s << ", failed" << endl;
+        cout << "Test " << classTest << ", " << testName << ", failed" << endl;
         cout << "First member is: " << a << "\nSecond member is: " << b << endl;
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
         RATE++;
@@ -63,10 +63,10 @@ template <class C>
  * @param verbose permet de dire si on affiche tous les tests qui on été validés. les tests raté sont toujours affichés. verbose est mis à "flase" par défaut
  * Cette fonction permet de comparer 2 liste dont les éléments sont des classe en surchargeant la fonction par défaut
  */
-void genericTestOutputFormat(string classTest, string s, list<C> a, list<C> b, bool verbose = false){
+void genericTestOutputFormat(string classTest, string testName, list<C> a, list<C> b, bool verbose = false){
     if (compareListContact(a, b) == true){
         if (verbose == true){
-            cout << "Test de la classe, " << classTest << ", " << s << ", succeeded" << endl;
+            cout << "Test de la classe, " << classTest << ", " << testName << ", succeeded" << endl;
             cout << "First member is: {\n";
             for (auto i : a)
                 cout << i << "\n";
@@ -78,7 +78,7 @@ void genericTestOutputFormat(string classTest, string s, list<C> a, list<C> b, b
         REUSSI++;
         } else {
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        cout << "Test " << classTest << ", " << s << ", failed" << endl;
+        cout << "Test " << classTest << ", " << testName << ", failed" << endl;
         cout << "First member is: {\n";
         for (auto i : a)
             cout << i << "\n";
@@ -100,16 +100,16 @@ void genericTestOutputFormat(string classTest, string s, list<C> a, list<C> b, b
  * @param verbose permet de dire si on affiche tous les tests qui on été validés. les tests raté sont toujours affichés. verbose est mis à "flase" par défaut
  * Surcharge de la fonction qui test lorsque 2 types sont identique pour pouvoir cast en string le résultat des getters
  */
-void genericTestOutputFormat(string classTest, string s, string a, string b, bool verbose = false){
+void genericTestOutputFormat(string classTest, string testName, string a, string b, bool verbose = false){
     if (a == b){
         if (verbose == true){
-            cout << "Test de la classe, " << classTest << ", " << s << " succeeded" << endl;
+            cout << "Test de la classe, " << classTest << ", " << testName << " succeeded" << endl;
             cout << "First member is: " << a << "\nSecond member is: " << b << endl;
         }
         REUSSI++;
     } else {
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        cout << "Test de la classe, " << classTest << ", " << s << " failed" << endl;
+        cout << "Test de la classe, " << classTest << ", " << testName << " failed" << endl;
         cout << "First member is: " << a << "\nSecond member is: " << b << endl;
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
         RATE++;
@@ -193,24 +193,30 @@ void testTodo(){
     Todo t = Todo("Rappeler", &i, &now);
 
     // Test des getter
-    genericTestOutputFormat(classTest, "recuperation du contenu", t.getContenu(), "Rappeler");
-    genericTestOutputFormat(classTest, "recuperation du contenu du tag", t.getDeadline(), now);
-    genericTestOutputFormat(classTest, "recuperation de l'interaction", *t.getInteraction(), i);
-    genericTestOutputFormat(classTest, "recuperation du tag de t", t.getTag(), true);
+    genericTestOutputFormat(classTest, "test d'initialisatiion, recuperation du contenu", t.getContenu(), "Rappeler");
+    genericTestOutputFormat(classTest, "test d'initialisatiion, recuperation du contenu du tag", t.getDeadline(), now);
+    genericTestOutputFormat(classTest, "test d'initialisatiion, recuperation de l'interaction", *t.getInteraction(), i);
+    genericTestOutputFormat(classTest, "test d'initialisatiion, recuperation du tag de t", t.getTag(), true);
 
     // Test des setter
     t.setContenu("Rendez-vous");
     genericTestOutputFormat(classTest, "modification du contenu", t.getContenu(), "Rendez-vous");
 
-    Date demain = Date(26, 10, 2021);
+    Date demain;
+    try {
+        demain = Date(26, 10, 2021);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
     t.setDeadline(demain);
     genericTestOutputFormat(classTest, "modification de la deadline", t.getDeadline(), demain);
 
     Todo t1 = Todo("Rentrez a la maison", &i);
     genericTestOutputFormat(classTest, "modification du tag", t1.getTag(), false);
+
     t1.setDeadline(now);
-    genericTestOutputFormat(classTest, "recuperation du contenu du tag", t1.getDeadline(), now);
-    genericTestOutputFormat(classTest, "modification du tag de t1", t1.getTag(), true);
+    genericTestOutputFormat(classTest, "modification de la deadline", t1.getDeadline() == demain, false);
+    genericTestOutputFormat(classTest, "modification du tag de t1, bool tag", t1.getTag(), true);
 }
 
 /**
@@ -221,14 +227,14 @@ void testDate(){
     time_t t = time(nullptr);
     tm* date = localtime(&t);
     Date d = Date();
-    genericTestOutputFormat(classTest, "annee de la date courante", d.getAnnee(), date->tm_year + 1900);
-    genericTestOutputFormat(classTest, "mois de la date courante", d.getMois(), date->tm_mon + 1);
-    genericTestOutputFormat(classTest, "jour de la date courante", d.getJour(), date->tm_mday);
+    genericTestOutputFormat(classTest, "Initialisation par defaut, annee de la date courante", d.getAnnee(), date->tm_year + 1900);
+    genericTestOutputFormat(classTest, "Initialisation par defaut, mois de la date courante", d.getMois(), date->tm_mon + 1);
+    genericTestOutputFormat(classTest, "Initialisation par defaut, jour de la date courante", d.getJour(), date->tm_mday);
 
     Date noel2021 = Date(25, 12, 2021);
-    genericTestOutputFormat(classTest, "annee de noel 2021", noel2021.getAnnee(), 2021);
-    genericTestOutputFormat(classTest, "mois de noel 2021", noel2021.getMois(), 12);
-    genericTestOutputFormat(classTest, "jour de noel 2021", noel2021.getJour(), 25);
+    genericTestOutputFormat(classTest, "Initialisation custom, annee de noel 2021", noel2021.getAnnee(), 2021);
+    genericTestOutputFormat(classTest, "Initialisation custom, mois de noel 2021", noel2021.getMois(), 12);
+    genericTestOutputFormat(classTest, "Initialisation custom, jour de noel 2021", noel2021.getJour(), 25);
 
     Date nouvelAn2022 = Date(01, 01, 2022);
     genericTestOutputFormat(classTest, "comparaison entre la date de noel 2021 et nouvel an 2022", noel2021 < nouvelAn2022, true);
@@ -240,9 +246,38 @@ void testDate(){
     Date deuxJanvier2022 = Date(2, 1, 2022);
     genericTestOutputFormat(classTest, "comparaison entre 01/01/2022 et 02/01/2022", nouvelAn2022 < deuxJanvier2022, true);
 
-    // Date dateImpossible = Date(32, 1, 2021);
-    // Date dateImpossible2 = Date(04, 45, 2021);
-    // Date datePlausible = Date(30, 2, 2021);
+    Date dateImpossible;
+    Date dateImpossible2;
+    Date datePlausible;
+    Date datePlausible2;
+    Date datePlausible3;
+
+    try {
+        dateImpossible = Date(32, 1, 2021);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
+    try {
+        dateImpossible2 = Date(04, 45, 2021);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
+    try {
+        datePlausible = Date(30, 2, 2021);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
+    try {
+        datePlausible2 = Date(29, 2, 2022);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
+
+    try {
+        datePlausible3 = Date(31, 4, 2022);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+    }
 }
 
 /**
@@ -259,14 +294,15 @@ void testGestionContacts(){
 
     Date now = Date();
 
-    genericTestOutputFormat(classTest, "recuperation de la liste de contact", gc.getContacts(), {});
-    genericTestOutputFormat(classTest, "récupération de la date de la derniere suppression", gc.getDerniereSuppr(), now);
+    genericTestOutputFormat(classTest, "Initialisation la liste de contact", gc.getContacts(), {});
+    genericTestOutputFormat(classTest, "Initialisation la date de la derniere suppression", gc.getDerniereSuppr(), now);
 
     try {
         gc.addContact(p1);
     }  catch (const invalid_argument &e) {
         cerr << e.what() << endl;
     }
+
     genericTestOutputFormat(classTest, "ajout d'un contact dans la list", gc.getContacts(), {p1});
 
     list<Contact> lp = {p1, p2};
@@ -300,8 +336,8 @@ void testGestionInteractions(){
     GestionInteractions gi = GestionInteractions();
     Date now = Date();
 
-    genericTestOutputFormat(classTest, "recuperation de gestionInteraction apres creation", gi.getInteractions(), {});
-    genericTestOutputFormat(classTest, "recuperation de la date de derniere suppression", gi.getDernModif(), now);
+    genericTestOutputFormat(classTest, "Initialisation, recuperation de gestionInteraction apres creation", gi.getInteractions(), {});
+    genericTestOutputFormat(classTest, "Initialisation, recuperation de la date de derniere suppression", gi.getDernModif(), now);
 
     try {
         gi.addInteraction(i1);
