@@ -76,6 +76,12 @@ int Date::getSecondes()
     return this->date.tm_sec;
 }
 
+std::string Date::affichage(){
+    return std::to_string(this->getJour()) + "/"
+            + std::to_string(this->getMois()) + "/"
+            + std::to_string(this->getAnnee());
+}
+
 bool Date::operator==(Date d){
     return d.getAnnee() == this->getAnnee() && d.getMois() == this->getMois() && d.getJour() == this->getJour();
 }

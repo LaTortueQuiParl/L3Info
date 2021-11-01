@@ -9,12 +9,13 @@ using namespace std;
 /**
  * @brief La classe gestionTodos.
  * Les classe gestionTodos permet de regrouper les todos sous forme de liste.
+ * Elle a pour seul attribut une liste de pointeur sur Todo pour que les modifications des todos modifient aussi ceux dans la liste
  * @class GestionTodos
  */
 class GestionTodos
 {
 private:
-    list<Todo> listTodo;
+    list<Todo*> listTodo;
 public:
     /**
      * @brief Le constructeur de GestionTodos.
@@ -25,19 +26,21 @@ public:
      * @brief getTodos renvoie la liste des todos.
      * @return La liste des todos
      */
-    list<Todo> const getTodos();
+    list<Todo*> const getTodos();
     /**
      * @brief setTodos remplace la liste des todos par une nouvelle.
      * @param lt est la nouvelle liste des todos.
+     * @todo Surchager la méthode pour avoir un todo en particulier
      */
-    void setTodos(const list<Todo> &l);
+    void setTodos(const list<Todo*> &l);
+
     /**
      * @brief addTodo permet d'ajouter un nouveau todo dans la liste.
-     * @param t est le todo à rajouter dans la liste.
+     * @param t est le todo à rajouter dans la liste. Il n'est pas constant pour que les todos dans la liste soit modifié lorsqu'ils le sont à l'extérieur de la liste
      * La fonction lance une exception 'std::invalid_argument' lorsque l'interaction à ajouter est déjà dans la liste.
      * La fonction doit donc toujours être dans un try et catch pour pouvoir gérer l'exception sinon quoi le programme se termine
      */
-    void addTodo(const Todo &t);
+    void addTodo(Todo &t);
     /**
      * @brief supprTodo permet de supprimer un todo dans la liste.
      * @param t est le todo à supprimer de la liste.

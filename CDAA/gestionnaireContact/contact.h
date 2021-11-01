@@ -23,6 +23,8 @@ private:
     Date dateCrea;
     Date dernModif;
 public:
+
+    Contact();
     /**
      * @brief Constructeur de contact.
      * @param n Le nom du contact.

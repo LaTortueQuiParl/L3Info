@@ -40,8 +40,9 @@ public:
      * @param contenu l'action qu'il y a faire
      * @param own est l'instance de l'interaction à l'origine du Todo.
      * @param date est la date butoir
+     * @todo Vérifier que la date n'est pas passée
      */
-    Todo(const string &contenu, Interaction *own, const Date *date);
+    Todo(const string &contenu, Interaction *own, const Date date);
 
     /**
      * @brief getContenu renvoie le contenu du Todo.
@@ -74,6 +75,8 @@ public:
      * @param date la nouvelle date butoir.
      */
     void setDeadline(const Date &date);
+
+    string affichage();
 
     /**
     * @brief surchage de l'operateur << qui permet d'afficher simplement les informations du todo.

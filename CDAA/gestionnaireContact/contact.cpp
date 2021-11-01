@@ -1,8 +1,13 @@
 #include "contact.h"
 
+Contact::Contact(){}
+
 Contact::Contact(const string &n, const string &p, const string &e, const string &t, const string &ph, const string &mail)
 {
-    this->setNom(n);
+    if (n == "")
+        throw invalid_argument("name is empty");
+    else
+        this->setNom(n);
     this->setPrenom(p);
     this->setEntreprise(e);
     this->setTelephone(t);

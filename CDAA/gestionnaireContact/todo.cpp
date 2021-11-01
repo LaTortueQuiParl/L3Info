@@ -6,10 +6,10 @@ Todo::Todo(const string &newContenu, Interaction *own){
     setTag(false);
     this->owner = own;
 }
-Todo::Todo(const string &newContenu, Interaction *own, const Date *date)
+Todo::Todo(const string &newContenu, Interaction *own, const Date date)
 {
     setContenu(newContenu);
-    setDeadline(*date);
+    setDeadline(date);
     this->owner = own;
 }
 
@@ -35,6 +35,12 @@ void Todo::setTag(const bool newTag)
 void Todo::setDeadline(const Date &date){
     setTag(true);
     this->deadline = date;
+}
+
+string Todo::affichage(){
+    if (this->getTag() == false)
+        return "@todo " + this->getContenu();
+    return "@todo" + this->getContenu() + " @date " + this->getDeadline().affichage();
 }
 
 bool Todo::operator==(Todo &t){

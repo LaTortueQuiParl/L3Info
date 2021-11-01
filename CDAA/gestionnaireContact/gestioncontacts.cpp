@@ -26,7 +26,9 @@ void GestionContacts::addContact(const Contact &c){
     Contact cc = c;
     for(auto v=this->listContact.begin() ; v!=this->listContact.end(); v++){
         if (*v == cc){
-            throw invalid_argument("Ce contact est deja dans la liste");
+            throw invalid_argument("Ce contact { "
+                                   + cc.getNom() + " " + cc.getPrenom()
+                                   + " } est deja dans la liste");
             return;
         }
     }

@@ -9,9 +9,8 @@
 /**
  * @brief La classe date
  * Permet de formater les données de la librairier time.h sous forme de int.
- * Comme il n'est pas possible de modifier les valeurs de la structure renvoyée par time.h, la classe ne contient pas de setteur.
+ * La date ne supporte que le format jj/mm/aaaa
  * @class Date
- * @todo faire des exceptions lorsque le format de la date n'est pas respecté
  */
 class Date
 {
@@ -29,7 +28,6 @@ public:
      * @param j le jour de la date
      * @param m le mois de la date
      * @param a l'année de la date
-     * @todo vérifier que le jour est inférieur à 31.., utiliser des exceptions.
      */
     Date(unsigned int j, unsigned int m, unsigned int a);
 
@@ -63,6 +61,12 @@ public:
      * @return La seconde de la création de la Date.
      */
     int getSecondes();
+
+    /**
+     * @brief affichage permet d'avoir le même format pour afficher les dates
+     * @return La date de l'instance sous forme de string jj/mm/aaaa
+     */
+    std::string affichage();
 
     friend std::ostream &operator<<(std::ostream &os, Date d){
         return os << std::to_string(d.getJour()) + "/" + std::to_string(d.getMois()) + "/" + std::to_string(d.getAnnee());
