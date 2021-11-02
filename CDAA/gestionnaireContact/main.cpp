@@ -199,17 +199,15 @@ void ExceptionTestOutputFormat(string testName, Todo *todo, GestionTodos *gest, 
 }
 
 /**
- * @brief ExceptionTestOutputFormat permet de mettre en evidence lorsqu'une date invalide a été créée
+ * @brief ExceptionTestOutputFormat permet de mettre en evidence que créer une date avec des arguments invalide renvoie une erreur
  * @param testName Le nom du test
- * @param j Le jour de la date
- * @param m Le mois de la date
- * @param a L'annee de la date
+ * @param Largs La liste d'arguments pour le constructeur de date
  * @param showForbiddenEntries permet de montrer le message d'erreur
  */
-void ExceptionTestOutputFormat(string testName, int j, int m, int a, bool showForbiddenEntries = false){
+void ExceptionTestOutputFormat(string testName, vector<int> Largs, bool showForbiddenEntries = false){
     bool caught = false;
     try {
-        Date d = Date(j, m , a);
+        Date d = Date(Largs.at(0), Largs.at(1) , Largs.at(2));
     }  catch (const invalid_argument &e) {
         REUSSI++;
         caught = true;
@@ -218,6 +216,75 @@ void ExceptionTestOutputFormat(string testName, int j, int m, int a, bool showFo
     }
     if (caught == false){
         cerr << "Test du constructeur de la classe Date : " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
+        RATE++;
+    }
+}
+
+/**
+ * @brief ExceptionTestOutputFormat permet de mettre en évidence que créer un contact avec des arguments invalide renvoie une erreur
+ * @param testName Le nom du test
+ * @param Largs La liste d'arguments pour le constructeur de date
+ * @param showForbiddenEntries permet de montrer le message d'erreur
+ */
+void ExceptionTestOutputFormat(string testName, vector<string> Largs, bool showForbiddenEntries = false){
+    bool caught = false;
+    try {
+        Contact d = Contact(Largs.at(0), Largs.at(1), Largs.at(2), Largs.at(3), Largs.at(4), Largs.at(5));
+    }  catch (const invalid_argument &e) {
+        REUSSI++;
+        caught = true;
+        if (showForbiddenEntries == true)
+            cerr << "Test du constructeur de la classe Contact : " << testName << ". A attrape une exception car " << e.what() << endl;
+    }
+    if (caught == false){
+        cerr << "Test du constructeur de la classe Contact : " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
+        RATE++;
+    }
+}
+
+/**
+ * @brief ExceptionTestOutputFormat permet de mettre en évidence que créer une interaction avec des arguments invalide renvoie une erreur
+ * @param testName Le nom du test
+ * @param contenu Le contenu de l'interaction
+ * @param c Le contact dont l'interaction avec lequel on interagit
+ * @param showForbiddenEntries permet de montrer le message d'erreur
+ */
+void ExceptionTestOutputFormat(string testName, string contenu, Contact *c, bool showForbiddenEntries = false){
+    bool caught = false;
+    try {
+        Interaction i = Interaction(contenu, *c);
+    }  catch (const invalid_argument &e) {
+        REUSSI++;
+        caught = true;
+        if (showForbiddenEntries == true)
+            cerr << "Test du constructeur de la classe Interaction : " << testName << ". A attrape une exception car " << e.what() << endl;
+    }
+    if (caught == false){
+        cerr << "Test du constructeur de la classe Interaction : " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
+        RATE++;
+    }
+}
+
+/**
+ * @brief ExceptionTestOutputFormat permet de mettre en évidence que créer un todo avec des arguments invalide renvoie une erreur
+ * @param testName Le nom du test
+ * @param contenu Le contenu de l'interaction
+ * @param i L'interaction dont le todo est issu
+ * @param la date pour laquelle est l'interaction, par défaut la date courante
+ * @param showForbiddenEntries permet de montrer le message d'erreur
+ */
+void ExceptionTestOutputFormat(string testName, string contenu, Interaction *i, Date d = Date(), bool showForbiddenEntries = false){
+    bool caught = false;
+    try {
+        Todo t = Todo(contenu, i, d);
+    }  catch (const invalid_argument &e) {
+        REUSSI++;
+        caught = true;
+        if (showForbiddenEntries == true)
+            cerr << "Test du constructeur de la classe Todo : " << testName << ". A attrape une exception car " << e.what() << endl;
+    }
+    if (caught == false){
+        cerr << "Test du constructeur de la classe Todo : " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
         RATE++;
     }
 }
@@ -258,14 +325,51 @@ void testContact(){
     TestOutputFormat(classTest, "modification de la photo", p.getPhoto(), "photo2.jpg");
     TestOutputFormat(classTest, "modification du mail", p.getMail(), "mail2");
 
-    //ExceptionTestOutputFormat(classTest, "contact sans nom", Contact(), {"", "Prenom", "Entreprise", "06 52 48 61 34", "photo.jpg", "mail"}, true);
-    /*
-    try {
-        Contact p1 = Contact("", "Prenom", "Entreprise", "06 52 48 61 34", "photo.jpg", "mail");
-    }  catch (const invalid_argument &e) {
-        exception
-    }
-    */
+    ExceptionTestOutputFormat("contact sans nom", {"", "Prenom", "Entreprise", "06 52 48 61 34", "photo.jpg", "mail"});
+    ExceptionTestOutputFormat("contact sans prenom", {"Nom", "", "Entreprise", "06 52 48 61 34", "photo.jpg", "mail"});
+    ExceptionTestOutputFormat("contact sans entreprise", {"Nom", "Prenom", "", "06 52 48 61 34", "photo.jpg", "mail"});
+    ExceptionTestOutputFormat("contact sans numero", {"Nom", "Prenom", "Entreprise", "", "photo.jpg", "mail"});
+    ExceptionTestOutputFormat("contact sans photo", {"Nom", "Prenom", "Entreprise", "06 52 48 61 34", "", "mail"});
+    ExceptionTestOutputFormat("contact sans mail", {"Nom", "Prenom", "Entreprise", "06 52 48 61 34", "photo.jpg", ""});
+
+    ExceptionTestOutputFormat("numero a 8 chiffres", {"Nom", "Prenom", "Entreprise", "06 48 61 34", "photo.jpg", "mail"});
+    ExceptionTestOutputFormat("numero avec une lettre", {"Nom", "Prenom", "Entreprise", "06 l8 46 61 34", "photo.jpg", "mail"});
+
+    p.setTelephone("0645134579");
+    TestOutputFormat(classTest, "numero ou il manque tous les espaces", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("06451345 79");
+    TestOutputFormat(classTest, "numero ou il n'y a que le dernier espace", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("064513 45 79");
+    TestOutputFormat(classTest, "numero ou il y a 2 espaces", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("0645 13 45 79");
+    TestOutputFormat(classTest, "numero ou il y a 3 espaces", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("0645 13 45 79");
+    TestOutputFormat(classTest, "numero ou il manque le premier espace", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("06 4513 45 79");
+    TestOutputFormat(classTest, "numero ou il manque le second espace", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("06 45 1345 79");
+    TestOutputFormat(classTest, "numero ou il manque le troisieme espace", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("06 45 13 4579");
+    TestOutputFormat(classTest, "numero ou il manque le quatrieme espace", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("06 4 5 13 45 79");
+    TestOutputFormat(classTest, "numero ou il y a un espace en trop", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("0 6 4 5 13 45 79");
+    TestOutputFormat(classTest, "numero ou il y a 2 espace en trop", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("06 451 3 45 79");
+    TestOutputFormat(classTest, "numero ou il y a un espace au mauvais endroit", p.getTelephone(), "06 45 13 45 79");
+
+    p.setTelephone("06 451 3 4579");
+    TestOutputFormat(classTest, "numero ou il y a un espace au mauvais endroit et il en manque 1", p.getTelephone(), "06 45 13 45 79");
 }
 
 /**
@@ -364,11 +468,11 @@ void testDate(){
     Date deuxJanvier2022 = Date(2, 1, 2022);
     TestOutputFormat(classTest, "comparaison entre 01/01/2022 et 02/01/2022", nouvelAn2022 < deuxJanvier2022, true);
 
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", 32, 1, 2021);
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", 04, 45, 2021);
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", 30, 2, 2021);
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", 29, 2, 2022);
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", 31, 4, 2022);
+    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {32, 1, 2021});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {4, 45, 2021});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {30, 2, 2021});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {29, 2, 2022});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {31, 4, 2022});
 }
 
 /**

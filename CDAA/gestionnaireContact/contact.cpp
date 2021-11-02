@@ -4,10 +4,7 @@ Contact::Contact(){}
 
 Contact::Contact(const string &n, const string &p, const string &e, const string &t, const string &ph, const string &mail)
 {
-    if (n == "")
-        throw invalid_argument("name is empty");
-    else
-        this->setNom(n);
+    this->setNom(n);
     this->setPrenom(p);
     this->setEntreprise(e);
     this->setTelephone(t);
@@ -63,38 +60,72 @@ LesInteractions const Contact::getInteraction()
 */
 void Contact::setNom(const string &n)
 {
-    if(!n.empty())
-        this->nom=n;
+    if(n.empty())
+        throw invalid_argument("le contact doit avoir un nom");
+    this->nom=n;
     this->dernModif=Date();
 }
 void Contact::setPrenom(const string &p)
 {
-    if(!p.empty())
-        this->prenom=p;
+    if(p.empty())
+        throw invalid_argument("le contact doit avoir un prenom");
+    this->prenom=p;
     this->dernModif=Date();
 }
 void Contact::setEntreprise(const string &e)
 {
-    if(!e.empty())
-        this->entreprise=e;
+    if(e.empty())
+        throw invalid_argument("le contact doit avoir une entreprise");
+    this->entreprise=e;
     this->dernModif=Date();
 }
 void Contact::setTelephone(const string &t)
 {
-    if(!t.empty())
-        this->telephone=t;
+    string nt = t;
+    int size = t.size();
+    if (t.empty() == true)
+        throw invalid_argument("le contact doit avoir un numero de telephone");
+    int nbChiffre = 0;
+    int nbSpace = 0;
+    for (auto it = t.begin(); it != t.end(); it++){
+        if (*it >= 47 && *it <= 57)
+            nbChiffre++;
+        else if (*it == 32)
+            nbSpace++;
+        else
+            throw invalid_argument("un numero de telephone ne contient que des chiffres et des espaces");
+    }
+    if (nbChiffre != 10)
+        throw invalid_argument("un numero de telephone contient 10 chiffres");
+
+    // Suppression des espaces dans le numero
+    int i = 0;
+    while ((i = nt.find(' ')) != -1)
+        nt.erase(i, 1);
+    //insertion des espaces dans le numero
+    int inserted = 0;
+    for (i = 2; i < 10; i+=2){
+        if (nt.at(i + inserted) != ' '){
+            nt.insert(i + inserted, " ");
+            inserted++;
+        }
+    }
+
+    this->telephone=nt;
     this->dernModif=Date();
 }
 void Contact::setPhoto(const string &ph)
 {
-    if(!ph.empty())
-        this->photo=ph;
+    if(ph.empty())
+        throw invalid_argument("le contact doit avoir une photo");
+    this->photo=ph;
     this->dernModif=Date();
 }
 void Contact::setMail(const string &m)
 {
-    if(!m.empty())
-        this->mail=m;
+    if(m.empty())
+        throw invalid_argument("le contact doit avoir un mail");
+    this->mail=m;
     this->dernModif=Date();
 }
 
