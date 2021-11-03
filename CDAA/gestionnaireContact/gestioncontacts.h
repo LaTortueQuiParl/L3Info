@@ -15,7 +15,7 @@ using namespace std;
 class GestionContacts
 {
 private:
-    list<Contact> listContact;
+    list<Contact*> listContact;
     Date derniereSuppr;
 
 public:
@@ -28,7 +28,7 @@ public:
      * @brief getContacts renvoie la liste de tous les contacts.
      * @return La liste de tous les contacts.
      */
-    list<Contact> const getContacts();
+    list<Contact*> const getContacts();
 
     /**
      * @brief getDerniereSuppr permet de récupérer la date de la dernière suppression, vaut par défaut la date de la création de l'instance
@@ -41,7 +41,7 @@ public:
      * @param lc est la nouvelle liste de contact.
      * @todo Vérifier que le liste est trier et la trier si besoin. Envoyer une erreur si il y a des doublons?
      */
-    void setContacts(const list<Contact> &lc);
+    void setContacts(const list<Contact*> &lc);
 
     /**
      * @brief resetDernModif permet de mettre la date de la dernière modification à la date courante
@@ -54,7 +54,7 @@ public:
      * La fonction lance une exception 'std::invalid_argument' lorsque l'interaction à ajouter est déjà dans la liste.
      * La fonction doit donc toujours être dans un try et catch pour pouvoir gérer l'exception sinon quoi le programme se termine
      */
-    void addContact(const Contact &c);
+    void addContact(Contact &c);
 
     /**
      * @brief supprContact permet de supprimer un contact de la liste

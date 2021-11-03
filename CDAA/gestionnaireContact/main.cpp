@@ -136,10 +136,10 @@ void ExceptionTestOutputFormat(string testName, Contact *cont, GestionContacts *
         REUSSI++;
         caught = true;
         if (showForbiddenEntries == true)
-            cerr << "Test de la classe, GestionContact : " << testName << ". A attrape une exception car " << e.what() << endl;
+            cerr << "Test de la classe gestionContact : " << testName << ". A attrape une exception car " << e.what() << endl;
     }
     if (caught == false) {
-        cerr << "Test de la classe, GestionContact, " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
+        cerr << "Test de la classe gestionContact, " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
         RATE++;
     }
 }
@@ -163,10 +163,10 @@ void ExceptionTestOutputFormat(string testName, Interaction *inter, GestionInter
         REUSSI++;
         caught = true;
         if (showForbiddenEntries == true)
-            cerr << "Test de la classe, GestionInteraction : " << testName << ". A attrape une exception car " << e.what() << endl;
+            cerr << "Test de la class gestionInteraction : " << testName << ". A attrape une exception car " << e.what() << endl;
     }
     if (caught == false) {
-        cerr << "Test de la classe, GestionInteraction, " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
+        cerr << "Test de la classe gestionInteraction, " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
         RATE++;
     }
 }
@@ -190,10 +190,10 @@ void ExceptionTestOutputFormat(string testName, Todo *todo, GestionTodos *gest, 
         REUSSI++;
         caught = true;
         if (showForbiddenEntries == true)
-            cerr << "Test de la classe, GestionTodo : " << testName << ". A attrape une exception car " << e.what() << endl;
+            cerr << "Test de la classe gestionTodo : " << testName << ". A attrape une exception car " << e.what() << endl;
     }
     if (caught == false) {
-        cerr << "Test de la classe, GestionTodos, " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
+        cerr << "Test de la classe gestionTodos, " << testName << " aurait du attraper une exception mais ne l'a pas fait" << endl;
         RATE++;
     }
 }
@@ -396,12 +396,10 @@ void testInteraction(){
 
     Interaction i2 = Interaction("apel aujourd'hui par tél., interessant", p);
 
-    try {
-        i2.setDateCreation(Date(25, 12, 2021)); // Ne devrait pas lancer d'exception
-    }  catch (const invalid_argument &e) {
-        cerr << e.what() << endl;
-    }
+    i2.setDateCreation(Date(25, 12, 2021)); // Ne devrait pas lancer d'exception
     TestOutputFormat(classTest, "comparaison entre une intreaction créée aujourd'hui et une le 25/12/2021", i<i2, true);
+
+    ExceptionTestOutputFormat("interaction qui n'a pas de contenu", "", &p);
 }
 
 /**
@@ -426,7 +424,7 @@ void testTodo(){
 
     Date demain;
     try {
-        demain = Date(26, 10, 2021); // Ne devrait pas lancer d'exception
+        demain = Date(26, 10, 2023); // Ne devrait pas lancer d'exception
     }  catch (const invalid_argument &e) {
         cerr << e.what() << endl;
     }
@@ -439,6 +437,9 @@ void testTodo(){
     t1.setDeadline(now);
     TestOutputFormat(classTest, "modification de la deadline", t1.getDeadline() == demain, false);
     TestOutputFormat(classTest, "modification du tag de t1, bool tag", t1.getTag(), true);
+
+    ExceptionTestOutputFormat("todo avec un contenu vide", "", &i);
+    ExceptionTestOutputFormat("todo avec une pour date hier", "contenu", &i, Date(1, 10, 2021));
 }
 
 /**
@@ -483,7 +484,7 @@ void testGestionContacts(){
     Contact p1 = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
     Contact p2 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
     Contact p3 = Contact("Florian", "Polier", "Netsle", "06 42 57 98 31", "photoFlorian.jpg", "florian.polier@mail.com");
-    //Contact p4 = Contact("Mathias", "Fareau", "Axe", "06 52 46 80 13", "photoMathias.jpg", "mathias.flareau@mail.com");
+    Contact p4 = Contact("Mathias", "Fareau", "Axe", "06 52 46 80 13", "photoMathias.jpg", "mathias.flareau@mail.com");
     //Contact p5 = Contact("Alexandre", "Nirula", "Yamaha", "06 98 46 20 38", "photoAlexandre.jpg", "alexandre.nirula@mail.com");
     GestionContacts gc = GestionContacts();
 
@@ -498,21 +499,39 @@ void testGestionContacts(){
         cerr << e.what() << endl;
     }
 
-    TestOutputFormat(classTest, "ajout d'un contact dans la list", gc.getContacts(), {p1});
+    TestOutputFormat(classTest, "ajout d'un contact dans la list", gc.getContacts(), {&p1});
 
-    list<Contact> lp = {p1, p2};
+    list<Contact*> lp = {&p1, &p2};
     gc.setContacts(lp);
     TestOutputFormat(classTest, "remplacement de la liste par une nouvelle", gc.getContacts(), lp);
 
     gc.supprContact(p2);
-    TestOutputFormat(classTest, "suppression du contact p1 de la liste", gc.getContacts(), {p1});
+    TestOutputFormat(classTest, "suppression du contact p1 de la liste", gc.getContacts(), {&p1});
     TestOutputFormat(classTest, "vérification de la mise à jour de la date de dernière suppression", gc.getDerniereSuppr(), now);
 
     gc.addContact(p3);
     gc.addContact(p2);
 
     ExceptionTestOutputFormat("ajout d'un contact deja dans la liste", &p1, &gc, "add");
-    TestOutputFormat(classTest, "verification que l'ajout d'un contact deja dans la liste ne la modifie pas", gc.getContacts(), {p1, p3, p2});
+    TestOutputFormat(classTest, "verification que l'ajout d'un contact deja dans la liste ne la modifie pas", gc.getContacts(), {&p1, &p3, &p2});
+
+    ExceptionTestOutputFormat("suppression de contact qui n'est pas dans la liste", &p4, &gc, "suppr");
+    TestOutputFormat(classTest, "verification que la suppression d'un contact qui n'est pas dans la liste ne la modifie pas", gc.getContacts(), {&p1, &p3, &p2});
+
+    p1.setNom("Julien");
+    TestOutputFormat(classTest, "verification que la modification d'un contact dans la liste est synchronise", gc.getContacts(), {&p1, &p3, &p2});
+    ExceptionTestOutputFormat("ajout du contact deja dans la liste dont le nom a ete modifie", &p1, &gc, "add");
+
+    Contact p5 = Contact("Romain", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    p5.setNom("Julien");
+    ExceptionTestOutputFormat("ajout d'un contact deja dans la liste mais qui a ete cree comme different", &p5, &gc, "add");
+
+    Contact p6 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    ExceptionTestOutputFormat("ajout d'un contact qui a les memes attribus qu'un contact dans la liste", &p6, &gc, "add");
+    TestOutputFormat(classTest, "verification que l'ajout d'un contact qui a les memes attributs qu'un contact dans la liste est refuse", gc.getContacts(),{&p1, &p3, &p2});
+
+    ExceptionTestOutputFormat("suppression d'un contact qui a les memes attribus q'un contact dans la liste", &p6, &gc, "suppr");
+    TestOutputFormat(classTest, "verification que la suppression d'un contact qui a lese memes attributs qu'un contact dans la liste ne la modifie pas", gc.getContacts(), {&p1, &p3, &p2});
 }
 
 /**
@@ -537,18 +556,30 @@ void testGestionInteractions(){
         cerr << e.what() << endl;
     }
 
-    TestOutputFormat(classTest, "recuperation d'une interaction ajoutee", gi.getInteractions(), {i1});
+    TestOutputFormat(classTest, "recuperation d'une interaction ajoutee", gi.getInteractions(), {&i1});
 
-    gi.setInteractions({i2, i1});
-    TestOutputFormat(classTest, "recuperation d'une liste d'interaction", gi.getInteractions(), {i2, i1});
+    gi.setInteractions({&i2, &i1});
+    TestOutputFormat(classTest, "recuperation d'une liste d'interaction", gi.getInteractions(), {&i2, &i1});
 
     gi.supprInteraction(i1);
-    TestOutputFormat(classTest, "suppression d'une interaction", gi.getInteractions(), {i2});
+    TestOutputFormat(classTest, "suppression d'une interaction", gi.getInteractions(), {&i2});
 
     gi.addInteraction(i1);
 
     ExceptionTestOutputFormat("Ajout d'une interaction deja dans la liste", &i2, &gi, "add");
-    TestOutputFormat(classTest, "verification que l'ajout d'une interaction deja dans la liste ne la modifie pas", gi.getInteractions(), {i2, i1});
+    TestOutputFormat(classTest, "verification que l'ajout d'une interaction deja dans la liste ne la modifie pas", gi.getInteractions(), {&i2, &i1});
+
+    Interaction i3 = Interaction("Rappeler", p1);
+    ExceptionTestOutputFormat("ajout d'une interaction qui a les memes attributs qu'une interaction dans la liste", &i3, &gi, "add");
+    TestOutputFormat(classTest, "verification que l'ajout d'une interaction qui a les memes attribus qu'une interaction dans la liste ne la modifie pas", gi.getInteractions(), {&i2, &i1});
+
+    ExceptionTestOutputFormat("suppression d'une interaction qui n'est pas dans la liste mais qui a les memes attributs qu'une interaction dans la liste", &i3, &gi, "suppr");
+    TestOutputFormat(classTest, "verification que la suppression d'une interaction qui a les memes attribus qu'une interaction dans la liste ne la modifie pas", gi.getInteractions(), {&i2, &i1});
+
+    Interaction i4 = Interaction("interaction!", p1);
+    ExceptionTestOutputFormat("suppression d'une interaction qui n'est pas dans la liste", &i4, &gi, "suppr");
+    TestOutputFormat(classTest, "verification que la suppression d'une interaction qui n'est pas dans la liste ne la modifie pas", gi.getInteractions(), {&i2, &i1});
+
 }
 
 /**
@@ -566,11 +597,7 @@ void testGestionTodos(){
 
     TestOutputFormat(classTest, "recuperation de la list apres initialisation", gt.getTodos(), {});
 
-    try {
-        gt.addTodo(t); // Should not raise exception
-    } catch (const invalid_argument &e) {
-        cerr << e.what() << endl;
-    }
+    gt.addTodo(t); // Should not raise exception
     TestOutputFormat(classTest, "ajout d'un todo", gt.getTodos(), {&t});
 
     gt.setTodos({&t2, &t1});
@@ -579,11 +606,7 @@ void testGestionTodos(){
     gt.supprTodo(t1);
     TestOutputFormat(classTest, "suppression d'un todo", gt.getTodos(), {&t2});
 
-    try {
-        gt.addTodo(t1); // Should not raise exception
-    }  catch (const invalid_argument &e) {
-        cerr << e.what() << endl;
-    }
+    gt.addTodo(t1); // Should not raise exception
     ExceptionTestOutputFormat("ajout d'un todo deja dans la liste", &t2, &gt, "add");
     TestOutputFormat(classTest, "remplacement de la liste des todos", gt.getTodos(), {&t2, &t1});
 
@@ -603,15 +626,16 @@ void testGestionTodos(){
     }
     TestOutputFormat(classTest, "verification que l'ajout dans la liste d'un todo deja dans la liste mais qui a une date qui est differente d'aujourd'hui est bien ajoute", gt.getTodos(), {&t2, &t1, &t3});
 
-    Todo t4 = Todo("boire", &i, Date(5, 10, 2021));
-    t4.setDeadline(Date());
-    ExceptionTestOutputFormat("Ajout d'un todo initialisé differement mais modifier pour être le même qu'un dans la liste", &t4, &gt, "add");
+    Todo t4 = Todo("boire", &i);
+    ExceptionTestOutputFormat("Ajout d'un todo avec les memes attributs d'un deja dans la liste", &t4, &gt, "add");
+    TestOutputFormat(classTest, "verification que l'ajout dans la liste d'un autre todo avec kes memes attributs qu'un todo dans la liste n'est pas ajoute", gt.getTodos(), {&t2, &t1, &t3});
 
-    TestOutputFormat(classTest, "verification que l'ajout dans la liste d'un autre todo, initialisé avec une date mais dont la deadline a change pour aujourd'hui n'est pas ajoute", gt.getTodos(), {&t2, &t1, &t3});
+    Todo t5 = Todo("detente", &i);
+    ExceptionTestOutputFormat("suppression d'un todo qui n'est pas dans la liste", &t5, &gt, "suppr");
+    TestOutputFormat(classTest, "verification que la suppression d'un todo qui n'est pas dans la liste ne la modifie pas", gt.getTodos(), {&t2, &t1, &t3});
 
-
-    ExceptionTestOutputFormat("supression d'un todo qui n'est pas dans la liste", &t4, &gt, "suppr");
-    TestOutputFormat(classTest, "verification que la supression d'un element qui n'est pas dans la liste ne la modifie pas", gt.getTodos(), {&t2, &t1, &t3});
+    ExceptionTestOutputFormat("suppression d'un todo qui n'est pas dans la liste mais qui a les memes attribu qu'un todo dans la liste", &t4, &gt, "suppr");
+    TestOutputFormat(classTest, "verification que la suppression d'un element qui n'est pas dans la liste mais qui a les memes attributs qu'un todo dans la listene la modifie pas", gt.getTodos(), {&t2, &t1, &t3});
 }
 
 int main(int argc, char** argv)

@@ -77,6 +77,11 @@ public:
      * @return La date de la dernière modification sous format de la classe Date.
      */
     Date getDernModif();
+    /**
+     * @brief getInteractions renvoie l'objet gestionInteractions qui contient toutes les interactions de ce contact
+     * @return l'objet gestionInteraction
+     */
+    GestionInteractions getInteractions();
 
     /**
      * @brief setNom modifie le nom du contact.

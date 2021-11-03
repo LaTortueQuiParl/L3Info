@@ -15,7 +15,7 @@ using namespace std;
 class GestionInteractions
 {
 private:
-    list<Interaction> listInteractions;
+    list<Interaction *> listInteractions;
     Date dernModif;
 
 public:
@@ -29,7 +29,7 @@ public:
      * @brief getInteractions renvoie les intéractions d'un contact.
      * @return La liste d'interaction d'un contact.
      */
-    list<Interaction> const getInteractions();
+    list<Interaction*> const getInteractions();
 
     /**
      * @brief getDernModif renvoie la date de dernière modification de la liste.
@@ -43,7 +43,7 @@ public:
      * @param li est la nouvelle liste d'intéraction.
      * @todo vérifier que la list est triée et la trier si besoin
      */
-    void setInteractions(const list<Interaction> &li);
+    void setInteractions(const list<Interaction*> &li);
 
     /**
      * @brief setDernModif permet de mettre la date de dernière modification à la date courante.
@@ -57,14 +57,14 @@ public:
      * La fonction lance une exception 'std::invalid_argument' lorsque l'interaction à ajouter est déjà dans la liste.
      * La fonction doit donc toujours être dans un try et catch pour pouvoir gérer l'exception sinon quoi le programme se termine
      */
-    void addInteraction(const Interaction &i);
+    void addInteraction(Interaction &i);
 
     /**
      * @brief supprInteraction permet de supprimer une interaction de la liste
      * @param i est l'interaction à supprimer
      * Utilisation d'un static cast pour convertir i en non constant et le comparer à l'itérateur.
      */
-    void supprInteraction(const Interaction &i);
+    void supprInteraction(Interaction &i);
 };
 
 #endif // LESINTERACTION_H

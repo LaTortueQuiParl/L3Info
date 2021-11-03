@@ -2,9 +2,9 @@
 
 Interaction::Interaction(const string &contenu, Contact &contact)
 {
-    setContenu(contenu);
-    dateCreation = Date();
-    setContact(&contact);
+    this->setContenu(contenu);
+    this->dateCreation = Date();
+    this->setContact(&contact);
 }
 Interaction::~Interaction(){}
 
@@ -19,6 +19,8 @@ Contact* Interaction::getContact(){
 }
 
 void Interaction::setContenu(const string &c){
+    if (c.empty() == true)
+        throw invalid_argument("une intraction doit avoir un contenu");
     this->contenu=c;
 }
 void Interaction::setContact(Contact *c){

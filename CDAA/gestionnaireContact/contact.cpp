@@ -13,7 +13,6 @@ Contact::Contact(const string &n, const string &p, const string &e, const string
     this->dateCrea = Date();
     this->dernModif = Date();
     this->gestionInteractions = GestionInteractions();
-    //this->lesInteractions = GestionInteractions();
 }
 Contact::~Contact(){
     this->dateCrea.~Date();
@@ -52,12 +51,11 @@ Date Contact::getDernModif()
 {
     return this->dernModif;
 }
-/*
-LesInteractions const Contact::getInteraction()
+GestionInteractions Contact::getInteractions()
 {
-    return this->lesInteractions;
+    return this->gestionInteractions;
 }
-*/
+
 void Contact::setNom(const string &n)
 {
     if(n.empty())
@@ -82,16 +80,16 @@ void Contact::setEntreprise(const string &e)
 void Contact::setTelephone(const string &t)
 {
     string nt = t;
-    int size = t.size();
     if (t.empty() == true)
         throw invalid_argument("le contact doit avoir un numero de telephone");
+
+    // Verification que le numero ne contien que 10 chiffres et des espaces
     int nbChiffre = 0;
-    int nbSpace = 0;
     for (auto it = t.begin(); it != t.end(); it++){
         if (*it >= 47 && *it <= 57)
             nbChiffre++;
         else if (*it == 32)
-            nbSpace++;
+            continue;
         else
             throw invalid_argument("un numero de telephone ne contient que des chiffres et des espaces");
     }
@@ -102,6 +100,7 @@ void Contact::setTelephone(const string &t)
     int i = 0;
     while ((i = nt.find(' ')) != -1)
         nt.erase(i, 1);
+
     //insertion des espaces dans le numero
     int inserted = 0;
     for (i = 2; i < 10; i+=2){

@@ -16,7 +16,7 @@ void GestionTodos::setTodos(const list<Todo*> &l){
 
 void GestionTodos::addTodo(Todo &t){
     for(std::list<Todo*>::iterator v = this->listTodo.begin() ; v != this->listTodo.end(); ++v){
-        if ((*v)->getContenu() == t.getContenu() && (*v)->getDeadline() == t.getDeadline()){
+        if (**v == t){
             throw invalid_argument("Ce todo { "
                                    + t.affichage()
                                    + " } est deja dans la liste");
@@ -28,11 +28,11 @@ void GestionTodos::addTodo(Todo &t){
 void GestionTodos::supprTodo(Todo &t){
     bool b = false;
     for(auto v=this->listTodo.begin() ; v!=this->listTodo.end(); ++v){
-        if(**v==t){
+        if(**v==t && *v == &t){ // On verifie avec le premier test que les attributs sont les memes mais avec le second que l'adresse est aussi la meme
             v = this->listTodo.erase(v);
             b = true;
         }
     }
     if (b == false)
-        throw invalid_argument("Rien n'a ete suprime");
+        throw invalid_argument("rien n'a ete supprime");
 }
