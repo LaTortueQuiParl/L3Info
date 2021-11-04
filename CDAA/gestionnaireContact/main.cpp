@@ -6,7 +6,7 @@
 #include <string>
 #include <functional>
 
-//#include "mainwindow.h"
+#include "mainwindow.h"
 #include <QApplication>
 
 using namespace std;
@@ -485,7 +485,6 @@ void testGestionContacts(){
     Contact p2 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
     Contact p3 = Contact("Florian", "Polier", "Netsle", "06 42 57 98 31", "photoFlorian.jpg", "florian.polier@mail.com");
     Contact p4 = Contact("Mathias", "Fareau", "Axe", "06 52 46 80 13", "photoMathias.jpg", "mathias.flareau@mail.com");
-    //Contact p5 = Contact("Alexandre", "Nirula", "Yamaha", "06 98 46 20 38", "photoAlexandre.jpg", "alexandre.nirula@mail.com");
     GestionContacts gc = GestionContacts();
 
     Date now = Date();
@@ -496,22 +495,35 @@ void testGestionContacts(){
     try {
         gc.addContact(p1); // Should not throw exception
     }  catch (const invalid_argument &e) {
-        cerr << e.what() << endl;
+        cerr << "Premier ajout d'un contact " << e.what() << endl;
     }
 
     TestOutputFormat(classTest, "ajout d'un contact dans la list", gc.getContacts(), {&p1});
 
-    list<Contact*> lp = {&p1, &p2};
-    gc.setContacts(lp);
-    TestOutputFormat(classTest, "remplacement de la liste par une nouvelle", gc.getContacts(), lp);
+    list<Contact*> lp1 = {&p1, &p2};
+    gc.setContacts(lp1);
+    TestOutputFormat(classTest, "remplacement de la liste par une nouvelle qui a 2 contact ayant la meme date de creation", gc.getContacts(), lp1);
 
+    Contact pers2 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    pers2.setDateCrea(Date(25, 12, 2022));
+    list<Contact*> lp2 = {&p1, &pers2};
+    gc.setContacts(lp2);
+    TestOutputFormat(classTest, "remplacement de la liste par une nouvelle qui a 2 contact ayant deux dates de creation differentes, triee", gc.getContacts(), lp2);
+
+    list<Contact*> lp3 = {&pers2, &p1};
+    gc.setContacts(lp3);
+    lp3.sort([] (Contact *c1, Contact *c2){
+        return (*c1).getDateCrea() < (*c2).getDateCrea();
+    });
+    TestOutputFormat(classTest, "remplacement de la liste par une nouvelle qui a 2 contact ayant deux dates de creation differentes, non triee", gc.getContacts(), lp3);
+
+    gc.setContacts(lp1);
     gc.supprContact(p2);
     TestOutputFormat(classTest, "suppression du contact p1 de la liste", gc.getContacts(), {&p1});
     TestOutputFormat(classTest, "vérification de la mise à jour de la date de dernière suppression", gc.getDerniereSuppr(), now);
 
     gc.addContact(p3);
     gc.addContact(p2);
-
     ExceptionTestOutputFormat("ajout d'un contact deja dans la liste", &p1, &gc, "add");
     TestOutputFormat(classTest, "verification que l'ajout d'un contact deja dans la liste ne la modifie pas", gc.getContacts(), {&p1, &p3, &p2});
 
@@ -532,6 +544,13 @@ void testGestionContacts(){
 
     ExceptionTestOutputFormat("suppression d'un contact qui a les memes attribus q'un contact dans la liste", &p6, &gc, "suppr");
     TestOutputFormat(classTest, "verification que la suppression d'un contact qui a lese memes attributs qu'un contact dans la liste ne la modifie pas", gc.getContacts(), {&p1, &p3, &p2});
+
+    gc.supprContact(p2);
+    Contact p7 = Contact("Alexandre", "Nirula", "Yamaha", "06 98 46 20 38", "photoAlexandre.jpg", "alexandre.nirula@mail.com");
+    p7.setDateCrea(Date(25,12,2021));
+    gc.addContact(p7);
+    gc.addContact(p2);
+    TestOutputFormat(classTest, "insertion d'un contact avec une date de creation plus avancees que les autres contact", gc.getContacts(), {&p1, &p3, &p2, &p7});
 }
 
 /**
@@ -650,10 +669,8 @@ int main(int argc, char** argv)
     cout << "Nombre de tests: " + to_string(RATE + REUSSI) + "\nNombre de tests valides: " + to_string(REUSSI)
                   + "\nNombre de tests rate: " + to_string(RATE) << endl;
     return 0;
-    /*
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-    return a.exec();
-    */
+    //QApplication a(argc, argv);
+    //MainWindow w;
+    //w.show();
+    //return a.exec();
 }

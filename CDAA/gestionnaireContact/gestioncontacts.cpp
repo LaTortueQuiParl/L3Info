@@ -14,8 +14,18 @@ Date GestionContacts::getDerniereSuppr(){
     return this->derniereSuppr;
 }
 
-void  GestionContacts::setContacts(const list<Contact*> &lc){
+struct ContactComparator
+{
+    bool operator ()(Contact &c1, Contact &c2){
+        return c1.getDateCrea() < c2.getDateCrea();
+    }
+};
+
+void  GestionContacts::setContacts(list<Contact*> &lc){
     this->listContact = lc;
+    listContact.sort([] (Contact *c1, Contact *c2){
+        return (*c1).getDateCrea() < (*c2).getDateCrea();
+    });
 }
 
 void GestionContacts::resetDernSuppr(){
@@ -23,6 +33,10 @@ void GestionContacts::resetDernSuppr(){
 }
 
 void GestionContacts::addContact(Contact &c){
+    if (this->getContacts().empty() == true) {
+        this->listContact.push_back(&c);
+        return;
+    }
     for(auto v=this->listContact.begin() ; v!=this->listContact.end(); v++){
         if (**v == c){
             throw invalid_argument("ce contact { "
@@ -30,7 +44,16 @@ void GestionContacts::addContact(Contact &c){
                                    + " } est deja dans la liste");
         }
     }
+    /*
+    for (auto it = this->listContact.begin()++; it != this->listContact.end(); it++){
+        if ( ((**it--) < c) && (c < (**it)) )
+            listContact.insert(it, &c);
+    }
+    */
     this->listContact.push_back(&c);
+    this->listContact.sort([](Contact *c1, Contact *c2){
+        return (*c1).getDateCrea() < (*c2).getDateCrea();
+    });
 }
 
 void GestionContacts::supprContact(Contact &c){

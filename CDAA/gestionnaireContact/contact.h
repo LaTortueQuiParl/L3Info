@@ -22,8 +22,9 @@ private:
     GestionInteractions gestionInteractions;
     Date dateCrea;
     Date dernModif;
-public:
 
+
+public:
     Contact();
     /**
      * @brief Constructeur de contact.
@@ -115,15 +116,34 @@ public:
     void setMail(const string &m);
 
     /**
+     * @brief setDateCrea sert à modifier la date de création, ne sert que pour les tests.
+     * @param d est la date à laquelle on veut mettre la date de création du contact.
+     */
+    void setDateCrea(Date d);
+
+    /**
     * @brief surchage de l'operateur << qui permet d'afficher simplement les informations du contact.
-    * @param os Le stream dans lequel on veut envoiyer les informations du contact.
-    * @param c L'instance du contact dont on veut afficher les informations.
+    * @param os est le stream dans lequel on veut envoiyer les informations du contact.
+    * @param c est l'instance du contact dont on veut afficher les informations.
     */
     friend ostream &operator<<(ostream &os, Contact &c)
     {
         return os << c.getNom() << " " << c.getPrenom() << " [" << c.getEntreprise() << "] (" << c.getMail() << ") \"" << c.getTelephone() << "\" " << c.getPhoto() << " cree le: " << c.getDateCrea() << " modifie le:" << c.getDernModif();
     }
-    bool operator==(Contact &);
+
+    /**
+     * @brief operator == permet de savoir si 2 contacts ont les mêmes attribus
+     * @param c est le contact avec lequel on veut comparer ce contact
+     * @return un booleen si les deux contacts ont les mêmes attribus
+     */
+    bool operator==(Contact &c);
+
+    /**
+     * @brief operator < qui permet de dire si un contact a été créé avant un autre, permet d'utiliser std::list.sort()
+     * @param c est le contact avec lequel on compare les dates de création
+     * @return Un booléen qui est vrai si ce contact a été créée avant celui avec lequel on le compare.
+     */
+    bool operator<(Contact &c);
 };
 
 #endif // CONTACT_H

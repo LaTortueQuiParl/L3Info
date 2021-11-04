@@ -34,7 +34,7 @@ public:
     /**
      * @brief getDernModif renvoie la date de dernière modification de la liste.
      * @return La date de la dernière modification
-     * @todo Trier les dat
+     * @todo Trier les dates
      */
     Date getDernModif();
 
@@ -53,9 +53,9 @@ public:
     /**
      * @brief addInteraction permet d'ajouter une interaction à la liste.
      * @param i est l'intéraction à ajouter dans la liste
-     * @todo trier les interactions par leurs dates
      * La fonction lance une exception 'std::invalid_argument' lorsque l'interaction à ajouter est déjà dans la liste.
      * La fonction doit donc toujours être dans un try et catch pour pouvoir gérer l'exception sinon quoi le programme se termine
+     * @todo trier les interactions par leurs dates
      */
     void addInteraction(Interaction &i);
 

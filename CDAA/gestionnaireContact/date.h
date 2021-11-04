@@ -68,12 +68,28 @@ public:
      */
     std::string affichage();
 
+    /**
+     * @brief operator << permet l'affichage facile de la date.
+     * @param os est le flux dans lequel on veut envoyer la date.
+     * @param d est la date à afficher.
+     * @return Le flus contenant la date.
+     */
     friend std::ostream &operator<<(std::ostream &os, Date d){
         return os << std::to_string(d.getJour()) + "/" + std::to_string(d.getMois()) + "/" + std::to_string(d.getAnnee());
     }
 
+    /**
+     * @brief operator == permet de savoir si les attrbuts de 2 dates sont les mêmes.
+     * @param d est la date avec laquelle on compare cette instance.
+     * @return Un booléen qui est vrai si les deux dates ont les mêmes attributs.
+     */
     bool operator==(Date d);
 
+    /**
+     * @brief operator < permet de comparer 2 dates dans l'ordre chronologique.
+     * @param d est la date avec laquelle on compare cette instance.
+     * @return Un booléen qui est vrai si la date de cette instance précède la date avec laquelle on la compare.
+     */
     bool operator<(Date d);
 };
 

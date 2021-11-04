@@ -127,9 +127,17 @@ void Contact::setMail(const string &m)
     this->mail=m;
     this->dernModif=Date();
 }
+void Contact::setDateCrea(Date d){
+    this->dateCrea = d;
+}
 
 bool Contact::operator==(Contact &c)
 {
     return this->nom == c.nom && this->prenom == c.prenom && this->entreprise == c.entreprise && this->mail == c.mail && this->telephone == c.telephone;
+}
+bool Contact::operator<(Contact &c){
+    if (this->getDateCrea() < c.getDateCrea())
+        return true;
+    return false;
 }
 //void Contact::setInteration(const Interaction &i){this->lesInteractions=i;};

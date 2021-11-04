@@ -39,9 +39,9 @@ public:
     /**
      * @brief setContacts permet de définir une nouvelle liste de contact.
      * @param lc est la nouvelle liste de contact.
-     * @todo Vérifier que le liste est trier et la trier si besoin. Envoyer une erreur si il y a des doublons?
+     * La fonction trie automatiquement la nouvelle liste si besoin.
      */
-    void setContacts(const list<Contact*> &lc);
+    void setContacts(list<Contact*> &lc);
 
     /**
      * @brief resetDernModif permet de mettre la date de la dernière modification à la date courante
@@ -51,15 +51,14 @@ public:
     /**
      * @brief addContact permet d'insérer un contact dans la liste des contacts.
      * @param c est le contact à ajouter dans la liste de contact.
-     * La fonction lance une exception 'std::invalid_argument' lorsque l'interaction à ajouter est déjà dans la liste.
-     * La fonction doit donc toujours être dans un try et catch pour pouvoir gérer l'exception sinon quoi le programme se termine
+     * La fonction lance une exception 'std::invalid_argument' lorsque le contact à ajouter est déjà dans la liste.
+     * Le contact ajouté est mis à la fin puis la liste est de nouveau triée si le contact ajouté n'est pas déjà présent
      */
     void addContact(Contact &c);
 
     /**
      * @brief supprContact permet de supprimer un contact de la liste
      * @param c est le contact à supprimer de la liste de contact
-     * @todo faire des exceptions pour savoir si il y a réellement eu une suppression ou non
      */
     void supprContact(Contact &c);
 };

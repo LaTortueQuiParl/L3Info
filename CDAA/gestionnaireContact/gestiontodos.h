@@ -29,7 +29,7 @@ public:
     list<Todo*> const getTodos();
     /**
      * @brief setTodos remplace la liste des todos par une nouvelle.
-     * @param lt est la nouvelle liste des todos.
+     * @param l est la nouvelle liste des todos.
      * @todo Surchager la méthode pour avoir un todo en particulier
      */
     void setTodos(const list<Todo*> &l);
@@ -47,6 +47,12 @@ public:
      */
     void supprTodo(Todo &t);
 
+    /**
+     * @brief operator << permet d'afficher tous les todos de la liste.
+     * @param os est le flux dans lequel on veut envoyer la liste.
+     * @param gt est le gestionTodos que l'on veut afficher.
+     * @return Le flux avec dedans tous les éléments de la liste.
+     */
     friend ostream &operator<<(ostream &os, GestionTodos &gt)
     {
         for(auto v:gt.getTodos()){
