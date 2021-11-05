@@ -137,13 +137,6 @@ public:
      * @return un booleen si les deux contacts ont les mêmes attribus
      */
     bool operator==(Contact &c);
-
-    /**
-     * @brief operator < qui permet de dire si un contact a été créé avant un autre, permet d'utiliser std::list.sort()
-     * @param c est le contact avec lequel on compare les dates de création
-     * @return Un booléen qui est vrai si ce contact a été créée avant celui avec lequel on le compare.
-     */
-    bool operator<(Contact &c);
 };
 
 #endif // CONTACT_H

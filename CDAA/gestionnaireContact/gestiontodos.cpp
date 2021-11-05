@@ -12,6 +12,9 @@ list<Todo*> const GestionTodos::getTodos(){
 
 void GestionTodos::setTodos(const list<Todo*> &l){
     this->listTodo = l;
+    this->listTodo.sort([] (Todo* t1, Todo* t2){
+        return t1->getDeadline() < t2->getDeadline();
+    });
 }
 
 void GestionTodos::addTodo(Todo &t){
@@ -23,6 +26,9 @@ void GestionTodos::addTodo(Todo &t){
         }
     }
     this->listTodo.push_back(&t);
+    this->listTodo.sort([] (Todo* t1, Todo* t2){
+        return t1->getDeadline() < t2->getDeadline();
+    });
 }
 
 void GestionTodos::supprTodo(Todo &t){

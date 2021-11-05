@@ -24,7 +24,7 @@ struct ContactComparator
 void  GestionContacts::setContacts(list<Contact*> &lc){
     this->listContact = lc;
     listContact.sort([] (Contact *c1, Contact *c2){
-        return (*c1).getDateCrea() < (*c2).getDateCrea();
+        return c1->getDateCrea() < c2->getDateCrea();
     });
 }
 
@@ -44,15 +44,9 @@ void GestionContacts::addContact(Contact &c){
                                    + " } est deja dans la liste");
         }
     }
-    /*
-    for (auto it = this->listContact.begin()++; it != this->listContact.end(); it++){
-        if ( ((**it--) < c) && (c < (**it)) )
-            listContact.insert(it, &c);
-    }
-    */
     this->listContact.push_back(&c);
     this->listContact.sort([](Contact *c1, Contact *c2){
-        return (*c1).getDateCrea() < (*c2).getDateCrea();
+        return c1->getDateCrea() < c2->getDateCrea();
     });
 }
 

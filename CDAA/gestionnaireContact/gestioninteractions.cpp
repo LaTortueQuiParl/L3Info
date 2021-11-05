@@ -16,8 +16,10 @@ Date GestionInteractions::getDernModif()
 }
 
 void GestionInteractions::setInteractions(const list<Interaction*> &l){
-    if(!l.empty())
-        this->listInteractions = l;
+    this->listInteractions = l;
+    this->listInteractions.sort([] (Interaction* i1, Interaction* i2){
+        return i1->getDateCreation() < i2->getDateCreation();
+    });
 }
 
 void GestionInteractions::setDernModif()
@@ -35,6 +37,9 @@ void GestionInteractions::addInteraction(Interaction &i){
         }
     }
     this->listInteractions.push_back(&i);
+    this->listInteractions.sort([] (Interaction *i1, Interaction *i2){
+        return i1->getDateCreation() < i2->getDateCreation();
+    });
 }
 
 void GestionInteractions::supprInteraction(Interaction &i){

@@ -599,6 +599,22 @@ void testGestionInteractions(){
     ExceptionTestOutputFormat("suppression d'une interaction qui n'est pas dans la liste", &i4, &gi, "suppr");
     TestOutputFormat(classTest, "verification que la suppression d'une interaction qui n'est pas dans la liste ne la modifie pas", gi.getInteractions(), {&i2, &i1});
 
+    i2.setDateCreation(Date(25, 12, 2021));
+    list<Interaction*> li = {&i1, &i2};
+    gi.setInteractions(li);
+    TestOutputFormat(classTest, "remplacement de la liste par une liste d'interaction triee", gi.getInteractions(), li);
+
+    list<Interaction*> li2 = {&i2, &i1};
+    gi.setInteractions(li2);
+    li2.sort([] (Interaction* i1, Interaction* i2){
+        return i1->getDateCreation() < i2->getDateCreation();
+    });
+    TestOutputFormat(classTest, "remplacement de la liste par une liste d'interaction non triee", gi.getInteractions(), li2);
+
+    Interaction i5 = Interaction("travailler", p1);
+    i5.setDateCreation(Date(01, 12, 2021));
+    gi.addInteraction(i5);
+    TestOutputFormat(classTest, "ajout d'une interaction qui n'a pas été créée en dernier", gi.getInteractions(), {&i1, &i5, &i2});
 }
 
 /**
@@ -643,18 +659,34 @@ void testGestionTodos(){
     }  catch (const invalid_argument &e) {
         cerr << e.what() << endl;
     }
-    TestOutputFormat(classTest, "verification que l'ajout dans la liste d'un todo deja dans la liste mais qui a une date qui est differente d'aujourd'hui est bien ajoute", gt.getTodos(), {&t2, &t1, &t3});
+    TestOutputFormat(classTest, "verification que l'ajout dans la liste d'un todo deja dans la liste mais qui a une date qui est differente d'aujourd'hui est bien ajoute", gt.getTodos(), {&t1, &t2, &t3});
 
     Todo t4 = Todo("boire", &i);
     ExceptionTestOutputFormat("Ajout d'un todo avec les memes attributs d'un deja dans la liste", &t4, &gt, "add");
-    TestOutputFormat(classTest, "verification que l'ajout dans la liste d'un autre todo avec kes memes attributs qu'un todo dans la liste n'est pas ajoute", gt.getTodos(), {&t2, &t1, &t3});
+    TestOutputFormat(classTest, "verification que l'ajout dans la liste d'un autre todo avec les memes attributs qu'un todo dans la liste n'est pas ajoute", gt.getTodos(), {&t1, &t2, &t3});
 
     Todo t5 = Todo("detente", &i);
     ExceptionTestOutputFormat("suppression d'un todo qui n'est pas dans la liste", &t5, &gt, "suppr");
-    TestOutputFormat(classTest, "verification que la suppression d'un todo qui n'est pas dans la liste ne la modifie pas", gt.getTodos(), {&t2, &t1, &t3});
+    TestOutputFormat(classTest, "verification que la suppression d'un todo qui n'est pas dans la liste ne la modifie pas", gt.getTodos(), {&t1, &t2, &t3});
 
     ExceptionTestOutputFormat("suppression d'un todo qui n'est pas dans la liste mais qui a les memes attribu qu'un todo dans la liste", &t4, &gt, "suppr");
-    TestOutputFormat(classTest, "verification que la suppression d'un element qui n'est pas dans la liste mais qui a les memes attributs qu'un todo dans la listene la modifie pas", gt.getTodos(), {&t2, &t1, &t3});
+    TestOutputFormat(classTest, "verification que la suppression d'un element qui n'est pas dans la liste mais qui a les memes attributs qu'un todo dans la listene la modifie pas", gt.getTodos(), {&t1, &t2, &t3});
+
+    t5.setDeadline(Date(25,12,2021));
+    list<Todo*> lt = {&t4, &t5};
+    gt.setTodos(lt);
+    TestOutputFormat(classTest, "remplacement de la liste de todo par une liste de todo triee", gt.getTodos(), lt);
+
+    list<Todo*> lt2 = {&t5, &t4};
+    gt.setTodos(lt2);
+    lt2.sort([] (Todo* t1, Todo* t2){
+        return t1->getDeadline() < t2->getDeadline();
+    });
+    TestOutputFormat(classTest, "remplacement de la liste de todo par une liste de todo non triee", gt.getTodos(), lt2);
+
+    Todo t6 = Todo("revenir", &i, Date(1,12,2021));
+    gt.addTodo(t6);
+    TestOutputFormat(classTest, "ajout d'un todo qui n'a pas la deadline la plus vieille", gt.getTodos(), {&t4, &t6, &t5});
 }
 
 int main(int argc, char** argv)
