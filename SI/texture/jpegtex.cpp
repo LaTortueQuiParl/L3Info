@@ -10,6 +10,7 @@
 #include <math.h>
 #include <iostream>
 #include <jerror.h>
+#include "Point.h"
 
 #ifdef __WIN32
 #pragma comment (lib, "jpeg.lib")
@@ -71,7 +72,7 @@ int main(int argc,char **argv)
   glutInit(&argc,argv);
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(1920, 1080);
-  glutCreateWindow("Dragon");
+  glutCreateWindow("TextCours");
 
   /* Initialisation de l'etat d'OpenGL */
   glClearColor(0.0, 0.0, 0.0, 0.0);

@@ -5,8 +5,6 @@
 #include <math.h>
 #include <iostream>
 #include <jerror.h>
-#include "Point.h"
-#include "Cylindre.h"
 
 void affichage();
 void axes();
@@ -15,25 +13,15 @@ void Init();
 void reshape(int x, int y);
 void mouse(int button, int state, int x, int y);
 void mousemotion(int x,int y);
-void loadJpegImage(char *fichier, unsigned char *im, const int l, const int h);
+
+void Jambe();
 
 int anglex=30,angley=20,x,y,xold,yold;
 char presse;
-const int largim = 989;
-const int hautim = 1024;
-unsigned char gris[largim * hautim * 3];
-
-const float h = 0.5; //hauteur cylindre
-const int n = 60;
-const float r = 0.5;
-
-void creaCube();
-void creaSphere(int P, int M, int r);
-
 
 int main(int argc, char** argv) {
 
-    loadJpegImage("./textures/gris.jpeg", gris, largim, hautim);
+    //loadJpegImage("./textures/gris.jpeg", gris, largim, hautim);
 
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -43,36 +31,65 @@ int main(int argc, char** argv) {
 
     /* Initialisation d'OpenGL */
     Init();
-
     glutDisplayFunc(affichage);
     glutKeyboardFunc(clavier);
     glutReshapeFunc(reshape);
     glutMouseFunc(mouse);
     glutMotionFunc(mousemotion);
-
-    // Pour les textures
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, largim, hautim, 0, GL_RGB, GL_UNSIGNED_BYTE, gris);
-    glEnable(GL_TEXTURE_2D);
-
     /* Entree dans la boucle principale glut */
     glutMainLoop();
     return 0;
 }
 
+void Jambe(){
+    glPushMatrix();
+        //glTranslatef(0,2.05,0);
+        //glRotatef(90,1,0,0);
+        glColor3f(0.4,0.7,0);
+        //glTranslatef(0,0,-1);
+        glutSolidCylinder(0.5,2,30,20);
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,0,-0.5);
+        glColor3f(0.9,0.9,0.4);
+        glutSolidSphere(0.5, 30,20);
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,-1.5,-0.5);
+        glRotatef(90,1,0,0);
+        glColor3f(0.4,0.7,0);
+        glTranslatef(0,0,-1);
+        glutSolidCylinder(0.5,2,30,20);
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,-2.75,-0.5);
+        glRotated(90,1,0,0);
+        glScalef(1.5,1.5,0.5);
+        glColor3f(1,0,0);
+        glutSolidCube(1);
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,-2.75,-5);
+        glRotated(180,1,0,0);
+        //glScalef(1.5,1.5,0.5);
+        glTranslated(0,0,-4);
+        glColor3f(0,1,0);
+        glutSolidCone(0.25,8,30,20);
+    glPopMatrix();
+
+}
+
 void affichage() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glShadeModel(GL_SMOOTH);
+    //glShadeModel(GL_SMOOTH);
 
     glLoadIdentity();
+    glOrtho(10,-10, 10, -10, 5, -5);
     glRotatef(angley,1.0,0.0,0.0);
     glRotatef(anglex,0.0,1.0,0.0);
 
-    Cylindre cyTest = Cylindre();
-    cyTest.drawPoint();
-    cyTest.appliTexture();
+    Jambe();
 
     axes();
 
@@ -80,80 +97,18 @@ void affichage() {
     glutSwapBuffers();
 }
 
-
-void creaCube(){
-  glBegin(GL_POLYGON);
-  glTexCoord2f(0.0,0.0);   glVertex3f(-0.5, 0.5, 0.5);
-  glTexCoord2f(0.0,1.0);   glVertex3f(-0.5,-0.5, 0.5);
-  glTexCoord2f(1.0,1.0);   glVertex3f( 0.5,-0.5, 0.5);
-  glTexCoord2f(1.0,0.0);   glVertex3f( 0.5, 0.5, 0.5);
-  glEnd();
-
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-  glBegin(GL_POLYGON);
-  glTexCoord2f(0.0,0.0);   glVertex3f( 0.5, 0.5, 0.5);
-  glTexCoord2f(0.0,3.0);   glVertex3f( 0.5,-0.5, 0.5);
-  glTexCoord2f(3.0,3.0);   glVertex3f( 0.5,-0.5,-0.5);
-  glTexCoord2f(3.0,0.0);   glVertex3f( 0.5, 0.5,-0.5);
-  glEnd();
-
-  glBegin(GL_POLYGON);
-  glTexCoord2f(0.0,0.0);   glVertex3f( -0.5, -0.5,-0.5);
-  glTexCoord2f(0.0,1.0);   glVertex3f( -0.5,0.5,-0.5);
-  glTexCoord2f(0.5,1.0);   glVertex3f(0.5,0.5,-0.5);
-  glTexCoord2f(0.5,0.0);   glVertex3f(0.5, -0.5,-0.5);
-  glEnd();
-
-  glBegin(GL_POLYGON);
-  glTexCoord2f(0.0,0.0);   glVertex3f(-0.5, 0.5,-0.5);
-  glTexCoord2f(0.0,1.0);   glVertex3f(-0.5,-0.5,-0.5);
-  glTexCoord2f(1.0,1.0);   glVertex3f(-0.5,-0.5, 0.5);
-  glTexCoord2f(1.0,0.0);   glVertex3f(-0.5, 0.5, 0.5);
-  glEnd();
-
-  glBegin(GL_POLYGON);
-  glTexCoord2f(0.0,0.0);   glVertex3f(-0.5, 0.5,-0.5);
-  glTexCoord2f(0.0,1.0);   glVertex3f(-0.5, 0.5, 0.5);
-  glTexCoord2f(1.0,1.0);   glVertex3f( 0.5, 0.5, 0.5);
-  glTexCoord2f(1.0,0.0);   glVertex3f( 0.5, 0.5,-0.5);
-  glEnd();
-  glBegin(GL_POLYGON);
-  glTexCoord2f(0.0,0.0);   glVertex3f(-0.5,-0.5,-0.5);
-  glTexCoord2f(0.0,1.0);   glVertex3f(-0.5,-0.5, 0.5);
-  glTexCoord2f(1.0,1.0);   glVertex3f( 0.5,-0.5, 0.5);
-  glTexCoord2f(1.0,0.0);   glVertex3f( 0.5,-0.5,-0.5);
-  glEnd();
-
-}
-
-void creaSphere(int P, int M, int r){
-    Point pSphere[M * P];
-    int k = 0;
-    for (int j = 0; j < P; j++){
-        double phi = (double) (-(M_PI/2.0) + j *(M_PI/(double) (P-1)));
-        for (int i = 0; i < M; i++){
-            double theta = (double) (i * 2.0*M_PI/M);
-            pSphere[k] = {r*cos(theta)*cos(phi), r*sin(theta)*cos(phi), r*sin(phi)};
-            k++;
-        }
-    }
-}
-
 void Init() {
-    glClearColor(0.0,0.0,0.0,0.0);
+    glClearColor(1.0,1.0,1.0,1.0);
     glColor3f(1.0,1.0,1.0);
     glPointSize(2.0);
     glEnable(GL_DEPTH_TEST);
 
      /* Initialisation de l'etat d'OpenGL */
-    glShadeModel(GL_FLAT);
+  glShadeModel(GL_FLAT);
+  glEnable(GL_DEPTH_TEST);
 
-    /* Mise en place de la projection perspective */
-    /*glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0,1,1.0,5.0);
-    glMatrixMode(GL_MODELVIEW);*/
+
+
 }
 
 void axes(){
@@ -244,50 +199,3 @@ void mousemotion(int x,int y) {
     xold=x; /* sauvegarde des valeurs courante de le position de la souris */
     yold=y;
   }
-
-void loadJpegImage(char *fichier, unsigned char *im, const int l, const int h) {
-  struct jpeg_decompress_struct cinfo;
-  struct jpeg_error_mgr jerr;
-  FILE *file;
-  unsigned char *ligne;
-
-  cinfo.err = jpeg_std_error(&jerr);
-  jpeg_create_decompress(&cinfo);
-#ifdef __WIN32
-  if (fopen_s(&file,fichier,"rb") != 0)
-    {
-      fprintf(stderr,"Erreur : impossible d'ouvrir le fichier texture.jpg\n");
-      exit(1);
-    }
-#elif __GNUC__
-  if ((file = fopen(fichier,"rb")) == 0)
-    {
-      fprintf(stderr,"Erreur : impossible d'ouvrir le fichier texture.jpg\n");
-      exit(1);
-    }
-#endif
-        //glVertex2f(0,1);
-        //glTexCoord2f(0,1);
-  jpeg_stdio_src(&cinfo, file);
-  jpeg_read_header(&cinfo, TRUE);
-
-  if ((cinfo.image_width!=l)||(cinfo.image_height!=h)) {
-    fprintf(stdout,"Erreur : l'image doit etre de taille %dx%d\n", l, h);
-    exit(1);
-  }
-
-  if (cinfo.jpeg_color_space==JCS_GRAYSCALE) {
-    fprintf(stdout,"Erreur : l'image doit etre de type RGB\n");
-    exit(1);
-  }
-
-  jpeg_start_decompress(&cinfo);
-  ligne=im;
-  while (cinfo.output_scanline<cinfo.output_height)
-    {
-      ligne=im+3*l*cinfo.output_scanline;
-      jpeg_read_scanlines(&cinfo,&ligne,1);
-    }
-  jpeg_finish_decompress(&cinfo);
-  jpeg_destroy_decompress(&cinfo);
-}
