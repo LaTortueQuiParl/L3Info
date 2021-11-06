@@ -14,13 +14,6 @@ Date GestionContacts::getDerniereSuppr(){
     return this->derniereSuppr;
 }
 
-struct ContactComparator
-{
-    bool operator ()(Contact &c1, Contact &c2){
-        return c1.getDateCrea() < c2.getDateCrea();
-    }
-};
-
 void  GestionContacts::setContacts(list<Contact*> &lc){
     this->listContact = lc;
     listContact.sort([] (Contact *c1, Contact *c2){

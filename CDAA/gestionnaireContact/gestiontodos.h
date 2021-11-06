@@ -27,10 +27,10 @@ public:
      * @return La liste des todos
      */
     list<Todo*> const getTodos();
+
     /**
      * @brief setTodos remplace la liste des todos par une nouvelle.
      * @param l est la nouvelle liste des todos.
-     * @todo Surchager la méthode pour avoir un todo en particulier
      */
     void setTodos(const list<Todo*> &l);
 
