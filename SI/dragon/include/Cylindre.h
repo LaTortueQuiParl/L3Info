@@ -20,16 +20,19 @@ class Cylindre
 
         void drawPoint();
         void ColorCylindre(float red, float green, float blue);
-        void appliTexture(char* fichier, int l, int h);
+        void appliTexture();
+        void setTexture(char* fichier, int l, int h);
         unsigned char* getTexture();
 
-    protected:
-
-    private:
         Point* pCylindre;
         int nombrePoints;
         double rayon, hauteur;
         unsigned char* texture;
+        int HTexture, LTexture;
+    protected:
+
+    private:
+
 };
 
 #endif // CYLINDRE_H

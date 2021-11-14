@@ -10,7 +10,7 @@
 
 1635604149 /home3/dp065247/Documents/travail/perso/SI/dragon/include/Point.h
 
-1636217643 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/dragon.cpp
+1636905618 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/dragon.cpp
 	<cstdio>
 	<cstdlib>
 	<GL/freeglut.h>
@@ -18,10 +18,12 @@
 	<math.h>
 	<iostream>
 	<jerror.h>
+	"Cylindre.h"
+	"Point.h"
 
-1635676215 /home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/include/Point.h
+1636726986 /home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/include/Point.h
 
-1636213146 /home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/include/Cylindre.h
+1636726655 /home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/include/Cylindre.h
 	"Point.h"
 	<cstdio>
 	<cstdlib>
@@ -32,9 +34,9 @@
 	<jerror.h>
 	<vector>
 
-1636214184 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/src/Cylindre.cpp
+1636726458 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/src/Cylindre.cpp
 	"Cylindre.h"
 
-1635678353 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/src/Point.cpp
+1636725438 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/src/Point.cpp
 	"Point.h"
 

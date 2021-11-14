@@ -1,13 +1,11 @@
 #ifndef POINT_H
 #define POINT_H
-
-
 class Point
 {
     public:
+        double x,y,z;
         Point();
         Point(double newX, double newY, double newZ);
-        virtual ~Point();
 
         double getX();
         double getY();
@@ -17,11 +15,18 @@ class Point
         void setY(double newY);
         void setZ(double newZ);
 
-    protected:
-
-    private:
-
-        double x,y,z;
+        const Point &operator=(const Point &p){
+            x = p.x;
+            y = p.y;
+            z = p.z;
+            return *this;
+        }
+        const Point &operator+(const Point &p){
+            x = x+p.x;
+            y = y+p.y;
+            z = z+p.z;
+            return *this;
+        }
 };
 
-#endif // POINT_H
+#endif //POINT_H
