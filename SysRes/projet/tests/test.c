@@ -28,7 +28,12 @@ void affichage(){
     printf("\n\n");
 }
 
+void testAffichage(){
+    reussi++;
+}
+
 int main(){
+    testAffichage();
     affichage();
     return 0;
 }

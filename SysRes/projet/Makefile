@@ -11,7 +11,7 @@ OBJ = $(wildcard src/*.o)
 BIN = game
 
 TEST = tests/test.c
-TESTOBJ = tests/test.o
+TESTOBJ = $(wildcard tests/*.o)
 TESTBIN = test
 
 .PHONY: clean all check debug
@@ -28,4 +28,13 @@ debug: main.c $(SRC)
 	$(CC) $(DEBUGFLAGS) $(INC) $^ -o $(BINDEBUG)
 
 clean:
+	rm $(OBJ) $(BIN)
+
+cleant:
+	rm $(TESTBIN) $(TESTOBJ) 
+
+cleand:
+	rm $(BINDEBUG) $(OBJ)
+
+cleana:
 	rm $(OBJ) $(BIN) $(BINDEBUG) $(TESTOBJ) $(TESTBIN)

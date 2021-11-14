@@ -1,6 +1,7 @@
-#include "header/init.h"
+#include "gestionnaire.h"
 
 int main(){
-    init();
+    //init();
+    gest()
     return 0;
 }
