@@ -10,7 +10,7 @@
 
 1635604149 /home3/dp065247/Documents/travail/perso/SI/dragon/include/Point.h
 
-1636905618 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/dragon.cpp
+1636938112 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/dragon.cpp
 	<cstdio>
 	<cstdlib>
 	<GL/freeglut.h>
@@ -18,7 +18,6 @@
 	<math.h>
 	<iostream>
 	<jerror.h>
-	"Cylindre.h"
 	"Point.h"
 
 1636726986 /home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/include/Point.h

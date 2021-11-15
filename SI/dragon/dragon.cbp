@@ -40,9 +40,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="dragon.cpp" />
-		<Unit filename="include/Cylindre.h" />
 		<Unit filename="include/Point.h" />
-		<Unit filename="src/Cylindre.cpp" />
 		<Unit filename="src/Point.cpp" />
 		<Extensions>
 			<code_completion />
