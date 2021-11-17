@@ -20,6 +20,9 @@ all: main.c $(SRC)
 	$(CC) $(CFLAGS) $(INC) $^ -o $(BIN)
 	./$(BIN)
 
+format: main.c $(SRC)
+	clang-format -i $^
+
 check: $(TEST) $(SRC)
 	$(CC) $(CFLAGS) $(INC) $^ -o $(TESTBIN)
 	./$(TESTBIN)

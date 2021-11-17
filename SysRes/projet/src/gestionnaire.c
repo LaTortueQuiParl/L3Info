@@ -1,5 +1,5 @@
 #include "gestionnaire.h"
 
-void gest(){
-    printf("gestionnaire\n")
+void gest() {
+    printf("gestionnaire\n");
 }

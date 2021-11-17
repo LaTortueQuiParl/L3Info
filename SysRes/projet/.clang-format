@@ -1,0 +1,16 @@
+﻿---
+BasedOnStyle: WebKit
+AlignTrailingComments: 'true'
+AllowAllParametersOfDeclarationOnNextLine: 'false'
+BreakBeforeBraces: Attach
+ContinuationIndentWidth: '4'
+IncludeBlocks: Regroup
+IndentCaseLabels: 'true'
+IndentWidth: '4'
+KeepEmptyLinesAtTheStartOfBlocks: 'false'
+MaxEmptyLinesToKeep: '1'
+ObjCBlockIndentWidth: '4'
+PointerAlignment: Left
+SortIncludes: 'true'
+
+...
