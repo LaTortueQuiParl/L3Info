@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wextra -Wall -Werror -std=c99 -pedantic -I
+CFLAGS = -I
 
 DEBUGFLAGS = -g $(CFLAGS)
 BINDEBUG = debug
@@ -18,7 +18,7 @@ TESTBIN = test
 
 all: main.c $(SRC) 
 	$(CC) $(CFLAGS) $(INC) $^ -o $(BIN)
-	./$(BIN)
+	./$(BIN) 2
 
 format: main.c $(SRC)
 	clang-format -i $^

@@ -15,7 +15,6 @@ int rate = 0;
 int reussi = 0;
 
 void affichage(){
-    printf("\n");
     int total = reussi + rate;
     printf(BOLD);
     printf("Synthesis | Tested: ");
@@ -25,7 +24,7 @@ void affichage(){
     printf(" | Failed: ");
     printf(RED "%d" RESET, rate);
     printf(NOBOLD);
-    printf("\n\n");
+    printf("\n");
 }
 
 void testAffichage(){
