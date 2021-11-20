@@ -689,8 +689,7 @@ void testGestionTodos(){
     TestOutputFormat(classTest, "ajout d'un todo qui n'a pas la deadline la plus vieille", gt.getTodos(), {&t4, &t6, &t5});
 }
 
-int main(int argc, char** argv)
-{
+void tests(){
     testContact(); // Tests de la classe contact
     testInteraction(); // Tests de la classe interaction
     testTodo(); // Tests de la classe Todo
@@ -700,9 +699,14 @@ int main(int argc, char** argv)
     testGestionTodos(); // Tests de la class GestionTodos
     cout << "Nombre de tests: " + to_string(RATE + REUSSI) + "\nNombre de tests valides: " + to_string(REUSSI)
                   + "\nNombre de tests rate: " + to_string(RATE) << endl;
-    return 0;
-    //QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
-    //return a.exec();
+
+}
+
+int main(int argc, char** argv)
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    //tests();
+    return a.exec();
 }
