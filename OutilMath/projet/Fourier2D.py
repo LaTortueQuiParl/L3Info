@@ -1,6 +1,8 @@
 import numpy as np
 import cmath
+import time
 import math
+from matplotlib import pyplot as plt
 
 from numpy import fft
 
@@ -58,17 +60,52 @@ def IFFT2D(A):
 
 #A=np.array([[1,4,2],[4,9,3]])
 #np.random.seed(0)
-a = True
-n = 100
-for i in range(2, n):
-    A=np.random.randint(100, size=(i,i))
-    F = FFT2D(A)
-    IF = IFFT2D(F)
-    if (np.allclose(F, np.fft.fft2(A)) == False or np.allclose(IF, A) == False):
-        a = False
+#a = True
+#n = 100
+#for i in range(2, n):
+#    A=np.random.randint(100, size=(i,i))
+#    F = FFT2D(A)
+#    IF = IFFT2D(F)
+#    if (np.allclose(F, np.fft.fft2(A)) == False or np.allclose(IF, A) == False):
+#        a = False
 
-print(a)
+#print(a)
 
+Lfast=[]
+LfastP=[]
+n=13
+np.random.seed(1)
+for i in range(1,n):
+    M = np.random.randint(0, 100,size=(2**i, 2**i))
+    start2 = time.time()
+    FFT2D(M)
+    end2 = time.time()
+    LfastP.append(end2 - start2)
+
+T = np.arange(0,n-1)
+X=[2**i for i in T]
+
+#plt.subplot(121)
+#A = np.array(Lfast)
+#plt.plot(X, A, "b:o", label="Fourier")
+#plt.scatter(X, A)
+#y = np.poly1d(np.polyfit(X,A,2))
+#t=np.linspace(min(X), max(X), 100)
+#plt.plot(t, y(t),"--", color="red", label="x^4")
+#plt.title("Transformée de Fourier discrète 2D")
+#plt.xlabel("Taille de la matrice")
+#plt.ylabel("Temps d'exécution en secondes")
+#plt.legend()
+
+plt.scatter(X, LfastP)
+plt.plot(X,LfastP, label="Fourier")
+plt.title("Transformée de Fourier rapide discrète 2D")
+plt.xlabel("Taille de la matrice")
+plt.ylabel("Temps d'exécution en secondes")
+plt.legend()
+
+
+plt.show()
 #B = FT2D(A)
 #print(np.allclose(B,D))
 

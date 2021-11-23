@@ -1,6 +1,9 @@
+import time
 import numpy as np
 import cmath
 import math
+from matplotlib import pyplot as plt
+from scipy.optimize import curve_fit
 
 from numpy import RAISE, concatenate, dtype, fft
 
@@ -22,7 +25,7 @@ def FFT1D(A):
     N = np.shape(A)[0] #Recupere la taille de A
     if N%2 > 0:
         raise ValueError("Test")
-    elif  N <= 32:
+    elif  N <= 2:
         return DFT1D(A)
     else:
         B = FFT1D(A[::2]) #execute la FFT sur un tableau de taille N/2 avec tout les éléments d'indice pair de A
@@ -33,8 +36,8 @@ def FFT1D(A):
 def IFFT1D(A):
     N = np.shape(A)[0] #Recupere la taille de A
     if N%2 > 0:
-        raise ValueError("Test")
-    elif N <= 32:
+        raise ValueError("Doit être une puissance de 2")
+    elif N <= 2:
         return DIFT1D(A)
     else:
         B = IFFT1D(A[::2]) #execute la FFT sur un tableau de taille N/2 avec tout les éléments d'indice pair de A
@@ -84,4 +87,41 @@ def TestRapide(n):
     print(np.allclose(D, E))
     '''
 
-TestRapide(64)
+def func(x, a, b,c):
+    return a*np.log(b+x)+c
+
+Lfast=[]
+LfastP=[]
+n=16
+np.random.seed(0)
+for i in range(1,n):
+    M = np.random.randint(0, 100,2**i)
+    start2 = time.time()
+    FFT1D(M)
+    end2 = time.time()
+    LfastP.append(end2 - start2)
+
+T = np.arange(0,n-1)
+X=[2**i for i in T]
+
+#A = np.array(Lfast)
+#plt.plot(X, A, "b:o", label="Fourier")
+#plt.scatter(X, A)
+#y = np.poly1d(np.polyfit(X,A,2))
+#t=np.linspace(min(X), max(X), 100)
+#plt.plot(t, y(t),"--", color="red", label="x²")
+#plt.title("Transformée de Fourier discrète 1D")
+#plt.xlabel("Taille de la matrice")
+#plt.ylabel("Temps d'exécution en secondes")
+#plt.legend()
+
+plt.scatter(X, LfastP)
+plt.plot(X,LfastP, label="Fourier")
+plt.title("Transformée de Fourier rapide discrète 1D")
+plt.xlabel("Taille de la matrice")
+plt.ylabel("Temps d'exécution en secondes")
+plt.legend()
+
+plt.show()
+
+#TestRapide(64)
