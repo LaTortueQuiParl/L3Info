@@ -17,7 +17,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     todo.cpp \
-    date.cpp
+    date.cpp \
+    gestionbdd.cpp
 
 HEADERS += \
     contact.h \
@@ -27,7 +28,8 @@ HEADERS += \
     mainwindow.h \
     interaction.h \
     todo.h \
-    date.h
+    date.h \
+    gestionbdd.h
 
 FORMS += \
     mainwindow.ui

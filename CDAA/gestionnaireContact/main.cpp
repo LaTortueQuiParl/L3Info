@@ -2,6 +2,7 @@
 #include "date.h"
 #include "interaction.h"
 #include "gestioncontacts.h"
+#include "gestionbdd.h"
 #include <iostream>
 #include <string>
 #include <functional>
@@ -704,9 +705,14 @@ void tests(){
 
 int main(int argc, char** argv)
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    //QApplication a(argc, argv);
+
+    //MainWindow w;
+    //w.show();
     //tests();
-    return a.exec();
+
+    GestionBDD gdb;
+    gdb.createTables();
+
+    return 0;
 }
