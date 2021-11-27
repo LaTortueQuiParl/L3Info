@@ -208,7 +208,7 @@ void ExceptionTestOutputFormat(string testName, Todo *todo, GestionTodos *gest, 
 void ExceptionTestOutputFormat(string testName, vector<int> Largs, bool showForbiddenEntries = false){
     bool caught = false;
     try {
-        Date d = Date(Largs.at(0), Largs.at(1) , Largs.at(2));
+        Date(Largs.at(0), Largs.at(1) , Largs.at(2));
     }  catch (const invalid_argument &e) {
         REUSSI++;
         caught = true;
@@ -690,7 +690,49 @@ void testGestionTodos(){
     TestOutputFormat(classTest, "ajout d'un todo qui n'a pas la deadline la plus vieille", gt.getTodos(), {&t4, &t6, &t5});
 }
 
-void tests(){
+/**
+ * @brief unitTestInsert permet de faire des tests unitaires sur les insertions, les tables sont supprimées et recréée par défaut
+ * @param gdb La base de donnée dans laquelle on travaille
+ * @param table La table dans laquelle on fait une insertion
+ * @param attributs Les attributs de la table
+ * @param c Le contact que l'on insère dans la base de donnée
+ * @param rollback Reset la base de donnée si l'agument est omis ou à true
+ */
+void unitTestInsert(GestionBDD *gdb, string table, vector<string> attributs, Contact c, bool rollback = true){
+    map<string, string> m{{attributs.at(0), c.getNom()},
+                          {attributs.at(1), c.getPrenom()},
+                          {attributs.at(2), c.getEntreprise()},
+                          {attributs.at(3), c.getTelephone()},
+                          {attributs.at(4), c.getPhoto()},
+                          {attributs.at(5), c.getMail()}};
+    gdb->insertData(table, m);
+    if (rollback == true)
+        gdb->getDb().rollback();
+}
+
+/**
+ * @brief testInsert Les tests qui concernent les insertions
+ * @param gdb La base de données sur laquelle on travaille
+ */
+void testInsert(GestionBDD *gdb){
+    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    vector<string> argContact = {"Nom", "Prenom", "Entreprise", "Telephone", "Photo", "Mail"};
+    unitTestInsert(gdb, "Contact", argContact, thomas);
+}
+
+/**
+ * @brief testsDB Les tests sur la partie base de donnée
+ */
+void testsDB(GestionBDD *gdb){
+    gdb->clearTables();
+    testInsert(gdb);
+    gdb->getDb().close();
+}
+
+/**
+ * @brief testsObjets Les tests sur la partie objet
+ */
+void testsObjets(){
     testContact(); // Tests de la classe contact
     testInteraction(); // Tests de la classe interaction
     testTodo(); // Tests de la classe Todo
@@ -703,16 +745,13 @@ void tests(){
 
 }
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-    //QApplication a(argc, argv);
+    QApplication a(argc, argv);
+    MainWindow w;
+    testsDB(w.getDb());
+    w.show();
+    //testsObjets();
 
-    //MainWindow w;
-    //w.show();
-    //tests();
-
-    GestionBDD gdb;
-    gdb.createTables();
-
-    return 0;
+    return a.exec();
 }
