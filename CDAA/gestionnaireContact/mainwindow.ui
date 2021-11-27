@@ -3,27 +3,53 @@
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="enabled">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>968</width>
-    <height>456</height>
+    <width>1151</width>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableView" name="tableView">
+   <widget class="QTableView" name="tableViewContact">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>971</width>
-      <height>461</height>
+      <width>1151</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
+   </widget>
+   <widget class="QTableView" name="tableViewInteraction">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>190</y>
+      <width>1151</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tableViewTodo">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>370</y>
+      <width>1151</width>
+      <height>161</height>
      </rect>
     </property>
    </widget>
