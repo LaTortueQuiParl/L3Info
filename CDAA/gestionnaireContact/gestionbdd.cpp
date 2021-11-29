@@ -2,6 +2,7 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql>
 #include <QDebug>
+#include <QVector>
 
 GestionBDD::GestionBDD()
 {
@@ -62,7 +63,6 @@ void GestionBDD::createTables(){
     QSqlQuery qTodo;
     if (!qTodo.exec(QString::fromStdString(tableTodo)))
         throw invalid_argument("Impossible de creer la table Todo");
-    this->db.commit();
 }
 
 void GestionBDD::clearTables()
@@ -76,49 +76,18 @@ void GestionBDD::clearTables()
         throw invalid_argument("Impossible de vider la table todo");
 }
 
-void GestionBDD::insertData(string table, map<string, string> m){
-
-    std::pair<string, string> lastP = *m.rbegin();
-
-    string stInsert = "INSERT INTO ";
-    stInsert.append(table);
-    stInsert.append("(id, ");
-    for (const auto& ks : m){
-        stInsert.append(ks.first);
-        if (m.value_comp()(ks, lastP))
-            stInsert.append(", ");
-    }
-    stInsert.append(") VALUES (1, ");
-    for (const auto& ks : m){
-        stInsert.append("'");
-        stInsert.append(ks.second);
-        stInsert.append("'");
-        if (m.value_comp()(ks, lastP))
-            stInsert.append(", ");
-    }
-    stInsert.append(")");
+void GestionBDD::insertData(string table, Contact c){
     QSqlQuery qInsert;
-    if (!qInsert.exec(QString::fromStdString(stInsert))){
-        qDebug() << "Impossible d'exécuter la requete : " << QString::fromStdString(stInsert);
-    } else {
-        qDebug() << "Requête " << QString::fromStdString(stInsert) << " effectuée";
-    }
-        //throw invalid_argument("Impossible d'exécuter la requete : " + stInsert);
-}
-
-void GestionBDD::selectQuery(string attribute, string table, string condition){
-    string stSelect = ("SELECT ");
-    stSelect.append(attribute);
-    stSelect.append(" FROM ");
-    stSelect.append(table);
-    if (!condition.empty()){
-        stSelect.append(" WHERE ");
-        stSelect.append(condition);
-    }
-    QSqlQuery qSelect(QString::fromStdString(stSelect));
-    if (!qSelect.exec()){
-        qDebug() << "Impossible d'exectuer la requête : " << QString::fromStdString(stSelect);
-    } else {
-        qDebug() << "Selection : " << QString::fromStdString(stSelect) << "réussie";
-    }
+    qInsert.prepare(QString("INSERT INTO %1(id, Nom, Prenom, Entreprise, Telephone, Photo, Mail) "
+                                "VALUES(:id, :Nom, :Prenom, :Entreprise, :Telephone, :Photo, :Mail)").arg(QString::fromStdString(table)));
+    //qInsert.bindValue(":table", QString::fromStdString(table));
+    qInsert.bindValue(":id", 1);
+    qInsert.bindValue(":Nom", QString::fromStdString(c.getNom()));
+    qInsert.bindValue(":Prenom", QString::fromStdString(c.getPrenom()));
+    qInsert.bindValue(":Entreprise", QString::fromStdString(c.getEntreprise()));
+    qInsert.bindValue(":Telephone", QString::fromStdString(c.getTelephone()));
+    qInsert.bindValue(":Photo", QString::fromStdString(c.getPhoto()));
+    qInsert.bindValue(":Mail", QString::fromStdString(c.getMail()));
+    if (!qInsert.exec())
+        throw invalid_argument("Impossible d'exécuter la requete insert");
 }

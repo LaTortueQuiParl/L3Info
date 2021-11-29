@@ -691,6 +691,20 @@ void testGestionTodos(){
 }
 
 /**
+ * @brief testsObjets Les tests sur la partie objet
+ */
+void testsObjets(){
+    testContact(); // Tests de la classe contact
+    testInteraction(); // Tests de la classe interaction
+    testTodo(); // Tests de la classe Todo
+    testDate(); // Tests de la classe Date
+    testGestionContacts(); // Tests de la classe GestionContacts
+    testGestionInteractions(); // Tests de la classe GestionsInteractions
+    testGestionTodos(); // Tests de la class GestionTodos
+
+}
+
+/**
  * @brief unitTestInsert permet de faire des tests unitaires sur les insertions, les tables sont supprimées et recréée par défaut
  * @param gdb La base de donnée dans laquelle on travaille
  * @param table La table dans laquelle on fait une insertion
@@ -698,16 +712,27 @@ void testGestionTodos(){
  * @param c Le contact que l'on insère dans la base de donnée
  * @param rollback Reset la base de donnée si l'agument est omis ou à true
  */
-void unitTestInsert(GestionBDD *gdb, string table, vector<string> attributs, Contact c, bool rollback = true){
-    map<string, string> m{{attributs.at(0), c.getNom()},
-                          {attributs.at(1), c.getPrenom()},
-                          {attributs.at(2), c.getEntreprise()},
-                          {attributs.at(3), c.getTelephone()},
-                          {attributs.at(4), c.getPhoto()},
-                          {attributs.at(5), c.getMail()}};
-    gdb->insertData(table, m);
-    if (rollback == true)
-        gdb->getDb().rollback();
+void unitTestInsert(GestionBDD *gdb, string table, Contact c){
+    gdb->insertData(table, c);
+
+    QSqlQuery q(QString("SELECT * FROM %1").arg(QString::fromStdString(table)));
+    if (!q.exec())
+        throw invalid_argument("Impossible de faire un select sur la table " + table);
+    else{
+        q.next();
+        if (q.value(1).toString().toStdString() != c.getNom() ||
+            q.value(2).toString().toStdString() != c.getPrenom() ||
+            q.value(3).toString().toStdString() != c.getEntreprise() ||
+            q.value(4).toString().toStdString() != c.getTelephone() ||
+            q.value(5).toString().toStdString() != c.getPhoto() ||
+            q.value(6).toString().toStdString() != c.getMail()
+                ){
+            RATE++;
+            cout << "La table ne contient pas d'élément correspondant au contact";
+        } else {
+            REUSSI++;
+        }
+    }
 }
 
 /**
@@ -715,9 +740,7 @@ void unitTestInsert(GestionBDD *gdb, string table, vector<string> attributs, Con
  * @param gdb La base de données sur laquelle on travaille
  */
 void testInsert(GestionBDD *gdb){
-    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
-    vector<string> argContact = {"Nom", "Prenom", "Entreprise", "Telephone", "Photo", "Mail"};
-    unitTestInsert(gdb, "Contact", argContact, thomas);
+    unitTestInsert(gdb, "Contact", Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com"));
 }
 
 /**
@@ -729,29 +752,19 @@ void testsDB(GestionBDD *gdb){
     gdb->getDb().close();
 }
 
-/**
- * @brief testsObjets Les tests sur la partie objet
- */
-void testsObjets(){
-    testContact(); // Tests de la classe contact
-    testInteraction(); // Tests de la classe interaction
-    testTodo(); // Tests de la classe Todo
-    testDate(); // Tests de la classe Date
-    testGestionContacts(); // Tests de la classe GestionContacts
-    testGestionInteractions(); // Tests de la classe GestionsInteractions
-    testGestionTodos(); // Tests de la class GestionTodos
+void tests(GestionBDD *gdb){
+    testsDB(gdb);
+    testsObjets();
     cout << "Nombre de tests: " + to_string(RATE + REUSSI) + "\nNombre de tests valides: " + to_string(REUSSI)
                   + "\nNombre de tests rate: " + to_string(RATE) << endl;
-
 }
 
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    testsDB(w.getDb());
+    tests(w.getDb());
     w.show();
-    //testsObjets();
 
     return a.exec();
 }

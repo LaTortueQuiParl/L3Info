@@ -5,6 +5,8 @@
 #include <map>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
+#include "contact.h"
+#include <QVariant>
 
 using namespace std;
 
@@ -37,9 +39,17 @@ public:
      */
     void createTables();
 
+    /**
+     * @brief clearTables drop toutes les tables et les recréée, utilisé pour avoir des tests sur des tables vides
+     */
     void clearTables();
 
-    void insertData(string table, map<string, string>);
+    /**
+     * @brief insertData permet d'exécuter des requêtes d'insertions
+     * @param table La table dans laquelle on veut insérer des données
+     * @param m Une map de QVariant qui représente les données à insérer
+     */
+    void insertData(string table, Contact obj);
 
     /**
      * @brief selectQuery permet de faire créer et exécuter des selects
