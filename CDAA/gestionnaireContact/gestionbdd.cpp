@@ -76,12 +76,20 @@ void GestionBDD::clearTables()
         throw invalid_argument("Impossible de vider la table todo");
 }
 
-void GestionBDD::insertData(string table, Contact c){
+void GestionBDD::insertData(Contact c){
+    int size;
+    QSqlQuery qSize("SELECT COUNT(*) FROM Contact");
+    if (!qSize.exec())
+        throw invalid_argument("Impossible de connaitre la taille de la table");
+    else{
+        qSize.next();
+        size = qSize.value(0).toInt();
+    }
+
     QSqlQuery qInsert;
-    qInsert.prepare(QString("INSERT INTO %1(id, Nom, Prenom, Entreprise, Telephone, Photo, Mail) "
-                                "VALUES(:id, :Nom, :Prenom, :Entreprise, :Telephone, :Photo, :Mail)").arg(QString::fromStdString(table)));
-    //qInsert.bindValue(":table", QString::fromStdString(table));
-    qInsert.bindValue(":id", 1);
+    qInsert.prepare("INSERT INTO Contact(id, Nom, Prenom, Entreprise, Telephone, Photo, Mail) "
+                                "VALUES(:id, :Nom, :Prenom, :Entreprise, :Telephone, :Photo, :Mail)");
+    qInsert.bindValue(":id", size+1);
     qInsert.bindValue(":Nom", QString::fromStdString(c.getNom()));
     qInsert.bindValue(":Prenom", QString::fromStdString(c.getPrenom()));
     qInsert.bindValue(":Entreprise", QString::fromStdString(c.getEntreprise()));

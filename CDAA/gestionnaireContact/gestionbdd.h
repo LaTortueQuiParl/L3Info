@@ -49,7 +49,7 @@ public:
      * @param table La table dans laquelle on veut insérer des données
      * @param m Une map de QVariant qui représente les données à insérer
      */
-    void insertData(string table, Contact obj);
+    void insertData(Contact obj);
 
     /**
      * @brief selectQuery permet de faire créer et exécuter des selects

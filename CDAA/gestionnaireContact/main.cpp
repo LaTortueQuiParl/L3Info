@@ -705,34 +705,49 @@ void testsObjets(){
 }
 
 /**
- * @brief unitTestInsert permet de faire des tests unitaires sur les insertions, les tables sont supprimées et recréée par défaut
- * @param gdb La base de donnée dans laquelle on travaille
- * @param table La table dans laquelle on fait une insertion
- * @param attributs Les attributs de la table
- * @param c Le contact que l'on insère dans la base de donnée
- * @param rollback Reset la base de donnée si l'agument est omis ou à true
+ * @brief checkTables vérifie que la base de donnée est bien modifiée comme c'est voulu
+ * @param lContenu Les lignes de la base de donnée
  */
-void unitTestInsert(GestionBDD *gdb, string table, Contact c){
-    gdb->insertData(table, c);
-
-    QSqlQuery q(QString("SELECT * FROM %1").arg(QString::fromStdString(table)));
+void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
+    QSqlQuery q("SELECT * FROM Contact");
     if (!q.exec())
-        throw invalid_argument("Impossible de faire un select sur la table " + table);
+        throw invalid_argument("Impossible de faire un select sur la table Contact");
     else{
-        q.next();
-        if (q.value(1).toString().toStdString() != c.getNom() ||
-            q.value(2).toString().toStdString() != c.getPrenom() ||
-            q.value(3).toString().toStdString() != c.getEntreprise() ||
-            q.value(4).toString().toStdString() != c.getTelephone() ||
-            q.value(5).toString().toStdString() != c.getPhoto() ||
-            q.value(6).toString().toStdString() != c.getMail()
-                ){
-            RATE++;
-            cout << "La table ne contient pas d'élément correspondant au contact";
-        } else {
-            REUSSI++;
+        for (list<Contact>::iterator c = lContenu.begin(); q.next() == true; c++){
+            if (q.value(1).toString().toStdString() != c->getNom() ||
+                q.value(2).toString().toStdString() != c->getPrenom() ||
+                q.value(3).toString().toStdString() != c->getEntreprise() ||
+                q.value(4).toString().toStdString() != c->getTelephone() ||
+                q.value(5).toString().toStdString() != c->getPhoto() ||
+                q.value(6).toString().toStdString() != c->getMail()
+                    ){
+                RATE++;
+                cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant au contact" << endl;
+                return;
+            }
         }
     }
+    REUSSI++;
+    gdb->clearTables(); // Il faut nettoyer les tables sinon les éléments de la liste ne correspondent pas à ceux de la table et faussent les résultats
+}
+
+/**
+ * @brief unitTestInsert Test sur 1 insert dans Contact
+ * @param c Le contact que l'on insère dans la base de donnée
+ */
+void testUniqueInsertContact(GestionBDD *gdb, Contact c){
+    gdb->insertData(c);
+    checkTables("Unique insert", gdb, {c});
+}
+
+/**
+ * @brief testMultipleInsert test sur plusieurs insertions dans Contact
+ * @param l Les contacts
+ */
+void testMultipleInsertContact(GestionBDD *gdb, list<Contact> l){
+    for (auto &it : l)
+        gdb->insertData(it);
+    checkTables("Multiple insert", gdb, l);
 }
 
 /**
@@ -740,21 +755,28 @@ void unitTestInsert(GestionBDD *gdb, string table, Contact c){
  * @param gdb La base de données sur laquelle on travaille
  */
 void testInsert(GestionBDD *gdb){
-    unitTestInsert(gdb, "Contact", Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com"));
+    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    std::list<Contact> lC = {thomas, jules};
+    testUniqueInsertContact(gdb, thomas);
+    testMultipleInsertContact(gdb, lC);
 }
 
 /**
  * @brief testsDB Les tests sur la partie base de donnée
  */
 void testsDB(GestionBDD *gdb){
-    gdb->clearTables();
     testInsert(gdb);
     gdb->getDb().close();
 }
 
+/**
+ * @brief tests permet de lancer la testsuite
+ * @param gdb la base de donnée
+ */
 void tests(GestionBDD *gdb){
     testsDB(gdb);
-    testsObjets();
+    //testsObjets();
     cout << "Nombre de tests: " + to_string(RATE + REUSSI) + "\nNombre de tests valides: " + to_string(REUSSI)
                   + "\nNombre de tests rate: " + to_string(RATE) << endl;
 }
@@ -764,7 +786,7 @@ int main(int argc, char* argv[])
     QApplication a(argc, argv);
     MainWindow w;
     tests(w.getDb());
-    w.show();
-
-    return a.exec();
+    //w.show();
+    //return a.exec();
+    return 0;
 }
