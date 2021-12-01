@@ -2,11 +2,11 @@
 #define GESTIONBDD_H
 
 #include <string>
-#include <map>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include "contact.h"
-#include <QVariant>
+#include "interaction.h"
+#include "todo.h"
 
 using namespace std;
 
@@ -18,6 +18,9 @@ class GestionBDD
 {
 private:
     QSqlDatabase db;
+    int sizeContact;
+    int sizeInteraction;
+    int sizeTodo;
 public:
     /**
      * @brief GestionBDD le constructeur qui lance automatiquement connexionBDD
@@ -40,6 +43,11 @@ public:
     void createTables();
 
     /**
+     * @brief recreateTable permet de supprimer toutes les tables et les recréer pour faire des updates sur les tables
+     */
+    void recreateTable();
+
+    /**
      * @brief clearTables drop toutes les tables et les recréée, utilisé pour avoir des tests sur des tables vides
      */
     void clearTables();
@@ -49,7 +57,9 @@ public:
      * @param table La table dans laquelle on veut insérer des données
      * @param m Une map de QVariant qui représente les données à insérer
      */
-    void insertData(Contact obj);
+    void insertData(Contact c);
+    void insertData(Interaction i);
+    void insertData(Todo t);
 
     /**
      * @brief selectQuery permet de faire créer et exécuter des selects

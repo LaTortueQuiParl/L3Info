@@ -1,8 +1,5 @@
 #include "gestionbdd.h"
-#include <QtSql/QSqlDatabase>
-#include <QtSql>
 #include <QDebug>
-#include <QVector>
 
 GestionBDD::GestionBDD()
 {
@@ -18,7 +15,6 @@ void GestionBDD::connexionBDD()
         throw invalid_argument("Pas de connexion BDD!");
 }
 GestionBDD::~GestionBDD(){
-    db.close();
 }
 
 QSqlDatabase GestionBDD::getDb() const
@@ -37,21 +33,20 @@ void GestionBDD::createTables(){
                           "mail varchar(255) NOT NULL"
                           " )";
 
-    string tableInteraction = "CREATE TABLE IF NOT EXISTS Interaction ( "
+    string tableInteraction = "CREATE TABLE IF NOT EXISTS Interaction( "
                               "id integer PRIMARY KEY,"
                               "contenu varchar(255) NOT NULL,"
                               "date varchar(255) NOT NULL,"
-                              "contact integer NOT NULL,"
-                              "gestionTodos integer,"
-                              "CONSTRAINT cle_etrangere FOREIGN KEY(contact) REFERENCES Contact(id) ON DELETE CASCADE"
+                              "idContact integer NOT NULL"
+                              //"CONSTRAINT cle_etrangere FOREIGN KEY(contact) REFERENCES Contact(id) ON DELETE CASCADE"
                               " )";
 
-    string tableTodo = "CREATE TABLE IF NOT EXISTS Todo ( "
+    string tableTodo = "CREATE TABLE IF NOT EXISTS Todo( "
                        "id integer PRIMARY KEY,"
                        "contenu varchar(255) NOT NULL,"
                        "deadline varchar(255) NOT NULL,"
-                       "interaction integer,"
-                       "CONSTRAINT cle_etrangere FOREIGN KEY(interaction) REFERENCES Interaction(id) ON DELETE CASCADE"
+                       "idInteraction integer"
+                       //"CONSTRAINT cle_etrangere FOREIGN KEY(interaction) REFERENCES Interaction(id) ON DELETE CASCADE"
                        " );";
 
     QSqlQuery qContact;
@@ -63,6 +58,20 @@ void GestionBDD::createTables(){
     QSqlQuery qTodo;
     if (!qTodo.exec(QString::fromStdString(tableTodo)))
         throw invalid_argument("Impossible de creer la table Todo");
+    sizeContact = 0;
+    sizeInteraction = 0;
+    sizeTodo = 0;
+}
+
+void GestionBDD::recreateTable(){
+    QSqlQuery qDropTable;
+    if (!qDropTable.exec("DROP TABLE Contact"))
+        throw invalid_argument("Impossible de supprimer la table Contact");
+    if (!qDropTable.exec("DROP TABLE Interaction"))
+        throw invalid_argument("Impossible de supprimer la table Interaction");
+    if (!qDropTable.exec("DROP TABLE Todo"))
+        throw invalid_argument("Impossible de supprimer la table Todo");
+    createTables();
 }
 
 void GestionBDD::clearTables()
@@ -74,22 +83,16 @@ void GestionBDD::clearTables()
         throw invalid_argument("Impossible de vider la table interaction");
     if (!qDelAll.exec("DELETE FROM Todo"))
         throw invalid_argument("Impossible de vider la table todo");
+    sizeContact = 0;
+    sizeInteraction = 0;
+    sizeTodo = 0;
 }
 
 void GestionBDD::insertData(Contact c){
-    int size;
-    QSqlQuery qSize("SELECT COUNT(*) FROM Contact");
-    if (!qSize.exec())
-        throw invalid_argument("Impossible de connaitre la taille de la table");
-    else{
-        qSize.next();
-        size = qSize.value(0).toInt();
-    }
-
     QSqlQuery qInsert;
     qInsert.prepare("INSERT INTO Contact(id, Nom, Prenom, Entreprise, Telephone, Photo, Mail) "
-                                "VALUES(:id, :Nom, :Prenom, :Entreprise, :Telephone, :Photo, :Mail)");
-    qInsert.bindValue(":id", size+1);
+                    "VALUES(:id, :Nom, :Prenom, :Entreprise, :Telephone, :Photo, :Mail)");
+    qInsert.bindValue(":id", sizeContact+1);
     qInsert.bindValue(":Nom", QString::fromStdString(c.getNom()));
     qInsert.bindValue(":Prenom", QString::fromStdString(c.getPrenom()));
     qInsert.bindValue(":Entreprise", QString::fromStdString(c.getEntreprise()));
@@ -97,5 +100,49 @@ void GestionBDD::insertData(Contact c){
     qInsert.bindValue(":Photo", QString::fromStdString(c.getPhoto()));
     qInsert.bindValue(":Mail", QString::fromStdString(c.getMail()));
     if (!qInsert.exec())
-        throw invalid_argument("Impossible d'exécuter la requete insert");
+        throw invalid_argument("Impossible d'executer la requete insert dans Contact");
+    sizeContact++;
+}
+
+void GestionBDD::insertData(Interaction i){
+    Contact c = *i.getContact();
+    QSqlQuery qIdContact;
+    qIdContact.prepare("SELECT * FROM Contact WHERE Nom=:Nom AND Prenom=:Prenom AND Entreprise=:Entreprise "
+                       "AND Telephone=:Telephone AND Photo=:Photo");
+    qIdContact.bindValue(":Nom", QString::fromStdString(c.getNom()));
+    qIdContact.bindValue(":Prenom", QString::fromStdString(c.getPrenom()));
+    qIdContact.bindValue(":Entreprise", QString::fromStdString(c.getEntreprise()));
+    qIdContact.bindValue(":Telephone", QString::fromStdString(c.getTelephone()));
+    qIdContact.bindValue(":Photo", QString::fromStdString(c.getPhoto()));
+    qIdContact.bindValue(":Mail", QString::fromStdString(c.getMail()));
+
+    if (!qIdContact.exec())
+        throw invalid_argument("Impossible de faire une selection dans Contact pour recuperer l'ID du contact de l'interaction");
+
+    if (qIdContact.isValid() == false)
+        qIdContact.next();
+
+    QSqlQuery qInsert;
+    qInsert.prepare("INSERT INTO Interaction(id, contenu, date, idContact) "
+                    "VALUES(:id, :contenu, :date, :idContact)");
+    qInsert.bindValue(":id", sizeInteraction + 1);
+    qInsert.bindValue(":contenu", QString::fromStdString((i.getContenu())));
+    qInsert.bindValue(":date", QString::fromStdString(i.getDateCreation().affichage()));
+    qInsert.bindValue(":idContact", qIdContact.value(0).toString());
+    if (!qInsert.exec())
+        throw invalid_argument("Impossible d'executer la requete insert dans Interaction");
+    sizeInteraction++;
+}
+
+void GestionBDD::insertData(Todo t){
+    QSqlQuery qInsert;
+    qInsert.prepare("INSERT INTO Todo(id, contenu, deadline, idInteraction) "
+                    "VALUES(:id, :contenu, :deadline, :idInteraction)");
+    qInsert.bindValue(":id", sizeContact+1);
+    qInsert.bindValue(":contenu", QString::fromStdString(t.getContenu()));
+    qInsert.bindValue(":deadline", QString::fromStdString(t.getDeadline().affichage()));
+    qInsert.bindValue(":idInteraction", 1);
+    if (!qInsert.exec())
+        throw invalid_argument("Impossible d'executer la requete insert dans Todo");
+    sizeTodo++;
 }

@@ -708,6 +708,7 @@ void testsObjets(){
  * @brief checkTables vérifie que la base de donnée est bien modifiée comme c'est voulu
  * @param lContenu Les lignes de la base de donnée
  */
+
 void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
     QSqlQuery q("SELECT * FROM Contact");
     if (!q.exec())
@@ -722,7 +723,36 @@ void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
                 q.value(6).toString().toStdString() != c->getMail()
                     ){
                 RATE++;
+                cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
                 cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant au contact" << endl;
+                cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+                return;
+            }
+        }
+    }
+    REUSSI++;
+    gdb->clearTables(); // Il faut nettoyer les tables sinon les éléments de la liste ne correspondent pas à ceux de la table et faussent les résultats
+}
+
+void checkTables(string nomTest, GestionBDD *gdb, list<Interaction> lContenu){
+    QSqlQuery q("SELECT * FROM Interaction");
+    if (!q.exec())
+        throw invalid_argument("Impossible de faire un select sur la table Contact");
+    else{
+        for (list<Interaction>::iterator i = lContenu.begin(); q.next() == true; i++){
+            if (q.value(1).toString().toStdString() != i->getContenu() ||
+                q.value(2).toString().toStdString() != i->getDateCreation().affichage() ||
+                q.value(3).toString().toStdString() != "1"
+                    ){
+                RATE++;
+                cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+                cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant a l'interaction" << endl;
+                cout << "Interaction " << "valeures de la query || valeures de l'interaction" << endl;
+                cout << "Contenu: " << q.value(1).toString().toStdString()  << " || " << i->getContenu() << endl;
+                cout << "Date: " << q.value(2).toString().toStdString()  << " || " << i->getDateCreation().affichage() << endl;
+                cout << "idContact: " << q.value(3).toString().toStdString()  << " || " << "1" << endl;
+                cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+                gdb->clearTables();
                 return;
             }
         }
@@ -737,7 +767,7 @@ void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
  */
 void testUniqueInsertContact(GestionBDD *gdb, Contact c){
     gdb->insertData(c);
-    checkTables("Unique insert", gdb, {c});
+    checkTables("Unique insert Contact", gdb, {c});
 }
 
 /**
@@ -747,7 +777,13 @@ void testUniqueInsertContact(GestionBDD *gdb, Contact c){
 void testMultipleInsertContact(GestionBDD *gdb, list<Contact> l){
     for (auto &it : l)
         gdb->insertData(it);
-    checkTables("Multiple insert", gdb, l);
+    checkTables("Multiple insert Contact", gdb, l);
+}
+
+void testUniqueInsertInteraction(GestionBDD *gdb, Interaction i){
+    gdb->insertData(*i.getContact());
+    gdb->insertData(i);
+    checkTables("Unique insert Interaction", gdb, {i});
 }
 
 /**
@@ -755,17 +791,21 @@ void testMultipleInsertContact(GestionBDD *gdb, list<Contact> l){
  * @param gdb La base de données sur laquelle on travaille
  */
 void testInsert(GestionBDD *gdb){
-    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.rate@mail.com");
     Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    Interaction i = Interaction("rdv aujourd'hui par tel., RAS", thomas);
     std::list<Contact> lC = {thomas, jules};
     testUniqueInsertContact(gdb, thomas);
     testMultipleInsertContact(gdb, lC);
+    testUniqueInsertInteraction(gdb, i);
 }
 
 /**
  * @brief testsDB Les tests sur la partie base de donnée
  */
 void testsDB(GestionBDD *gdb){
+    //gdb->recreateTable();
+    gdb->clearTables();
     testInsert(gdb);
     gdb->getDb().close();
 }
@@ -786,7 +826,7 @@ int main(int argc, char* argv[])
     QApplication a(argc, argv);
     MainWindow w;
     tests(w.getDb());
-    //w.show();
-    //return a.exec();
+    w.show();
+    return a.exec();
     return 0;
 }

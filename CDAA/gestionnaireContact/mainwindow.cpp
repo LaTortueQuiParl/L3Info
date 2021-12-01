@@ -25,8 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
                      QStringList() << "Id"
                                    << "Contenu"
                                    << "DateCreation"
-                                   << "idContact"
-                                   << "idGestionTodo",
+                                   << "idContact",
                      modelInteraction
                      );
     this->setupModel("Todo",
@@ -60,7 +59,7 @@ void MainWindow::setupModel(const QString table, QStringList attributs, QSqlTabl
 void MainWindow::createUI()
 {
     ui->tableViewContact->setModel(modelContact);
-    ui->tableViewContact->setColumnHidden(0, true);
+    //ui->tableViewContact->setColumnHidden(0, true);
     ui->tableViewContact->horizontalHeader()->setStretchLastSection(true);
     ui->tableViewContact->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
