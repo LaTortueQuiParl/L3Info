@@ -2,6 +2,7 @@
 #define GESTIONBDD_H
 
 #include <string>
+#include <map>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include "contact.h"
@@ -63,11 +64,10 @@ public:
 
     /**
      * @brief selectQuery permet de faire créer et exécuter des selects
-     * @param attribute Le ou les attributs que l'on veut récupérer
-     * @param table La table dans laquelle on veut faire un select
-     * @param condition La condition dans la where si il y a
+     * @param c Le contact que l'on cherche dans la table
+     * Fait par défaut
      */
-    void selectQuery(string attribute, string table, string condition = "");
+    list<Contact> selectQuery(string table, map<string, string> conditions);
 };
 
 #endif // GESTIONBDD_H

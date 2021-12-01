@@ -786,6 +786,42 @@ void testUniqueInsertInteraction(GestionBDD *gdb, Interaction i){
     checkTables("Unique insert Interaction", gdb, {i});
 }
 
+void checkSelect(string nomTable, GestionBDD *gdb, list<Contact> v, list<Contact> tableC){
+    if (v.size() != tableC.size()){
+        RATE++;
+        cout << "Le select contient moins de contact que ce qui a ete insere" << endl;
+        return;
+    }
+    for (list<Contact>::iterator select = v.begin(), contact = tableC.begin(); select != v.end(); select++, contact++){
+        if (!(*select == *contact)){
+            RATE++;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            cout << "Fail du test" << nomTable << ": le select ne contient pas le contact" << endl;
+            cout << "Select:  " << *select << endl << "Contact: " << *contact << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            return;
+        }
+    }
+    REUSSI++;
+    gdb->clearTables();
+}
+
+void testSelectUniqueContact(GestionBDD *gdb, string table, map<string, string> condition, list<Contact> c){
+    for (auto& contact : c)
+        gdb->insertData(contact);
+    list<Contact> v = gdb->selectQuery(table, condition);
+    checkSelect("Select Contact avec une table", gdb,  v, c);
+}
+
+void testSelect(GestionBDD *gdb){
+    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.rate@mail.com");
+    Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    Interaction i = Interaction("rdv aujourd'hui par tel., RAS", thomas);
+    list<Contact> lC = {thomas, jules};
+    map<string, string> map;
+    testSelectUniqueContact(gdb, "Contact", map, lC);
+}
+
 /**
  * @brief testInsert Les tests qui concernent les insertions
  * @param gdb La base de données sur laquelle on travaille
@@ -800,6 +836,7 @@ void testInsert(GestionBDD *gdb){
     testUniqueInsertInteraction(gdb, i);
 }
 
+
 /**
  * @brief testsDB Les tests sur la partie base de donnée
  */
@@ -807,6 +844,7 @@ void testsDB(GestionBDD *gdb){
     //gdb->recreateTable();
     gdb->clearTables();
     testInsert(gdb);
+    testSelect(gdb);
     gdb->getDb().close();
 }
 
@@ -816,7 +854,7 @@ void testsDB(GestionBDD *gdb){
  */
 void tests(GestionBDD *gdb){
     testsDB(gdb);
-    //testsObjets();
+    testsObjets();
     cout << "Nombre de tests: " + to_string(RATE + REUSSI) + "\nNombre de tests valides: " + to_string(REUSSI)
                   + "\nNombre de tests rate: " + to_string(RATE) << endl;
 }
@@ -826,7 +864,7 @@ int main(int argc, char* argv[])
     QApplication a(argc, argv);
     MainWindow w;
     tests(w.getDb());
-    w.show();
-    return a.exec();
+    //w.show();
+    //return a.exec();
     return 0;
 }

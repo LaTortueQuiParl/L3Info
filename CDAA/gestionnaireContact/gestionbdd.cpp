@@ -134,15 +134,22 @@ void GestionBDD::insertData(Interaction i){
     sizeInteraction++;
 }
 
-void GestionBDD::insertData(Todo t){
-    QSqlQuery qInsert;
-    qInsert.prepare("INSERT INTO Todo(id, contenu, deadline, idInteraction) "
-                    "VALUES(:id, :contenu, :deadline, :idInteraction)");
-    qInsert.bindValue(":id", sizeContact+1);
-    qInsert.bindValue(":contenu", QString::fromStdString(t.getContenu()));
-    qInsert.bindValue(":deadline", QString::fromStdString(t.getDeadline().affichage()));
-    qInsert.bindValue(":idInteraction", 1);
-    if (!qInsert.exec())
-        throw invalid_argument("Impossible d'executer la requete insert dans Todo");
-    sizeTodo++;
+list<Contact> GestionBDD::selectQuery(string table, map<string, string> condition){
+    QSqlQuery qSelect;
+    list<Contact> res;
+    qSelect.prepare("SELECT * FROM Contact");
+    if (!qSelect.exec())
+        throw invalid_argument("Impossible de selectionner les donnees de contact");
+    else{
+        while (qSelect.next()){
+            Contact c(qSelect.value(1).toString().toStdString(),
+                      qSelect.value(2).toString().toStdString(),
+                      qSelect.value(3).toString().toStdString(),
+                      qSelect.value(4).toString().toStdString(),
+                      qSelect.value(5).toString().toStdString(),
+                      qSelect.value(6).toString().toStdString());
+            res.push_back(c);
+        }
+    }
+    return res;
 }
