@@ -67,7 +67,7 @@ public:
      * @param c Le contact que l'on cherche dans la table
      * Fait par défaut
      */
-    list<Contact> selectQuery(string table, map<string, string> conditions);
+    list<Contact> selectQuery(string table, map<string, string> condition = {});
 };
 
 #endif // GESTIONBDD_H

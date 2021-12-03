@@ -71,10 +71,10 @@ void TestOutputFormat(string classTest, string testName, list<C> a, list<C> b, b
             cout << "Test de la classe, " << classTest << ", " << testName << ", succeeded" << endl;
             cout << "First member is: {\n";
             for (auto i : a)
-                cout << i << "\n";
+                cout << *i << "\n";
             cout << "}\nSecond member is: {\n";
             for (auto j : b)
-                cout << j << "\n";
+                cout << *j << "\n";
             cout << "}" << endl;
             }
         REUSSI++;
@@ -83,10 +83,10 @@ void TestOutputFormat(string classTest, string testName, list<C> a, list<C> b, b
         cout << "Test " << classTest << ", " << testName << ", failed" << endl;
         cout << "Premier membre est: {\n";
         for (auto i : a)
-            cout << i << "\n";
+            cout << *i << "\n";
         cout << "}\nSecond membre est: {\n";
         for (auto j : b)
-            cout << j << "\n";
+            cout << *j << "\n";
         cout << "}" << endl;
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
         RATE++;
@@ -613,9 +613,9 @@ void testGestionInteractions(){
     TestOutputFormat(classTest, "remplacement de la liste par une liste d'interaction non triee", gi.getInteractions(), li2);
 
     Interaction i5 = Interaction("travailler", p1);
-    i5.setDateCreation(Date(01, 12, 2021));
+    i5.setDateCreation(Date(24, 12, 2021));
     gi.addInteraction(i5);
-    TestOutputFormat(classTest, "ajout d'une interaction qui n'a pas été créée en dernier", gi.getInteractions(), {&i1, &i5, &i2});
+    TestOutputFormat(classTest, "ajout d'une interaction qui n'a pas ete creee en dernier", gi.getInteractions(), {&i1, &i5, &i2});
 }
 
 /**
@@ -685,7 +685,7 @@ void testGestionTodos(){
     });
     TestOutputFormat(classTest, "remplacement de la liste de todo par une liste de todo non triee", gt.getTodos(), lt2);
 
-    Todo t6 = Todo("revenir", &i, Date(1,12,2021));
+    Todo t6 = Todo("revenir", &i, Date(24,12,2021));
     gt.addTodo(t6);
     TestOutputFormat(classTest, "ajout d'un todo qui n'a pas la deadline la plus vieille", gt.getTodos(), {&t4, &t6, &t5});
 }
@@ -708,7 +708,6 @@ void testsObjets(){
  * @brief checkTables vérifie que la base de donnée est bien modifiée comme c'est voulu
  * @param lContenu Les lignes de la base de donnée
  */
-
 void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
     QSqlQuery q("SELECT * FROM Contact");
     if (!q.exec())
@@ -786,40 +785,51 @@ void testUniqueInsertInteraction(GestionBDD *gdb, Interaction i){
     checkTables("Unique insert Interaction", gdb, {i});
 }
 
-void checkSelect(string nomTable, GestionBDD *gdb, list<Contact> v, list<Contact> tableC){
+void checkSelect(string nomTable, list<Contact> v, list<Contact> tableC){
     if (v.size() != tableC.size()){
         RATE++;
-        cout << "Le select contient moins de contact que ce qui a ete insere" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test: " << nomTable << endl << "La selection contient moins de contact que ce qui a ete insere" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
         return;
     }
     for (list<Contact>::iterator select = v.begin(), contact = tableC.begin(); select != v.end(); select++, contact++){
         if (!(*select == *contact)){
             RATE++;
             cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            cout << "Fail du test" << nomTable << ": le select ne contient pas le contact" << endl;
+            cout << "Fail du test: " << nomTable << endl << "Le select ne contient pas le contact" << endl;
             cout << "Select:  " << *select << endl << "Contact: " << *contact << endl;
             cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
             return;
         }
     }
     REUSSI++;
-    gdb->clearTables();
 }
 
-void testSelectUniqueContact(GestionBDD *gdb, string table, map<string, string> condition, list<Contact> c){
-    for (auto& contact : c)
-        gdb->insertData(contact);
-    list<Contact> v = gdb->selectQuery(table, condition);
-    checkSelect("Select Contact avec une table", gdb,  v, c);
+void testSelectStarContact(GestionBDD *gdb, string table, list<Contact> listContact){
+    list<Contact> result= gdb->selectQuery(table);
+    checkSelect("Select tout de Contact sans condition", result, listContact);
+}
+
+void testSelectUniqueContactCondition(GestionBDD *gdb, string table, map<string, string> condition, list<Contact> listContact){
+    list<Contact> result= gdb->selectQuery(table, condition);
+    checkSelect("Select contact avec condition sur le nom", result, listContact);
 }
 
 void testSelect(GestionBDD *gdb){
-    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.rate@mail.com");
-    Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
-    Interaction i = Interaction("rdv aujourd'hui par tel., RAS", thomas);
-    list<Contact> lC = {thomas, jules};
-    map<string, string> map;
-    testSelectUniqueContact(gdb, "Contact", map, lC);
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.rate@mail.com");
+    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+
+    gdb->insertData(thomas);
+    gdb->insertData(jules);
+
+    Interaction rdvTelephonique = Interaction("rdv aujourd'hui par tel., RAS", thomas);
+    list<Contact> listContact = {thomas, jules};
+
+    //testSelectStarContact(gdb, "Contact", listContact);
+
+    map<string, string> condition = {{"nom", "Ratu"}};
+    testSelectUniqueContactCondition(gdb, "Contact", condition, {thomas});
 }
 
 /**
@@ -827,15 +837,14 @@ void testSelect(GestionBDD *gdb){
  * @param gdb La base de données sur laquelle on travaille
  */
 void testInsert(GestionBDD *gdb){
-    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.rate@mail.com");
-    Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.rate@mail.com");
+    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
     Interaction i = Interaction("rdv aujourd'hui par tel., RAS", thomas);
     std::list<Contact> lC = {thomas, jules};
     testUniqueInsertContact(gdb, thomas);
     testMultipleInsertContact(gdb, lC);
     testUniqueInsertInteraction(gdb, i);
 }
-
 
 /**
  * @brief testsDB Les tests sur la partie base de donnée
@@ -854,7 +863,7 @@ void testsDB(GestionBDD *gdb){
  */
 void tests(GestionBDD *gdb){
     testsDB(gdb);
-    testsObjets();
+    //testsObjets();
     cout << "Nombre de tests: " + to_string(RATE + REUSSI) + "\nNombre de tests valides: " + to_string(REUSSI)
                   + "\nNombre de tests rate: " + to_string(RATE) << endl;
 }

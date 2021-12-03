@@ -1,5 +1,8 @@
 #include "gestionbdd.h"
 #include <QDebug>
+#include <QSqlRecord>
+#include <QtSql>
+
 
 GestionBDD::GestionBDD()
 {
@@ -134,20 +137,38 @@ void GestionBDD::insertData(Interaction i){
     sizeInteraction++;
 }
 
-list<Contact> GestionBDD::selectQuery(string table, map<string, string> condition){
+list<Contact> GestionBDD::selectQuery(string table, map<string, string> projection){
     QSqlQuery qSelect;
     list<Contact> res;
-    qSelect.prepare("SELECT * FROM Contact");
-    if (!qSelect.exec())
+    if (projection.empty() == true){
+        qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact");
+    } else {
+
+
+
+        /*
+        qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact WHERE nom='Ratu'"); // solution 1
+
+        qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact WHERE :condition"); // solution 2
+        qSelect.bindValue(":condition", "nom='Ratu'");
+        */
+        QString conditions;
+        for (const auto& condition : projection){
+            conditions.append(QString("%1='%2'").arg(QString::fromStdString(condition.first), QString::fromStdString(condition.second)));
+        }
+        qSelect.prepare(QString("SELECT nom, prenom, entreprise, telephone, photo, mail FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions));
+    }
+    if (!qSelect.exec()){
         throw invalid_argument("Impossible de selectionner les donnees de contact");
-    else{
+    } else {
         while (qSelect.next()){
-            Contact c(qSelect.value(1).toString().toStdString(),
+            Contact c(qSelect.value(0).toString().toStdString(),
+                      qSelect.value(1).toString().toStdString(),
                       qSelect.value(2).toString().toStdString(),
                       qSelect.value(3).toString().toStdString(),
                       qSelect.value(4).toString().toStdString(),
-                      qSelect.value(5).toString().toStdString(),
-                      qSelect.value(6).toString().toStdString());
+                      qSelect.value(5).toString().toStdString());
+            cout << c << endl;
             res.push_back(c);
         }
     }
