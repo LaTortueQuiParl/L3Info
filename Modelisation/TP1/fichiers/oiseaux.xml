@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE oiseaux SYSTEM "oiseaux.dtd">
+
+<oiseaux>
+
+	<espece nom="accenteur alpin" image="accenteur.alpin.jfna.0p">
+		<ordre>Passeriformes</ordre>
+		<famille>Prunellid�s</famille>
+		<nomScientifique>Prunella collaris</nomScientifique>
+		<synonymes>
+			<synonyme>p�got</synonyme>
+			<synonyme>fauvette des alpes</synonyme>
+			<synonyme>accenteur des alpes</synonyme>
+			<synonyme>accenteur montagnar</synonyme>
+			<synonyme>Alpenheggemus (Neerl)</synonyme>
+			<synonyme>Alpenbraunelle (Alle)</synonyme>
+			<synonyme>Sordone (Ital)</synonyme>
+			<synonyme>Acentor alpino (Espa)</synonyme>
+			<synonyme>Alpine Accentor (Angl</synonyme>
+			<synonyme>Alpj�rnsparv (Sued)</synonyme>
+			<synonyme>Alpiyskaya Zavirushka (Russ)</synonyme>
+		</synonymes>
+		<biometrie>
+			<taille>15 � 18 cm</taille>
+			<envergure>18 cm</envergure>
+			<poids>40 g</poids>
+		</biometrie>
+		<distribution>Esp�ce pr�sente en France � l'�tat sauvage.</distribution>
+		<statut>nicheur s�dentaire. migrateur. hivernant. Esp�ce prot�g�e</statut>
+	</espece>
+
+
+	<espece nom="fauvette babillarde" image="fauvette.babillarde.jfna.0p" chant="fauvetteBabillarde">
+		<ordre>Passeriformes</ordre>
+		<famille>Sylviid�s</famille>
+		<nomScientifique>Sylvia curruca</nomScientifique>
+		<synonymes>
+			<synonyme>Braamsluiper (Neerl)</synonyme>
+			<synonyme>Klappergrasm�cke (Alle)</synonyme>
+			<synonyme>Bigiarella (Ital)</synonyme>
+			<synonyme>Curruca zarcerilla (Espa)</synonyme>
+			<synonyme>Lesser Whitethroat (Angl)</synonyme>
+			<synonyme>�rts�ngare (Sued)</synonyme>
+			<synonyme>Slavka-melnichek (Russ)</synonyme>
+		</synonymes>
+		<biometrie>
+			<taille>13 � 14 cm</taille>
+			<envergure>19 cm</envergure>
+			<poids>10 � 16 g</poids>
+			<longevite>7 ans</longevite>
+		</biometrie>
+		<distribution>Esp�ce pr�sente en France � l'�tat sauvage.</distribution>
+		<statut>nicheur. migrateur. Esp�ce prot�g�e</statut>
+	</espece>
+
+	<espece nom="accenteur mouchet" image="accenteur.mouchet.jfna.0p">
+		<ordre>Passeriformes</ordre>
+		<famille>Prunellid�s</famille>
+		<nomScientifique>Prunella modularis</nomScientifique>
+		<synonymes>
+			<synonyme>freille</synonyme>
+			<synonyme>grisette</synonyme>
+			<synonyme>gris-moignet</synonyme>
+			<synonyme>treille</synonyme>
+			<synonyme>Heggemus (Neerl)</synonyme>
+			<synonyme>Heckenbraunelle (Alle)</synonyme>
+			<synonyme>Passera scopaiola (Ital)</synonyme>
+			<synonyme>Acentor com�n (Espa)</synonyme>
+			<synonyme>Dunnock (Angl)</synonyme>
+			<synonyme>J�rnsparv (Sued)</synonyme>
+			<synonyme>Lesnaya Zavirushka (Russ)</synonyme>
+		</synonymes>
+		<biometrie>
+			<taille>14 � 15 cm</taille>
+			<envergure>21 cm</envergure>
+			<poids>20 g</poids>
+			<longevite>9 ans</longevite>
+		</biometrie>
+		<distribution>Esp�ce pr�sente en France � l'�tat sauvage.</distribution>
+		<statut>nicheur s�dentaire. migrateur. hivernant. Esp�ce prot�g�e </statut>
+	</espece>
+
+	<espece nom="aigle bott�" image="aigle.botte.hedr.0p">
+		<ordre>Accipitriformes</ordre>
+		<famille>Accipitrid�s</famille>
+		<nomScientifique>Hieraaetus pennatus</nomScientifique>
+		<synonymes>
+			<synonyme>Dwergarend (Neerl)</synonyme>
+			<synonyme>Zwergadler (Alle)</synonyme>
+			<synonyme>Aquila minore (Ital)</synonyme>
+			<synonyme>�guila calzada (Espa)</synonyme>
+			<synonyme>Booted Eagle (Angl)</synonyme>
+			<synonyme>Dv�rg�rn (Sued)</synonyme>
+			<synonyme>Oryol-karlik (Russ)</synonyme>
+			<synonyme>Aigle bott�</synonyme>
+		</synonymes>
+		<biometrie>
+			<taille>45 � 50 cm</taille>
+			<envergure>110 � 135 cm</envergure>
+			<poids>Femelle : 850 � 1250 g ; M�le : 500 � 800 g</poids>
+		</biometrie>
+		<distribution>Esp�ce pr�sente en France � l'�tat sauvage.</distribution>
+		<statut>nicheur rare. migrateur. hivernant occasionnel. Esp�ce prot�g�e (liste rouge)</statut>
+	</espece>
+
+	<espece nom="Sittelle torchepot" image="sittelle.torchepot.hedr.0p" video="sittelle_torchepot_1_hd">
+		<ordre>Passeriformes</ordre>
+		<famille>Sittid�s</famille>
+		<nomScientifique>Sitta europaea</nomScientifique>
+		<synonymes>
+			<synonyme>pic ma�on</synonyme>
+			<synonyme>Boomklever (Neerl)</synonyme>
+			<synonyme>Kleiber (Alle)</synonyme>
+			<synonyme>Picchio muratore (Ital)</synonyme>
+			<synonyme>Trepador azul (Espa)</synonyme>
+			<synonyme>Wood Nuthatch</synonyme>
+			<synonyme>N�tv�cka (Sued)</synonyme>
+			<synonyme>Obyknovenny Popolzen (Russ)</synonyme>
+		</synonymes>
+		<biometrie>
+			<taille>14 cm</taille>
+			<poids>19 � 24 g</poids>
+			<longevite>9 ans</longevite>
+		</biometrie>
+		<distribution>Esp�ce pr�sente en France � l'�tat sauvage.</distribution>
+		<statut>nicheur s�dentaire. migrateur. hivernant. Esp�ce prot�g�e</statut>
+	</espece>
+
+	<espece nom="Tadorne de Belon">
+		<ordre>Anseriformes</ordre>
+		<famille>Anatid�s</famille>
+		<nomScientifique>Tadorna tadorna</nomScientifique>
+		<synonymes>
+			<synonyme>ardent</synonyme>
+			<synonyme>raga</synonyme>
+			<synonyme>ringand</synonyme>
+			<synonyme>Bergeend (Neerl)</synonyme>
+			<synonyme>Brandente (Alle)</synonyme>
+			<synonyme>Volpoca (Ital)</synonyme>
+			<synonyme>Tarro blanco (Espa)</synonyme>
+			<synonyme>Common Shelduck (Angl)</synonyme>
+			<synonyme>Gravand (Sued)</synonyme>
+			<synonyme>Peganka (Russ)</synonyme>
+		</synonymes>
+		<biometrie>
+			<taille>58 � 71 cm</taille>
+			<envergure>110 � 113 cm</envergure>
+			<poids>1100 � 1400 g</poids>
+			<longevite>16 ans</longevite>
+		</biometrie>
+		<distribution>Esp�ce pr�sente en France � l'�tat sauvage.</distribution>
+		<statut>nicheur. migrateur. hivernant. Esp�ce prot�g�e</statut>
+	</espece>
+</oiseaux>
