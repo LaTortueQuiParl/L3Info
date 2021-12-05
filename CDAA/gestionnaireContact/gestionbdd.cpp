@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QSqlRecord>
 #include <QtSql>
-
+#include <QMap>
 
 GestionBDD::GestionBDD()
 {
@@ -137,29 +137,32 @@ void GestionBDD::insertData(Interaction i){
     sizeInteraction++;
 }
 
-list<Contact> GestionBDD::selectQuery(string table, map<string, string> projection){
+list<Contact> GestionBDD::selectQuery(string table, map<string, string> stProjection){
     QSqlQuery qSelect;
+    QMap<string, string> projection(stProjection);
     list<Contact> res;
+    QString conditions = "";
     if (projection.empty() == true){
         qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact");
     } else {
-
-
-
         /*
         qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact WHERE nom='Ratu'"); // solution 1
 
         qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact WHERE :condition"); // solution 2
         qSelect.bindValue(":condition", "nom='Ratu'");
         */
-        QString conditions;
-        for (const auto& condition : projection){
-            conditions.append(QString("%1='%2'").arg(QString::fromStdString(condition.first), QString::fromStdString(condition.second)));
+        QMapIterator<string, string> condition(projection);
+        while (condition.hasNext()){
+            condition.next();
+            conditions.append(QString("%1='%2'").arg(QString::fromStdString(condition.key()), QString::fromStdString(condition.value())));
+            if (projection.size() != 1 && condition.value() != projection.last()){
+                conditions.append(" AND ");
+            }
         }
         qSelect.prepare(QString("SELECT nom, prenom, entreprise, telephone, photo, mail FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions));
     }
     if (!qSelect.exec()){
-        throw invalid_argument("Impossible de selectionner les donnees de contact");
+        throw invalid_argument((QString("Impossible de selectionner les donnees de contact avec pour condition %1").arg(conditions)).toStdString());
     } else {
         while (qSelect.next()){
             Contact c(qSelect.value(0).toString().toStdString(),
@@ -168,7 +171,6 @@ list<Contact> GestionBDD::selectQuery(string table, map<string, string> projecti
                       qSelect.value(3).toString().toStdString(),
                       qSelect.value(4).toString().toStdString(),
                       qSelect.value(5).toString().toStdString());
-            cout << c << endl;
             res.push_back(c);
         }
     }
