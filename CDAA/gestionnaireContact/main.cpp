@@ -811,12 +811,12 @@ void testSelectStarContact(GestionBDD *gdb, string table, list<Contact> listCont
     checkSelect("Select tout de Contact sans condition", result, listContact);
 }
 
-void testSelectUniqueContactCondition(GestionBDD *gdb, string table, map<string, string> condition, list<Contact> listContact, string nomTest){
+void testSelectUniqueContactCondition(GestionBDD *gdb, string table, map<string, list<string>> condition, list<Contact> listContact, string nomTest){
     list<Contact> result= gdb->selectQuery(table, condition);
     checkSelect(nomTest, result, listContact);
 }
 
-void testSelectPlusieursContactCondition(GestionBDD *gdb, string table, map<string, string> condition, list<Contact> listContact, string nomTest){
+void testSelectPlusieursContactCondition(GestionBDD *gdb, string table, map<string, list<string>> condition, list<Contact> listContact, string nomTest){
     list<Contact> result = gdb->selectQuery(table, condition);
     checkSelect(nomTest, result, listContact);
 }
@@ -830,24 +830,22 @@ void testSelect(GestionBDD *gdb){
 
     testSelectStarContact(gdb, "Contact", {thomas, jules});
 
-    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", "Ratu"}}, {thomas}, "Select avec condition sur le nom");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"prenom", "Thomas"}}, {thomas}, "Select avec condition sur le prenom");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"entreprise", "Total"}}, {thomas}, "Select avec condition sur le entreprise");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"telephone", "06 52 48 61 34"}}, {thomas}, "Select avec condition sur le telephone");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"photo", "photoThomas.jpg"}}, {thomas}, "Select avec condition sur le photo");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"mail", "thomas.ratu@mail.com"}}, {thomas}, "Select avec condition sur le mail");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", "Ratu"},
-                                                      {"prenom", "Thomas"},
-                                                      {"entreprise", "Total"},
-                                                      {"telephone", "06 52 48 61 34"},
-                                                      {"photo", "photoThomas.jpg"},
-                                                      {"mail", "thomas.ratu@mail.com"}},
+    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", {"Ratu"}}}, {thomas}, "Select avec condition sur le nom");
+    testSelectUniqueContactCondition(gdb, "Contact", {{"prenom", {"Thomas"}}}, {thomas}, "Select avec condition sur le prenom");
+    testSelectUniqueContactCondition(gdb, "Contact", {{"entreprise", {"Total"}}}, {thomas}, "Select avec condition sur le entreprise");
+    testSelectUniqueContactCondition(gdb, "Contact", {{"telephone", {"06 52 48 61 34"}}}, {thomas}, "Select avec condition sur le telephone");
+    testSelectUniqueContactCondition(gdb, "Contact", {{"photo", {"photoThomas.jpg"}}}, {thomas}, "Select avec condition sur le photo");
+    testSelectUniqueContactCondition(gdb, "Contact", {{"mail", {"thomas.ratu@mail.com"}}}, {thomas}, "Select avec condition sur le mail");
+    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", {"Ratu"}},
+                                                      {"prenom", {"Thomas"}},
+                                                      {"entreprise", {"Total"}},
+                                                      {"telephone", {"06 52 48 61 34"}},
+                                                      {"photo", {"photoThomas.jpg"}},
+                                                      {"mail", {"thomas.ratu@mail.com"}}},
                                      {thomas}, "Select avec condition sur le nom, prenom, entreprise, tehelphone, photo, mail");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", "Siba"}}, {jules}, "Select avec condition sur le nom");
+    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", {"Siba"}}}, {jules}, "Select avec condition sur le nom");
 
-    //map<string, string> m = {{"nom", "Ratu"}};
-    //m["nom"] =  "Siba";
-    //testSelectPlusieursContactCondition(gdb, "Contact", m, {thomas, jules}, "Select avec des conditions sur 2 contact differents");
+    testSelectPlusieursContactCondition(gdb, "Contact", {{"nom", {"Ratu", "Siba"}}}, {thomas, jules}, "Select avec des conditions sur 2 contact differents");
 }
 
 /**

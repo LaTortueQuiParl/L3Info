@@ -137,9 +137,9 @@ void GestionBDD::insertData(Interaction i){
     sizeInteraction++;
 }
 
-list<Contact> GestionBDD::selectQuery(string table, map<string, string> stProjection){
+list<Contact> GestionBDD::selectQuery(string table, map<string, list<string>> stlProjection){
     QSqlQuery qSelect;
-    QMap<string, string> projection(stProjection);
+    QMap<string, list<string>> projection(stlProjection);
     list<Contact> res;
     QString conditions = "";
     if (projection.empty() == true){
@@ -151,10 +151,14 @@ list<Contact> GestionBDD::selectQuery(string table, map<string, string> stProjec
         qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact WHERE :condition"); // solution 2
         qSelect.bindValue(":condition", "nom='Ratu'");
         */
-        QMapIterator<string, string> condition(projection);
+        QMapIterator<string, list<string>> condition(projection);
         while (condition.hasNext()){
             condition.next();
-            conditions.append(QString("%1='%2'").arg(QString::fromStdString(condition.key()), QString::fromStdString(condition.value())));
+            for (list<string>::const_iterator it = condition.value().begin(); it != condition.value().end() ; it++){
+                conditions.append(QString("%1='%2'").arg(QString::fromStdString(condition.key()), QString::fromStdString(*it)));
+                if (*it != condition.value().back())
+                    conditions.append(" OR ");
+            }
             if (projection.size() != 1 && condition.value() != projection.last()){
                 conditions.append(" AND ");
             }
