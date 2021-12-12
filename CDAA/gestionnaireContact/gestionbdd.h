@@ -65,15 +65,23 @@ public:
 
     /**
      * @brief selectQueryContact permet de créer et exécuter des selects dans la table Contact
-     * @param Les conditions de la selection qui est par défaut vide
+     * @param Les conditions de la selection qui est vide par défaut
      */
     list<Contact> selectQueryContact(map<string, list<string>> condition = {});
 
     /**
-     * selectQueryInteraction permet de créer et exécuter des sélect dans la table interaction
+     * @brief selectQueryInteraction permet de créer et exécuter des selects dans la table Interaction
+     * @param Les conditions de la selection qui est vide par défaut
      */
     list<Interaction> selectQueryInteraction(map<string, list<string>> condition = {});
+
+    /**
+     * @brief selectQueryTodo permet de créer et exécuter des selects dans la table Todo
+     * @param Les conditions de la selection qui est vide par défaut
+     */
     list<Todo> selectQueryTodo(map<string, list<string>> condition = {});
+
+    void updateData(string nomTable, map<string, string> modifications, map<string, list<string>> conditions = {});
 };
 
 #endif // GESTIONBDD_H

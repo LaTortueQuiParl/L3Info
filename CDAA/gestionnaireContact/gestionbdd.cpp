@@ -188,9 +188,8 @@ QString craftSelect(string table, map<string, list<string>> mapConditions){
                 if (*it != condition.value().back())
                     conditions.append(" OR ");
             }
-            if (condition.hasNext() && condition.value() != QmapConditions.last()){
+            if (condition.hasNext() && condition.value() != QmapConditions.last())
                 conditions.append(" AND ");
-            }
         }
     }
     if (table == "Contact")
@@ -256,4 +255,39 @@ list<Todo> GestionBDD::selectQueryTodo(map<string, list<string>> mapConditions){
         }
     }
     return res;
+}
+
+void GestionBDD::updateData(string nomTable, map<string, string> modifications, map<string, list<string>> conditions){
+    QSqlQuery qUpdate;
+    QString qStringModifications;
+    QMap<string, string> modif(modifications);
+    QMapIterator<string, string> iterModif(modif);
+    while(iterModif.hasNext()){
+        iterModif.next();
+    qStringModifications.append(QString("%1='%2'").arg(QString::fromStdString(iterModif.key()), QString::fromStdString(iterModif.value())));
+        if (iterModif.hasNext() && iterModif.peekNext().value() != modif.last())
+            qStringModifications.append(" ");
+    }
+    if (conditions.empty() == true){
+        qUpdate.prepare(QString("UPDATE %1 SET %2").arg(QString::fromStdString(nomTable), qStringModifications));
+        if (!qUpdate.exec())
+            throw invalid_argument("Impossible de modifier la table " + nomTable);
+    } else {
+        QString qStringConditions;
+        QMap<string, list<string>> condition(conditions);
+        QMapIterator<string, list<string>> iterCondition(condition);
+        while(iterCondition.hasNext()){
+            iterCondition.next();
+            for (auto it = iterCondition.value().begin(); it != iterCondition.value().end(); it++){
+                qStringConditions.append(QString("%1='%2'").arg(QString::fromStdString(iterCondition.key()), QString::fromStdString(*it)));
+                if (*it != iterCondition.value().back())
+                    qStringConditions.append(" OR ");
+            }
+            if (iterCondition.hasNext() && iterCondition.value() != condition.last())
+                qStringConditions.append(" AND ");
+        }
+        qUpdate.prepare(QString("UPDATE %1 SET %2 WHERE %3").arg(QString::fromStdString(nomTable), qStringModifications, qStringConditions));
+        if (!qUpdate.exec())
+            throw invalid_argument("Impossible de modifier la table " + nomTable);
+    }
 }

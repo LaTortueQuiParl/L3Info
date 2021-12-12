@@ -401,6 +401,10 @@ void testInteraction(){
     TestOutputFormat(classTest, "comparaison entre une intreaction créée aujourd'hui et une le 25/12/2021", i<i2, true);
 
     ExceptionTestOutputFormat("interaction qui n'a pas de contenu", "", &p);
+
+    p.setNom("Nom2");
+    TestOutputFormat(classTest, "Changement du contact associe au todo doit etre modifie aussi dans l'interaction", i.getContact()->getNom(), p.getNom());
+
 }
 
 /**
@@ -708,12 +712,12 @@ void testsObjets(){
 }
 
 /**
- * @brief checkInsert permet de vérifier de l'insertion d'un Contact dans la base de donnée en faisant un select manuellement dessus et le comparant à ce qui a été inséré
+ * @brief checkTables permet de vérifier de l'insertion d'un Contact dans la base de donnée en faisant un select manuellement dessus et le comparant à ce qui a été inséré
  * @param nomTest Le nom du test
  * @param gdb La base de donnée
  * @param lContenu La liste de contact insérée
  */
-void checkInsert(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
+void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
     QSqlQuery q("SELECT * FROM Contact");
     if (!q.exec())
         throw invalid_argument("Impossible de faire un select sur la table Contact");
@@ -739,12 +743,12 @@ void checkInsert(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
 }
 
 /**
- * @brief checkInsert permet de vérifier de l'insertion d'une Interaction dans la base de donnée en faisant un select manuellement dessus et le comparant à ce qui a été inséré
+ * @brief checkTables permet de vérifier de l'insertion d'une Interaction dans la base de donnée en faisant un select manuellement dessus et le comparant à ce qui a été inséré
  * @param nomTest Le nom du test
  * @param gdb La base de donnée
  * @param lInteraction La liste d'interaction insérée
  */
-void checkInsert(string nomTest, GestionBDD *gdb, list<Interaction> lInteraction){
+void checkTables(string nomTest, GestionBDD *gdb, list<Interaction> lInteraction){
     QSqlQuery q("SELECT * FROM Interaction");
     if (!q.exec())
         throw invalid_argument("Impossible de faire un select sur la table Interaction");
@@ -774,7 +778,13 @@ void checkInsert(string nomTest, GestionBDD *gdb, list<Interaction> lInteraction
     gdb->clearTables(); // Il faut nettoyer les tables sinon les éléments de la liste ne correspondent pas à ceux de la table et faussent les résultats
 }
 
-void checkInsert(string nomTest, GestionBDD *gdb, list<Todo> lTodo){
+/**
+ * @brief checkTables Vérifie le contenu de la table Todo
+ * @param nomTest Le nom du test
+ * @param gdb La base de donnée
+ * @param lTodo La liste contenant les todos
+ */
+void checkTables(string nomTest, GestionBDD *gdb, list<Todo> lTodo){
     QSqlQuery q("SELECT * FROM Todo");
     if (!q.exec())
         throw invalid_argument("Impossible de faire un select sur la table Todo");
@@ -807,7 +817,7 @@ void checkInsert(string nomTest, GestionBDD *gdb, list<Todo> lTodo){
  */
 void testUniqueInsertContact(GestionBDD *gdb, Contact c){
     gdb->insertData(c);
-    checkInsert("Unique insert Contact", gdb, {c});
+    checkTables("Unique insert Contact", gdb, {c});
 }
 
 /**
@@ -817,7 +827,7 @@ void testUniqueInsertContact(GestionBDD *gdb, Contact c){
 void testMultipleInsertContact(GestionBDD *gdb, list<Contact> lContact){
     for (auto &it : lContact)
         gdb->insertData(it);
-    checkInsert("Multiple insert Contact", gdb, lContact);
+    checkTables("Multiple insert Contact", gdb, lContact);
 }
 
 /**
@@ -828,7 +838,7 @@ void testMultipleInsertContact(GestionBDD *gdb, list<Contact> lContact){
 void testUniqueInsertInteraction(GestionBDD *gdb, Interaction i){
     gdb->insertData(*i.getContact());
     gdb->insertData(i);
-    checkInsert("Unique insert Interaction", gdb, {i});
+    checkTables("Unique insert Interaction", gdb, {i});
 }
 
 /**
@@ -841,7 +851,7 @@ void testMultipleInsertInteraction(GestionBDD *gdb, list<Interaction> lInteracti
         gdb->insertData(*it.getContact());
         gdb->insertData(it);
     }
-    checkInsert("Insertion de plusieurs interactions", gdb, lInteraction);
+    checkTables("Insertion de plusieurs interactions", gdb, lInteraction);
 }
 
 /**
@@ -853,7 +863,7 @@ void testUniqueInsertTodo(GestionBDD *gdb, Todo t){
     gdb->insertData(*t.getInteraction()->getContact());
     gdb->insertData(*t.getInteraction());
     gdb->insertData(t);
-    checkInsert("Unique insert Todo", gdb, {t});
+    checkTables("Unique insert Todo", gdb, {t});
 }
 
 /**
@@ -867,7 +877,7 @@ void testMultipleInsertTodo(GestionBDD *gdb, list<Todo> listeTodo){
         gdb->insertData(*it.getInteraction());
         gdb->insertData(it);
     }
-    checkInsert("Insertion de plusieurs Todo", gdb, listeTodo);
+    checkTables("Insertion de plusieurs Todo", gdb, listeTodo);
 }
 
 /**
@@ -994,9 +1004,9 @@ void testSelectStar(GestionBDD *gdb, list<Contact> contactBDD){
  * @param gdb La base de donnée
  * @param interactionBDD Les contacts dans la base de donnée
  */
-void testSelectStar(GestionBDD *gdb, list<Interaction> objetBDD){
+void testSelectStar(GestionBDD *gdb, list<Interaction> interactionBDD){
     list<Interaction> result = gdb->selectQueryInteraction();
-    checkSelect("Select tout de Interaction sans condition", result, objetBDD);
+    checkSelect("Select tout de Interaction sans condition", result, interactionBDD);
 }
 
 /**
@@ -1004,9 +1014,9 @@ void testSelectStar(GestionBDD *gdb, list<Interaction> objetBDD){
  * @param gdb La base de donnée
  * @param todoBDD Les contacts dans la base de donnée
  */
-void testSelectStar(GestionBDD *gdb, list<Todo> objetBDD){
+void testSelectStar(GestionBDD *gdb, list<Todo> todoBDD){
     list<Todo> result = gdb->selectQueryTodo();
-    checkSelect("Select tout de Todo sans condition", result, objetBDD);
+    checkSelect("Select tout de Todo sans condition", result, todoBDD);
 }
 
 /**
@@ -1082,6 +1092,40 @@ void testSelect(GestionBDD *gdb){
     testSelectUniqueContactCondition(gdb, {{"id", {"1"}}}, {thomas}, "Select avec condition sur l'id");
 
     testSelectPlusieursContactCondition(gdb, {{"nom", {"Ratu", "Siba"}}}, {thomas, jules}, "Select avec des conditions sur 2 contact differents");
+    gdb->clearTables();
+}
+
+void testUpdateChangementNomContact(GestionBDD *gdb, string nomTable, map<string, string> modifications){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    gdb->insertData(thomas);
+    gdb->insertData(jules);
+    gdb->updateData(nomTable, modifications);
+    thomas.setPrenom("Thomy");
+    jules.setPrenom("Thomy");
+    checkTables("Changement du nom de tous les contacts en Thomy", gdb, {thomas, jules});
+    gdb->clearTables();
+}
+
+void testUpdateChangementNomThomas(GestionBDD *gdb, string nomTable, map<string, string> modifications, map<string, list<string>> conditions){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    gdb->insertData(thomas);
+    gdb->insertData(jules);
+    gdb->updateData(nomTable, modifications, conditions);
+    thomas.setPrenom("Thomy");
+    checkTables("Changement du nom de Thomas en Thomy", gdb, {thomas, jules});
+    gdb->clearTables();
+}
+
+void testUpdate(GestionBDD *gdb){
+    map<string, string> modif;
+    modif["Prenom"] = "Thomy";
+    testUpdateChangementNomContact(gdb, "Contact", modif);
+
+    map<string, list<string>> conditions;
+    conditions["Nom"] = {"Ratu"};
+    testUpdateChangementNomThomas(gdb, "Contact", modif, conditions);
 }
 
 /**
@@ -1092,6 +1136,7 @@ void testsDB(GestionBDD *gdb){
     gdb->clearTables();
     testInsert(gdb);
     testSelect(gdb);
+    testUpdate(gdb);
     gdb->getDb().close();
 }
 
