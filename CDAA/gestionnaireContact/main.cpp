@@ -805,70 +805,6 @@ void testMultipleInsertInteraction(GestionBDD *gdb, list<Interaction> lInteracti
 }
 
 /**
- * @brief checkSelect permet de vérifier la bonne sélection d'un sélect
- * @param nomTest Le nom du test que l'on effectue
- * @param resSelect Le résultat du select
- * @param tableC Les contacts présents dans la base de donnée
- */
-void checkSelect(string nomTest, list<Contact> resSelect, list<Contact> contactBDD){
-    if (resSelect.size() != contactBDD.size()){
-        RATE++;
-        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        cout << "Fail du test: " << nomTest << endl << "La selection contient moins de contact que ce qui a ete insere" << endl;
-        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        return;
-    }
-    for (list<Contact>::iterator select = resSelect.begin(), contact = contactBDD.begin(); select != resSelect.end(); select++, contact++){
-        if (!(*select == *contact)){
-            RATE++;
-            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas le contact" << endl;
-            cout << "Select:  " << *select << endl << "Contact: " << *contact << endl;
-            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            return;
-        }
-    }
-    REUSSI++;
-}
-
-/**
- * @brief testSelectStarContact Execute une selection avec * pour recuperer tous les contacts dans la bdd alors qu'elle n'a que 1 contact
- * @param gdb La base de donnée
- * @param table La table dans laquelle on exécute un sélect
- * @param contactBDD Les contacts dans la base de donnée
- */
-void testSelectStarContact1(GestionBDD *gdb, string table, list<Contact> contactBDD){
-    list<Contact> result= gdb->selectQuery(table);
-    checkSelect("Select tout de Contact sans condition", result, contactBDD);
-}
-
-/**
- * @brief testSelectUniqueContactCondition execute un sélect dans la base de donnée avec une condition alors qu'elle ne contient que 1 contact
- * @param gdb La base de donnée
- * @param table La table dans laquelle on exécute un sélect
- * @param condition La condition pour sélectionner le bon contact
- * @param contactBDD Le contact dans la base de donnée
- * @param nomTest Le nom du test
- */
-void testSelectUniqueContactCondition(GestionBDD *gdb, string table, map<string, list<string>> condition, list<Contact> contactBDD, string nomTest){
-    list<Contact> result= gdb->selectQuery(table, condition);
-    checkSelect(nomTest, result, contactBDD);
-}
-
-/**
- * @brief testSelectPlusieursContactCondition execute un sélect dans la base de donnée avec une/des contision(s) alors qu'elle contient plusieurs contact
- * @param gdb La base de donnée
- * @param table La table dans laquelle on fait un sélect
- * @param condition La/les condition(s) pou récupérer les contacts
- * @param contactBDD Les contacts qui sont dans la base de donnée
- * @param nomTest Le nom du test
- */
-void testSelectPlusieursContactCondition(GestionBDD *gdb, string table, map<string, list<string>> condition, list<Contact> contactBDD, string nomTest){
-    list<Contact> result = gdb->selectQuery(table, condition);
-    checkSelect(nomTest, result, contactBDD);
-}
-
-/**
  * @brief testInsert sont les tests qui concernent les insertions
  * @param gdb La base de donnée
  */
@@ -883,34 +819,187 @@ void testInsert(GestionBDD *gdb){
 }
 
 /**
+ * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table contact
+ * @param nomTest Le nom du test que l'on effectue
+ * @param resSelect Le résultat du select
+ * @param listeContact Les contacts que le sélect devrait renvoyer
+ */
+void checkSelect(string nomTest, list<Contact> resSelect, list<Contact> listeContact){
+    if (resSelect.size() != listeContact.size()){
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test: " << nomTest << endl << "La selection contient moins de contact que ce qui a ete insere" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        return;
+    }
+    for (list<Contact>::iterator select = resSelect.begin(), contact = listeContact.begin(); select != resSelect.end(); select++, contact++){
+        if (!(*select == *contact)){
+            RATE++;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas le contact" << endl;
+            cout << "Select:  " << *select << endl << "Contact: " << *contact << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            return;
+        }
+    }
+    REUSSI++;
+}
+
+/**
+ * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table interaction
+ * @param nomTest Le nom du test que l'on effectue
+ * @param resSelect Le résultat du select
+ * @param listeInteraction Les Interactions que le sélect devrait renvoyer
+ */
+void checkSelect(string nomTest, list<Interaction> resSelect, list<Interaction> listInteraction){
+    if (resSelect.size() != listInteraction.size()){
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test: " << nomTest << endl << "La selection contient moins d'interaction que ce qui a ete insere" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        return;
+    }
+    for (list<Interaction>::iterator select = resSelect.begin(), interaction = listInteraction.begin(); select != resSelect.end(); select++, interaction++){
+
+        if ((*select).getContenu() != (*interaction).getContenu() || !((*select).getDateCreation() == (*interaction).getDateCreation())){
+            RATE++;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas l'interaction" << endl;
+            cout << "Select:  " << *select << endl << "Interaction: " << *interaction << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            return;
+        }
+    }
+    REUSSI++;
+}
+
+/**
+ * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table todo
+ * @param nomTest Le nom du test que l'on effectue
+ * @param resSelect Le résultat du select
+ * @param listeTodo Les Todos que le sélect devrait renvoyer
+ */
+void checkSelect(string nomTest, list<Todo> resSelect, list<Todo> listeTodo){
+    if (resSelect.size() != listeTodo.size()){
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test: " << nomTest << endl << "La selection contient moins de todo que ce qui a ete insere" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        return;
+    }
+    for (list<Todo>::iterator select = resSelect.begin(), todo = listeTodo.begin(); select != resSelect.end(); select++, todo++){
+        if (!(*select == *todo)){
+            RATE++;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas le todo" << endl;
+            cout << "Select:  " << *select << endl << "Todo: " << *todo << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            return;
+        }
+    }
+    REUSSI++;
+}
+
+/**
+ * @brief testSelectStarContact Execute une selection avec * pour recuperer tous les contacts dans la bdd alors qu'elle n'a que 1 contact
+ * @param gdb La base de donnée
+ * @param table La table dans laquelle on exécute un sélect
+ * @param contactBDD Les contacts dans la base de donnée
+ */
+void testSelectStar(GestionBDD *gdb, list<Contact> objetBDD){
+    list<Contact> result = gdb->selectQueryContact();
+    checkSelect("Select tout de Contact sans condition", result, objetBDD);
+    /*
+        list<C> result = gdb->selectQueryInteraction();
+        checkSelect("Select tout de Interaction sans condition", result, objetBDD);
+        list<Todo> result = gdb->selectQueryTodo(table);
+        checkSelect("Select tout de Todo sans condition", result, objetBDD);
+    }
+    */
+}
+void testSelectStar(GestionBDD *gdb, list<Interaction> objetBDD){
+    list<Interaction> result = gdb->selectQueryInteraction();
+    checkSelect("Select tout de Interaction sans condition", result, objetBDD);
+}
+void testSelectStar(GestionBDD *gdb, list<Todo> objetBDD){
+    //list<Todo> result = gdb->selectQueryTodo();
+    //checkSelect("Select tout de Todo sans condition", result, objetBDD);
+}
+
+/**
+ * @brief testSelectUniqueContactCondition execute un sélect dans la base de donnée avec une condition alors qu'elle ne contient que 1 contact
+ * @param gdb La base de donnée
+ * @param table La table dans laquelle on exécute un sélect
+ * @param condition La condition pour sélectionner le bon contact
+ * @param contactBDD Le contact dans la base de donnée
+ * @param nomTest Le nom du test
+ */
+void testSelectUniqueContactCondition(GestionBDD *gdb, map<string, list<string>> condition, list<Contact> contactBDD, string nomTest){
+    list<Contact> result= gdb->selectQueryContact(condition);
+    checkSelect(nomTest, result, contactBDD);
+}
+
+/**
+ * @brief testSelectPlusieursContactCondition execute un sélect dans la base de donnée avec une/des contision(s) alors qu'elle contient plusieurs contact
+ * @param gdb La base de donnée
+ * @param table La table dans laquelle on fait un sélect
+ * @param condition La/les condition(s) pou récupérer les contacts
+ * @param contactBDD Les contacts qui sont dans la base de donnée
+ * @param nomTest Le nom du test
+ */
+void testSelectPlusieursContactCondition(GestionBDD *gdb, map<string, list<string>> condition, list<Contact> contactBDD, string nomTest){
+    list<Contact> result = gdb->selectQueryContact(condition);
+    checkSelect(nomTest, result, contactBDD);
+}
+
+/**
  * @brief testSelect sont les tests qui concernent les selections
  * @param gdb La base de donnée
  */
 void testSelect(GestionBDD *gdb){
     Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
     Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    list<Contact> lContactBDD = {thomas};
+
+    Interaction tel = Interaction("rdv aujourd'hui par tel., RAS", thomas);
+    list<Interaction> lInteractionBDD = {tel};
+
+    Todo attendreAppel = Todo("Attendre d'etre rappele", &tel);
+    Todo appel = Todo("Appeler dans 2 jours si il n'y a pas de nouvelle", &tel);
+    list<Todo> lTodoBDD = {attendreAppel};
 
     gdb->insertData(thomas);
+    gdb->insertData(tel);
+    /*
+    gdb->insertData(attendreAppel);
+    gdb->insertData(appel);
+    */
+
+    testSelectStar(gdb, lContactBDD);
+
     gdb->insertData(jules);
+    lContactBDD.push_back(jules);
+    testSelectStar(gdb, lContactBDD);
 
-    testSelectStarContact1(gdb, "Contact", {thomas, jules});
+    testSelectStar(gdb, lInteractionBDD);
 
-    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", {"Ratu"}}}, {thomas}, "Select avec condition sur le nom");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"prenom", {"Thomas"}}}, {thomas}, "Select avec condition sur le prenom");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"entreprise", {"Total"}}}, {thomas}, "Select avec condition sur le entreprise");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"telephone", {"06 52 48 61 34"}}}, {thomas}, "Select avec condition sur le telephone");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"photo", {"photoThomas.jpg"}}}, {thomas}, "Select avec condition sur le photo");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"mail", {"thomas.ratu@mail.com"}}}, {thomas}, "Select avec condition sur le mail");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", {"Ratu"}},
+    testSelectUniqueContactCondition(gdb, {{"nom", {"Ratu"}}}, {thomas}, "Select avec condition sur le nom");
+    testSelectUniqueContactCondition(gdb, {{"prenom", {"Thomas"}}}, {thomas}, "Select avec condition sur le prenom");
+    testSelectUniqueContactCondition(gdb, {{"entreprise", {"Total"}}}, {thomas}, "Select avec condition sur le entreprise");
+    testSelectUniqueContactCondition(gdb, {{"telephone", {"06 52 48 61 34"}}}, {thomas}, "Select avec condition sur le telephone");
+    testSelectUniqueContactCondition(gdb, {{"photo", {"photoThomas.jpg"}}}, {thomas}, "Select avec condition sur le photo");
+    testSelectUniqueContactCondition(gdb, {{"mail", {"thomas.ratu@mail.com"}}}, {thomas}, "Select avec condition sur le mail");
+    testSelectUniqueContactCondition(gdb, {{"nom", {"Ratu"}},
                                                       {"prenom", {"Thomas"}},
                                                       {"entreprise", {"Total"}},
                                                       {"telephone", {"06 52 48 61 34"}},
                                                       {"photo", {"photoThomas.jpg"}},
                                                       {"mail", {"thomas.ratu@mail.com"}}},
                                      {thomas}, "Select avec condition sur le nom, prenom, entreprise, tehelphone, photo, mail");
-    testSelectUniqueContactCondition(gdb, "Contact", {{"nom", {"Siba"}}}, {jules}, "Select avec condition sur le nom");
+    testSelectUniqueContactCondition(gdb, {{"nom", {"Siba"}}}, {jules}, "Select avec condition sur le nom");
+    testSelectUniqueContactCondition(gdb, {{"id", {"1"}}}, {thomas}, "Select avec condition sur l'id");
 
-    testSelectPlusieursContactCondition(gdb, "Contact", {{"nom", {"Ratu", "Siba"}}}, {thomas, jules}, "Select avec des conditions sur 2 contact differents");
+    testSelectPlusieursContactCondition(gdb, {{"nom", {"Ratu", "Siba"}}}, {thomas, jules}, "Select avec des conditions sur 2 contact differents");
 }
 
 /**

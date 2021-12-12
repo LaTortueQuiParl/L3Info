@@ -137,21 +137,18 @@ void GestionBDD::insertData(Interaction i){
     sizeInteraction++;
 }
 
-list<Contact> GestionBDD::selectQuery(string table, map<string, list<string>> stlProjection){
-    QSqlQuery qSelect;
-    QMap<string, list<string>> projection(stlProjection);
-    list<Contact> res;
+QString craftSelect(string table, map<string, list<string>> mapConditions){
+    QMap<string, list<string>> QmapConditions(mapConditions);
     QString conditions = "";
-    if (projection.empty() == true){
-        qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact");
+    if (QmapConditions.empty() == true){
+        if (table == "Contact")
+            return QString("SELECT nom, prenom, entreprise, telephone, photo, mail FROM %1").arg(QString::fromStdString(table));
+        else if (table == "Interaction")
+            return QString("SELECT contenu, date, idContact FROM %1").arg(QString::fromStdString(table));
+        else if (table == "Todo")
+            return QString("SELECT contenu, deadline idInteractrion FROM %1").arg(QString::fromStdString(table));
     } else {
-        /*
-        qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact WHERE nom='Ratu'"); // solution 1
-
-        qSelect.prepare("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact WHERE :condition"); // solution 2
-        qSelect.bindValue(":condition", "nom='Ratu'");
-        */
-        QMapIterator<string, list<string>> condition(projection);
+        QMapIterator<string, list<string>> condition(QmapConditions);
         while (condition.hasNext()){
             condition.next();
             for (list<string>::const_iterator it = condition.value().begin(); it != condition.value().end() ; it++){
@@ -159,14 +156,20 @@ list<Contact> GestionBDD::selectQuery(string table, map<string, list<string>> st
                 if (*it != condition.value().back())
                     conditions.append(" OR ");
             }
-            if (projection.size() != 1 && condition.value() != projection.last()){
+            if (condition.hasNext() && condition.value() != QmapConditions.last()){
                 conditions.append(" AND ");
             }
         }
-        qSelect.prepare(QString("SELECT nom, prenom, entreprise, telephone, photo, mail FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions));
     }
-    if (!qSelect.exec()){
-        throw invalid_argument((QString("Impossible de selectionner les donnees de contact avec pour condition %1").arg(conditions)).toStdString());
+    return QString("SELECT nom, prenom, entreprise, telephone, photo, mail FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions);
+}
+
+list<Contact> GestionBDD::selectQueryContact(map<string, list<string>> mapConditions){
+    QSqlQuery qSelect;
+    QString select = craftSelect("Contact", mapConditions);
+    list<Contact> res;
+    if (!qSelect.exec(select)){
+        throw invalid_argument("Impossible d'executer le select : " + select.toStdString());
     } else {
         while (qSelect.next()){
             Contact c(qSelect.value(0).toString().toStdString(),
@@ -176,6 +179,25 @@ list<Contact> GestionBDD::selectQuery(string table, map<string, list<string>> st
                       qSelect.value(4).toString().toStdString(),
                       qSelect.value(5).toString().toStdString());
             res.push_back(c);
+        }
+    }
+    return res;
+}
+
+list<Interaction> GestionBDD::selectQueryInteraction(map<string, list<string>> mapConditions){
+    QSqlQuery qSelect;
+    QString select = craftSelect("Interaction", mapConditions);
+    list<Interaction> res;
+    if (!qSelect.exec(select)){
+        throw invalid_argument("Impossible d'executer le select : " + select.toStdString());
+    } else {
+        while (qSelect.next()){
+            map<string, list<string>> mapIdContact;
+            mapIdContact["id"] = {qSelect.value(2).toString().toStdString()};
+            Contact contactInteraction = selectQueryContact(mapIdContact).front();
+            Interaction i(qSelect.value(0).toString().toStdString(),
+                          contactInteraction);
+            res.push_back(i);
         }
     }
     return res;

@@ -45,6 +45,7 @@ public:
 
     /**
      * @brief recreateTable permet de supprimer toutes les tables et les recréer pour faire des updates sur les tables
+     * N'a pas d'utilité pratique dans le projet mais permet de modifier la BDD si l'on en a besoin
      */
     void recreateTable();
 
@@ -56,18 +57,23 @@ public:
     /**
      * @brief insertData permet d'exécuter des requêtes d'insertions
      * @param c/i/t Un objet qui est soit un contact, une interaction soit un todo
-     * La fonction est surchargé pour pouvoir insérer les 3 types d'objets qui sont : Contact, Interaction, Todo
+     * La fonction est surchargée pour pouvoir insérer les 3 types d'objets qui sont : Contact, Interaction, Todo
      */
     void insertData(Contact c);
     void insertData(Interaction i);
     void insertData(Todo t);
 
     /**
-     * @brief selectQuery permet de faire créer et exécuter des selects
-     * @param c Le contact que l'on cherche dans la table
-     * Fait par défaut
+     * @brief selectQueryContact permet de créer et exécuter des selects dans la table Contact
+     * @param Les conditions de la selection qui est par défaut vide
      */
-    list<Contact> selectQuery(string table, map<string, list<string>> condition = {});
+    list<Contact> selectQueryContact(map<string, list<string>> condition = {});
+
+    /**
+     * selectQueryInteraction permet de créer et exécuter des sélect dans la table interaction
+     */
+    list<Interaction> selectQueryInteraction(map<string, list<string>> condition = {});
+    list<Todo> selectQueryTodo(map<string, list<string>> condition = {});
 };
 
 #endif // GESTIONBDD_H
