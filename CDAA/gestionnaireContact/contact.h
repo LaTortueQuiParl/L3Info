@@ -13,6 +13,7 @@ using namespace std;
 /**
  * @brief Classe contact qui représente un contact avec son nom, prenom, numéro de téléphone, entreprise, mail, photo.
  * Elle garde en mémoire sa date de creation ainsi que sa dernière modification.
+ * Elle permet de décrire et manipuler un contact
  * @class Contact
  */
 class Contact

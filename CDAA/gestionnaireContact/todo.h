@@ -12,6 +12,7 @@ using namespace std;
 /**
  * @brief La classe Todo qui défini une action à faire
  * Elle est la conséquence d'une action et a donc un pointeur sur l'action qui la justifie.
+ * Elle permet de décrire et de manipuler un todo
  * @class Todo
  */
 class Todo

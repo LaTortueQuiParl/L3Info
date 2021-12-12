@@ -12,6 +12,7 @@ using namespace std;
 /**
  * @brief La classe interaction
  * Elle représente l'intéraction, décrite dans contenu, garde en mémoire sa date de création et est associée avec le contact qui est à l'origine de l'interaction
+ * Elle permet de décrire et de manipuler une interaction
  * @class Interaction
  */
 class Interaction

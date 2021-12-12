@@ -691,7 +691,7 @@ void testGestionTodos(){
 }
 
 /**
- * @brief testsObjets Les tests sur la partie objet
+ * @brief testsObjets Les tests sur la partie c++ du projet
  */
 void testsObjets(){
     testContact(); // Tests de la classe contact
@@ -705,10 +705,12 @@ void testsObjets(){
 }
 
 /**
- * @brief checkTables vérifie que la base de donnée est bien modifiée comme c'est voulu
- * @param lContenu Les lignes de la base de donnée
+ * @brief checkInsert permet de vérifier de l'insertion d'un Contact dans la base de donnée en faisant un select manuellement dessus et le comparant à ce qui a été inséré
+ * @param nomTest Le nom du test
+ * @param gdb La base de donnée
+ * @param lContenu La liste de contact insérée
  */
-void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
+void checkInsert(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
     QSqlQuery q("SELECT * FROM Contact");
     if (!q.exec())
         throw invalid_argument("Impossible de faire un select sur la table Contact");
@@ -733,12 +735,18 @@ void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
     gdb->clearTables(); // Il faut nettoyer les tables sinon les éléments de la liste ne correspondent pas à ceux de la table et faussent les résultats
 }
 
-void checkTables(string nomTest, GestionBDD *gdb, list<Interaction> lContenu){
+/**
+ * @brief checkInsert permet de vérifier de l'insertion d'une Interaction dans la base de donnée en faisant un select manuellement dessus et le comparant à ce qui a été inséré
+ * @param nomTest Le nom du test
+ * @param gdb La base de donnée
+ * @param lInteraction La liste d'interaction insérée
+ */
+void checkInsert(string nomTest, GestionBDD *gdb, list<Interaction> lInteraction){
     QSqlQuery q("SELECT * FROM Interaction");
     if (!q.exec())
         throw invalid_argument("Impossible de faire un select sur la table Contact");
     else{
-        for (list<Interaction>::iterator i = lContenu.begin(); q.next() == true; i++){
+        for (list<Interaction>::iterator i = lInteraction.begin(); q.next() == true; i++){
             if (q.value(1).toString().toStdString() != i->getContenu() ||
                 q.value(2).toString().toStdString() != i->getDateCreation().affichage() ||
                 q.value(3).toString().toStdString() != "1"
@@ -766,38 +774,55 @@ void checkTables(string nomTest, GestionBDD *gdb, list<Interaction> lContenu){
  */
 void testUniqueInsertContact(GestionBDD *gdb, Contact c){
     gdb->insertData(c);
-    checkTables("Unique insert Contact", gdb, {c});
+    checkInsert("Unique insert Contact", gdb, {c});
 }
 
 /**
  * @brief testMultipleInsert test sur plusieurs insertions dans Contact
  * @param l Les contacts
  */
-void testMultipleInsertContact(GestionBDD *gdb, list<Contact> l){
-    for (auto &it : l)
+void testMultipleInsertContact(GestionBDD *gdb, list<Contact> lContact){
+    for (auto &it : lContact)
         gdb->insertData(it);
-    checkTables("Multiple insert Contact", gdb, l);
+    checkInsert("Multiple insert Contact", gdb, lContact);
 }
 
+/**
+ * @brief testUniqueInsertInteraction teste la méthode insertData de GestionBDD en insérant une unique interaction
+ * @param gdb La base de donnée
+ * @param i L'interaction que l'on insère
+ */
 void testUniqueInsertInteraction(GestionBDD *gdb, Interaction i){
     gdb->insertData(*i.getContact());
     gdb->insertData(i);
-    checkTables("Unique insert Interaction", gdb, {i});
+    checkInsert("Unique insert Interaction", gdb, {i});
 }
 
-void checkSelect(string nomTable, list<Contact> v, list<Contact> tableC){
-    if (v.size() != tableC.size()){
+void testMultipleInsertInteraction(GestionBDD *gdb, list<Interaction> lInteraction){
+    for (auto &it : lInteraction)
+        gdb->insertData(it);
+    checkInsert("Intertion de plusieurs interactions", gdb, lInteraction);
+}
+
+/**
+ * @brief checkSelect permet de vérifier la bonne sélection d'un sélect
+ * @param nomTest Le nom du test que l'on effectue
+ * @param resSelect Le résultat du select
+ * @param tableC Les contacts présents dans la base de donnée
+ */
+void checkSelect(string nomTest, list<Contact> resSelect, list<Contact> contactBDD){
+    if (resSelect.size() != contactBDD.size()){
         RATE++;
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        cout << "Fail du test: " << nomTable << endl << "La selection contient moins de contact que ce qui a ete insere" << endl;
+        cout << "Fail du test: " << nomTest << endl << "La selection contient moins de contact que ce qui a ete insere" << endl;
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
         return;
     }
-    for (list<Contact>::iterator select = v.begin(), contact = tableC.begin(); select != v.end(); select++, contact++){
+    for (list<Contact>::iterator select = resSelect.begin(), contact = contactBDD.begin(); select != resSelect.end(); select++, contact++){
         if (!(*select == *contact)){
             RATE++;
             cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            cout << "Fail du test: " << nomTable << endl << "Le select ne contient pas le contact" << endl;
+            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas le contact" << endl;
             cout << "Select:  " << *select << endl << "Contact: " << *contact << endl;
             cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
             return;
@@ -806,21 +831,61 @@ void checkSelect(string nomTable, list<Contact> v, list<Contact> tableC){
     REUSSI++;
 }
 
-void testSelectStarContact(GestionBDD *gdb, string table, list<Contact> listContact){
+/**
+ * @brief testSelectStarContact Execute une selection avec * pour recuperer tous les contacts dans la bdd alors qu'elle n'a que 1 contact
+ * @param gdb La base de donnée
+ * @param table La table dans laquelle on exécute un sélect
+ * @param contactBDD Les contacts dans la base de donnée
+ */
+void testSelectStarContact1(GestionBDD *gdb, string table, list<Contact> contactBDD){
     list<Contact> result= gdb->selectQuery(table);
-    checkSelect("Select tout de Contact sans condition", result, listContact);
+    checkSelect("Select tout de Contact sans condition", result, contactBDD);
 }
 
-void testSelectUniqueContactCondition(GestionBDD *gdb, string table, map<string, list<string>> condition, list<Contact> listContact, string nomTest){
+/**
+ * @brief testSelectUniqueContactCondition execute un sélect dans la base de donnée avec une condition alors qu'elle ne contient que 1 contact
+ * @param gdb La base de donnée
+ * @param table La table dans laquelle on exécute un sélect
+ * @param condition La condition pour sélectionner le bon contact
+ * @param contactBDD Le contact dans la base de donnée
+ * @param nomTest Le nom du test
+ */
+void testSelectUniqueContactCondition(GestionBDD *gdb, string table, map<string, list<string>> condition, list<Contact> contactBDD, string nomTest){
     list<Contact> result= gdb->selectQuery(table, condition);
-    checkSelect(nomTest, result, listContact);
+    checkSelect(nomTest, result, contactBDD);
 }
 
-void testSelectPlusieursContactCondition(GestionBDD *gdb, string table, map<string, list<string>> condition, list<Contact> listContact, string nomTest){
+/**
+ * @brief testSelectPlusieursContactCondition execute un sélect dans la base de donnée avec une/des contision(s) alors qu'elle contient plusieurs contact
+ * @param gdb La base de donnée
+ * @param table La table dans laquelle on fait un sélect
+ * @param condition La/les condition(s) pou récupérer les contacts
+ * @param contactBDD Les contacts qui sont dans la base de donnée
+ * @param nomTest Le nom du test
+ */
+void testSelectPlusieursContactCondition(GestionBDD *gdb, string table, map<string, list<string>> condition, list<Contact> contactBDD, string nomTest){
     list<Contact> result = gdb->selectQuery(table, condition);
-    checkSelect(nomTest, result, listContact);
+    checkSelect(nomTest, result, contactBDD);
 }
 
+/**
+ * @brief testInsert sont les tests qui concernent les insertions
+ * @param gdb La base de donnée
+ */
+void testInsert(GestionBDD *gdb){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.rate@mail.com");
+    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    Interaction i = Interaction("rdv aujourd'hui par tel., RAS", thomas);
+    std::list<Contact> lC = {thomas, jules};
+    testUniqueInsertContact(gdb, thomas);
+    testMultipleInsertContact(gdb, lC);
+    testUniqueInsertInteraction(gdb, i);
+}
+
+/**
+ * @brief testSelect sont les tests qui concernent les selections
+ * @param gdb La base de donnée
+ */
 void testSelect(GestionBDD *gdb){
     Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
     Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
@@ -828,7 +893,7 @@ void testSelect(GestionBDD *gdb){
     gdb->insertData(thomas);
     gdb->insertData(jules);
 
-    testSelectStarContact(gdb, "Contact", {thomas, jules});
+    testSelectStarContact1(gdb, "Contact", {thomas, jules});
 
     testSelectUniqueContactCondition(gdb, "Contact", {{"nom", {"Ratu"}}}, {thomas}, "Select avec condition sur le nom");
     testSelectUniqueContactCondition(gdb, "Contact", {{"prenom", {"Thomas"}}}, {thomas}, "Select avec condition sur le prenom");
@@ -849,20 +914,6 @@ void testSelect(GestionBDD *gdb){
 }
 
 /**
- * @brief testInsert Les tests qui concernent les insertions
- * @param gdb La base de données sur laquelle on travaille
- */
-void testInsert(GestionBDD *gdb){
-    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.rate@mail.com");
-    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
-    Interaction i = Interaction("rdv aujourd'hui par tel., RAS", thomas);
-    std::list<Contact> lC = {thomas, jules};
-    testUniqueInsertContact(gdb, thomas);
-    testMultipleInsertContact(gdb, lC);
-    testUniqueInsertInteraction(gdb, i);
-}
-
-/**
  * @brief testsDB Les tests sur la partie base de donnée
  */
 void testsDB(GestionBDD *gdb){
@@ -875,7 +926,7 @@ void testsDB(GestionBDD *gdb){
 
 /**
  * @brief tests permet de lancer la testsuite
- * @param gdb la base de donnée
+ * @param gdb La base de donnée
  */
 void tests(GestionBDD *gdb){
     testsDB(gdb);

@@ -55,8 +55,8 @@ public:
 
     /**
      * @brief insertData permet d'exécuter des requêtes d'insertions
-     * @param table La table dans laquelle on veut insérer des données
-     * @param m Une map de QVariant qui représente les données à insérer
+     * @param c/i/t Un objet qui est soit un contact, une interaction soit un todo
+     * La fonction est surchargé pour pouvoir insérer les 3 types d'objets qui sont : Contact, Interaction, Todo
      */
     void insertData(Contact c);
     void insertData(Interaction i);
