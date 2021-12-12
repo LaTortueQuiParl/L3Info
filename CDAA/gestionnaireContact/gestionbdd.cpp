@@ -107,8 +107,7 @@ void GestionBDD::insertData(Contact c){
     sizeContact++;
 }
 
-void GestionBDD::insertData(Interaction i){
-    Contact c = *i.getContact();
+QString getIdContact(Contact c){
     QSqlQuery qIdContact;
     qIdContact.prepare("SELECT * FROM Contact WHERE Nom=:Nom AND Prenom=:Prenom AND Entreprise=:Entreprise "
                        "AND Telephone=:Telephone AND Photo=:Photo");
@@ -120,21 +119,54 @@ void GestionBDD::insertData(Interaction i){
     qIdContact.bindValue(":Mail", QString::fromStdString(c.getMail()));
 
     if (!qIdContact.exec())
-        throw invalid_argument("Impossible de faire une selection dans Contact pour recuperer l'ID du contact de l'interaction");
+        throw invalid_argument("Impossible de faire une selection dans Interaction pour recuperer l'ID du contact de l'interaction");
 
-    if (qIdContact.isValid() == false)
-        qIdContact.next();
+    if (qIdContact.isValid() == false && !qIdContact.next())
+        throw invalid_argument("Aucun contact n'a ete trouve");
 
+    return qIdContact.value(0).toString();
+}
+
+void GestionBDD::insertData(Interaction i){
     QSqlQuery qInsert;
     qInsert.prepare("INSERT INTO Interaction(id, contenu, date, idContact) "
                     "VALUES(:id, :contenu, :date, :idContact)");
     qInsert.bindValue(":id", sizeInteraction + 1);
     qInsert.bindValue(":contenu", QString::fromStdString((i.getContenu())));
     qInsert.bindValue(":date", QString::fromStdString(i.getDateCreation().affichage()));
-    qInsert.bindValue(":idContact", qIdContact.value(0).toString());
+    qInsert.bindValue(":idContact", getIdContact(*i.getContact()));
     if (!qInsert.exec())
         throw invalid_argument("Impossible d'executer la requete insert dans Interaction");
     sizeInteraction++;
+}
+
+void GestionBDD::insertData(Todo t){
+    Interaction i = *t.getInteraction();
+    QSqlQuery qIdInteraction;
+    qIdInteraction.prepare("SELECT * FROM Interaction WHERE Contenu=:Contenu AND Date=:Date "
+                           "AND idContact=idContact");
+    qIdInteraction.bindValue(":Contenu", QString::fromStdString(i.getContenu()));
+    qIdInteraction.bindValue(":Date", QString::fromStdString(i.getDateCreation().affichage()));
+    qIdInteraction.bindValue(":idContact", getIdContact(*i.getContact()));
+
+    if (!qIdInteraction.exec())
+        throw invalid_argument("Impossible de recuprer l'interaction associee au todo ");
+    else{
+        if (qIdInteraction.isValid() == false && qIdInteraction.next() == false)
+            throw invalid_argument("Aucune interaction n'a ete trouve pour inserer un todo");
+        else {
+            QSqlQuery qInsert;
+            qInsert.prepare("INSERT INTO Todo(id, contenu, deadline, idInteraction) "
+                            "VALUES(:id, :contenu, :deadline, :idInteraction)");
+            qInsert.bindValue(":id", sizeTodo + 1);
+            qInsert.bindValue(":contenu", QString::fromStdString(t.getContenu()));
+            qInsert.bindValue(":deadline", QString::fromStdString(t.getDeadline().affichage()));
+            qInsert.bindValue(":idInteraction", qIdInteraction.value(0).toString());
+            if (!qInsert.exec())
+                throw invalid_argument("Impossible d'inserer le todo");
+            sizeTodo++;
+        }
+    }
 }
 
 QString craftSelect(string table, map<string, list<string>> mapConditions){
@@ -146,7 +178,7 @@ QString craftSelect(string table, map<string, list<string>> mapConditions){
         else if (table == "Interaction")
             return QString("SELECT contenu, date, idContact FROM %1").arg(QString::fromStdString(table));
         else if (table == "Todo")
-            return QString("SELECT contenu, deadline idInteractrion FROM %1").arg(QString::fromStdString(table));
+            return QString("SELECT contenu, deadline, idInteraction FROM %1").arg(QString::fromStdString(table));
     } else {
         QMapIterator<string, list<string>> condition(QmapConditions);
         while (condition.hasNext()){
@@ -161,7 +193,12 @@ QString craftSelect(string table, map<string, list<string>> mapConditions){
             }
         }
     }
-    return QString("SELECT nom, prenom, entreprise, telephone, photo, mail FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions);
+    if (table == "Contact")
+        return QString("SELECT nom, prenom, entreprise, telephone, photo, mail FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions);
+    else if (table == "Interaction")
+        return QString("SELECT contenu, date, idContact FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions);
+    else
+        return QString("SELECT contenu, deadline, idInteraction FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions);
 }
 
 list<Contact> GestionBDD::selectQueryContact(map<string, list<string>> mapConditions){
@@ -198,6 +235,24 @@ list<Interaction> GestionBDD::selectQueryInteraction(map<string, list<string>> m
             Interaction i(qSelect.value(0).toString().toStdString(),
                           contactInteraction);
             res.push_back(i);
+        }
+    }
+    return res;
+}
+
+list<Todo> GestionBDD::selectQueryTodo(map<string, list<string>> mapConditions){
+    QSqlQuery qSelect;
+    QString select = craftSelect("Todo", mapConditions);
+    list<Todo> res;
+    if (!qSelect.exec(select)){
+        throw invalid_argument("Impossible d'executer le select : " + select.toStdString());
+    } else {
+        while (qSelect.next()){
+            map<string, list<string>> mapIdInteraction;
+            mapIdInteraction["id"] = {qSelect.value(2).toString().toStdString()};
+            Interaction todoInteraction = selectQueryInteraction(mapIdInteraction).front();
+            Todo t(qSelect.value(0).toString().toStdString(), &todoInteraction);
+            res.push_back(t);
         }
     }
     return res;
