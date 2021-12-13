@@ -14,17 +14,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->db = new GestionBDD();
 
-
+    //recuperations contact dans la BDD
     this->gestCont = new GestionContacts();
-    Contact* c1 = new Contact("moi", "toi", "entre", "0625142514", "D:\\Images\\iconediscord.jpg", "mail@mail.com");
-    Contact* c2 = new Contact("Nous galaga", "Vous", "psy", "0636253625", "D:\\Images\\iconediscordgit.jpg", "mail@mail.com");
-    Contact* c3 = new Contact("papi", "mami", "psy", "0669586958", "", "mail@mail.com");
-    Contact* c4 = new Contact("pipi", "caca", "entre", "0647584758", "", "mail@mail.com");
-    gestCont->addContact(*c1);
-    gestCont->addContact(*c2);
-    gestCont->addContact(*c3);
-    gestCont->addContact(*c4);
+    list<Contact> lis = db->selectQueryContact();
+    for(auto v:lis){
+        gestCont->addContact(v);
+    }
 
+/*
     Interaction* i1 = new Interaction("Je ne sais pas", *c1);
     Interaction* i2 = new Interaction("2eme interaction", *c1);
     Interaction* i3 = new Interaction("Ah bon ?", *c2);
@@ -33,16 +30,20 @@ MainWindow::MainWindow(QWidget *parent)
     c1->getInteractions()->addInteraction(*i2);
     c2->getInteractions()->addInteraction(*i3);
     c3->getInteractions()->addInteraction(*i4);
+*/
 
+    //Recuperation Interaction dans la BDD
     this->gestInter = new GestionInteractions();
-
-    for(auto v:gestCont->getContacts()){
-        for(auto i:v->getInteractions()->getInteractions()){
-            gestInter->addInteraction(*i);
-        }
+    list<Interaction> lisInter = db->selectQueryInteraction();
+    for(auto v:lisInter){
+        gestInter->addInteraction(v);
     }
 
     this->gestTodos = new GestionTodos();
+    list<Todo> lisTodo = db->selectQueryTodo();
+    for(auto v:lisTodo){
+        gestTodos->addTodo(v);
+    }
 
     remplissageListContact();
     remplissageListInteraction();
@@ -199,13 +200,13 @@ void MainWindow::on_contactListWidget_itemClicked(QListWidgetItem* item)
 
 void MainWindow::ouvrirajoutContactDialog()
 {
-    this->acd = new AjoutContactDialog(this,gestCont);
+    this->acd = new AjoutContactDialog(this,gestCont,db);
     acd->exec();
 }
 
 void MainWindow::ouvrirajoutInteractionDialog()
 {
-    this->aid = new ajoutInteractionDialog(this,gestInter,gestCont);
+    this->aid = new ajoutInteractionDialog(this,gestInter,gestCont,db);
     aid->exec();
 }
 
