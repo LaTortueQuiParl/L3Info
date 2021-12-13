@@ -12,7 +12,7 @@ Contact::Contact(const string &n, const string &p, const string &e, const string
     this->setMail(mail);
     this->dateCrea = Date();
     this->dernModif = Date();
-    this->gestionInteractions = GestionInteractions();
+    this->gestionInteractions = new GestionInteractions();
 }
 Contact::~Contact(){
     this->dateCrea.~Date();
@@ -51,7 +51,7 @@ Date Contact::getDernModif()
 {
     return this->dernModif;
 }
-GestionInteractions Contact::getInteractions()
+GestionInteractions* Contact::getInteractions()
 {
     return this->gestionInteractions;
 }
@@ -116,8 +116,9 @@ void Contact::setTelephone(const string &t)
 void Contact::setPhoto(const string &ph)
 {
     if(ph.empty())
-        throw invalid_argument("le contact doit avoir une photo");
-    this->photo=ph;
+        this->photo = "./Images/PPDefault.jpg";
+    else
+        this->photo=ph;
     this->dernModif=Date();
 }
 void Contact::setMail(const string &m)

@@ -3,7 +3,15 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
+#include <QListWidgetItem>
+
 #include "gestionbdd.h"
+#include "gestioncontacts.h"
+#include "gestioninteractions.h"
+#include "gestiontodos.h"
+
+#include "ajoutcontactdialog.h"
+#include "ajoutinteractiondialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,10 +24,15 @@ class MainWindow : public QMainWindow
 private:
     Ui::MainWindow *ui;
     GestionBDD *db;
-    QSqlTableModel *modelContact;
-    QSqlTableModel *modelInteraction;
-    QSqlTableModel *modelTodo;
-    // Voir QSqlTableModel pour afficher la bdd dans qt
+    GestionContacts* gestCont;
+    GestionInteractions* gestInter;
+    GestionTodos* gestTodos;
+    Contact* contactCourant;
+    Interaction* interactionCourant;
+    QString imgContact;
+
+    AjoutContactDialog* acd;
+    ajoutInteractionDialog* aid;
 
 public:
     /**
@@ -31,16 +44,35 @@ public:
      * Le destructeur de mainwindow qui détruit aussi l'ui
      */
     ~MainWindow();
+
     /**
-     * @brief setupModel permet paramétrer correctement les QSqlTableModel
-     * @param table La table que l'on veut visualiser
-     * @param attributs Les attributs de la table que l'on veut visualiser
+     * @brief getDb retroune la base de donnée active
+     * @return db
      */
-    void setupModel(const QString table, QStringList attributs, QSqlTableModel *(&model));
-    /**
-     * @brief createUI création des tables dans la mainwindow
-     */
-    void createUI();
     GestionBDD *getDb() const;
+
+    /**
+     * @brief remplissageListContact affiche tout les contacts dans la liste de contact
+     */
+    void remplissageListContact();
+    /**
+     * @brief remplissageListInteraction affiche Toutes les interactions dans la liste d'interaction
+     */
+    void remplissageListInteraction();
+
+public slots:
+    void modifPPButton();
+    void recherchContactButton();
+    void retourWidgetContact();
+    void saveModif();
+    void suppContact();
+    void ouvrirajoutContactDialog();
+    void ouvrirajoutInteractionDialog();
+    void suppInteraction();
+
+private slots:
+    void on_contactListWidget_itemDoubleClicked(QListWidgetItem* item);
+    void on_contactListWidget_itemClicked(QListWidgetItem* item);
+    void on_InteractionListWidget_itemClicked(QListWidgetItem *item);
 };
 #endif // MAINWINDOW_H

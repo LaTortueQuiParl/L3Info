@@ -21,7 +21,7 @@ private:
     string contenu;
     Date dateCreation;
     Contact* contact;
-    GestionTodos gt;
+    GestionTodos* gt;
 
     /**
      * @brief setContact change le contact.
