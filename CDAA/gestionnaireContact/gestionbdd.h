@@ -19,9 +19,6 @@ class GestionBDD
 {
 private:
     QSqlDatabase db;
-    int sizeContact;
-    int sizeInteraction;
-    int sizeTodo;
 public:
     /**
      * @brief GestionBDD le constructeur qui lance automatiquement connexionBDD
@@ -81,11 +78,48 @@ public:
      */
     list<Todo> selectQueryTodo(map<string, list<string>> condition = {});
 
+    /**
+     * @brief updateDate permet de faire des updates sur les tables sur tous ces éléments ou seulement certain selon les conditions précisés
+     * @param nomTable Le nom de la table dans laquelle on veut effectuer une modification
+     * @param modifications Une map qui contient les modifications que l'on veut faire (ex: sil map={{Prenom},{'Romain'}} modifiera le prenom en Romain)
+     * @param conditions Une map qui contient les conditions pour préciser sur quels éléments de la table il faut faire une modification (ex: si map={{"Nom"}, {{"Thomas"}}} fera que Seulement les contacts ayant "Thomas" pur nom seront modifiés).
+     * conditions est par défaut une liste vide. Si conditions est vide alors les modifications seront appliqués à tous les éléments de la table
+     */
     void updateData(string nomTable, map<string, string> modifications, map<string, list<string>> conditions = {});
 
+    /**
+     * @brief deleteData permet de supprimer des données des tables
+     * @param objet Un pointeur sur l'objet à supprimer
+     * L'objet est par défaut un nullptr. Si l'objet est un nullptr, alors, selon le type du pointeur toute la table correspondant à l'objet est supprimée.
+     * La méthode est surchargé pour pouvoir supprimer des contact, interaction, todo
+     */
+    void deleteData(Contact *contact = nullptr);
+    void deleteData(Interaction *interaction = nullptr);
+    void deleteData(Todo *todo = nullptr);
+
+    /**
+     * @brief countTable permet de donner le nombre d'élément de la table
+     * @param nomTable Le nom de la table
+     * @return Un entier qui est le nombre d'élément de la table
+     */
     int countTable(string nomTable);
 
+    /**
+     * @brief selectInteractionEntreDeuxDates permet de selectionner toutes les interactions qui ont eu lieu entre 2 dates données
+     * @param d1 La permière date limite
+     * @param d2 La deuxième date limite
+     * @return Une liste d'interaction contenant toutes les interactions qui ont eu lieu entre les 2 dates
+     * Il n'y a pas de condition sur les dates tel que d1<d2 ou inversement
+     */
     list<Interaction> selectInteractionEntreDeuxDates(Date d1, Date d2);
+
+    /**
+     * @brief selectTodoEntreDeuxDatesPourContact Përmet de selectionner tous les todos d'un contact qui ont eu lieu entre 2 dates données
+     * @param d1 La première date limite
+     * @param d2 La deuxième date limite
+     * @param contact Le contact dont on veut récupérer toutes les interactions
+     * @return Une liste de Todo contenant tous les Todos du contact compris entres les 2 dates limites
+     */
     list<Todo> selectTodoEntreDeuxDatesPourContact(Date d1, Date d2, Contact *contact = nullptr);
 };
 

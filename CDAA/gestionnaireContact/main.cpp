@@ -16,6 +16,12 @@ int RATE = 0; // Nombre de tests rate
 int REUSSI = 0; // Nombre de tests reussi
 
 template <class T>
+/**
+ * @brief compareListContact compare des liste d'objet de même type
+ * @param a La première liste
+ * @param b La deuxième liste
+ * @return Un booléen qui est true si les listes sont les mêmes
+ */
 bool compareListContact(list<T> a, list<T> b){
     if (a.size() != b.size())
         return false;
@@ -820,27 +826,29 @@ void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
     if (!q.exec())
         throw invalid_argument("Impossible de faire un select sur la table Contact");
     else{
-        for (auto c = lContenu.begin(); q.next() == true; c++){
-            //cout << "Dans le " + nomTest + " " << endl << "Il y a " + to_string(gdb->countTable("Contact")) + " element dans la table Contact" << endl << *c << endl;
-            if (q.value(0).toString().toStdString() != c->getNom() ||
-                q.value(1).toString().toStdString() != c->getPrenom() ||
-                q.value(2).toString().toStdString() != c->getEntreprise() ||
-                q.value(3).toString().toStdString() != c->getTelephone() ||
-                q.value(4).toString().toStdString() != c->getPhoto() ||
-                q.value(5).toString().toStdString() != c->getMail()
-                    ){
-                RATE++;
-                cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-                cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant au contact" << endl;
-                cout << "query || contact" << endl;
-                cout << q.value(0).toString().toStdString() << " || " << c->getNom() << endl;
-                cout << q.value(1).toString().toStdString() << " || " << c->getPrenom() << endl;
-                cout << q.value(2).toString().toStdString() << " || " << c->getEntreprise() << endl;
-                cout << q.value(3).toString().toStdString() << " || " << c->getTelephone() << endl;
-                cout << q.value(4).toString().toStdString() << " || " << c->getPhoto() << endl;
-                cout << q.value(5).toString().toStdString() << " || " << c->getMail() << endl;
-                cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-                return;
+        if (!(q.isNull(0) && lContenu.empty())){
+            for (auto c = lContenu.begin(); q.next() == true; c++){
+                //cout << "Dans le " + nomTest + " " << endl << "Il y a " + to_string(gdb->countTable("Contact")) + " element dans la table Contact" << endl << *c << endl;
+                if (q.value(0).toString().toStdString() != c->getNom() ||
+                    q.value(1).toString().toStdString() != c->getPrenom() ||
+                    q.value(2).toString().toStdString() != c->getEntreprise() ||
+                    q.value(3).toString().toStdString() != c->getTelephone() ||
+                    q.value(4).toString().toStdString() != c->getPhoto() ||
+                    q.value(5).toString().toStdString() != c->getMail()
+                        ){
+                    RATE++;
+                    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+                    cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant au contact" << endl;
+                    cout << "query || contact" << endl;
+                    cout << q.value(0).toString().toStdString() << " || " << c->getNom() << endl;
+                    cout << q.value(1).toString().toStdString() << " || " << c->getPrenom() << endl;
+                    cout << q.value(2).toString().toStdString() << " || " << c->getEntreprise() << endl;
+                    cout << q.value(3).toString().toStdString() << " || " << c->getTelephone() << endl;
+                    cout << q.value(4).toString().toStdString() << " || " << c->getPhoto() << endl;
+                    cout << q.value(5).toString().toStdString() << " || " << c->getMail() << endl;
+                    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+                    return;
+                }
             }
         }
     }
@@ -1011,8 +1019,248 @@ void testInsert(GestionBDD *gdb){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                    Tests de suppressions                                                        ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @brief testDelete1Interaction teste la capcité de la méthode deleteData de suprimer un seul Interaction dans la table Interaction
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDelete1Contact(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    gdb->insertData(thomas);
+    gdb->deleteData(&thomas);
+    list<Contact> tmp = {};
+    checkTables(nomTest, gdb, tmp);
+}
+
+/**
+ * @brief testDeleteTousContact teste la capacité de la méthode deleteData de suprimer tous les todo de la table Contact
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDeleteToutContact(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    Contact florian = Contact("Florian", "Polier", "Netsle", "06 42 57 98 31", "photoFlorian.jpg", "florian.polier@mail.com");
+
+    Contact* contact = nullptr;
+    gdb->deleteData(contact);
+    list<Contact> tmp = {};
+    checkTables(nomTest, gdb, tmp);
+}
+
+/**
+ * @brief testDelete1ContactEtInsertionNouveau teste si la méthode d'attribution des ID dans la table Contact est correcte
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDelete1ContactEtInsertionNouveau(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    Contact florian = Contact("Florian", "Polier", "Netsle", "06 42 57 98 31", "photoFlorian.jpg", "florian.polier@mail.com");
+
+    gdb->insertData(thomas);
+    gdb->insertData(jules);
+    gdb->deleteData(&thomas);
+
+    try {
+        gdb->insertData(florian);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant a l'interaction" << endl;
+        cout << "Le contact " << florian << " n'a pas ete creer apres la suppression de thomas, verifier les identifiants" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        gdb->clearTables();
+        return;
+    }
+    REUSSI++;
+    gdb->clearTables();
+}
+
+/**
+ * @brief testDelete1Interaction teste la capcité de la méthode deleteData de suprimer un seul Interaction dans la table Interaction
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDelete1Interaction(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Interaction tel("rdv par telephone", thomas);
+    gdb->insertData(thomas);
+    gdb->insertData(tel);
+    Interaction *i = nullptr;
+    gdb->deleteData(i);
+    list<Interaction> listeInteraction = {};
+    checkTables(nomTest, gdb, listeInteraction);
+}
+
+/**
+ * @brief testDeleteTousInteraction teste la capacité de la méthode deleteData de suprimer tous les todo de la table Interaction
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDeleteTousInteraction(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    list<Contact> listeContact = {thomas, jules};
+
+    Interaction tel("rdv par telephone", thomas);
+    Interaction compta("demande d'info pour la comptabilite", thomas);
+    Interaction recap("recap de la journee", thomas);
+    Interaction meeting("meeting avec les devs", jules);
+    Interaction presentation("presentation du projet", jules);
+    Interaction edt("creation de l'emploi du temps", jules);
+    list<Interaction> listeInteraction = {tel, compta, recap, meeting, presentation, edt};
+
+    for (auto &it : listeContact)
+        gdb->insertData(it);
+    for (auto &it : listeInteraction)
+        gdb->insertData(it);
+
+    Interaction *i = nullptr;
+    gdb->deleteData(i);
+    list<Interaction> tmp = {};
+    checkTables(nomTest, gdb, tmp);
+}
+
+/**
+ * @brief testDelete1InteractionEtInsertionNouveau teste si la méthode d'attribution des ID dans la table Interaction est correcte
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDelete1InteractionEtInsertionNouveau(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Interaction tel("rdv par telephone", thomas);
+    Interaction compta("demande d'info pour la comptabilite", thomas);
+    Interaction recap("recap de la journee", thomas);
+    Interaction meeting("meeting avec les devs", thomas);
+
+    gdb->insertData(thomas);
+    gdb->insertData(tel);
+    gdb->insertData(compta);
+    gdb->insertData(meeting);
+
+    gdb->deleteData(&tel);
+
+    try {
+        gdb->insertData(recap);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant a l'interaction" << endl;
+        cout << "L'interaction " << recap << " n'a pas ete creer apres la suppression de tel, verifier les identifiants" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        gdb->clearTables();
+        return;
+    }
+    REUSSI++;
+    gdb->clearTables();
+}
+
+/**
+ * @brief testDelete1Todo teste la capcité de la méthode deleteData de suprimer un seul Todo dans la table Todo
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDelete1Todo(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Interaction tel("rdv par telephone", thomas);
+    Todo attendreAppel = Todo("Attendre d'etre rappele", &tel);
+    gdb->insertData(thomas);
+    gdb->insertData(tel);
+    gdb->insertData(attendreAppel);
+
+    Todo *t = nullptr;
+    gdb->deleteData(t);
+    list<Todo> tmp = {};
+    checkTables(nomTest, gdb, tmp);
+}
+
+/**
+ * @brief testDeleteTousTodo teste la capacité de la méthode deleteData de suprimer tous les todo de la table Todo
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDeleteTousTodo(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Interaction tel("rdv par telephone", thomas);
+
+    Todo attendreAppel = Todo("Attendre d'etre rappele", &tel);
+    Todo appel = Todo("Appeler dans 2 jours si il n'y a pas de nouvelle", &tel);
+    Todo edt = Todo("Faire un emploi du temps", &tel, Date(14,12,2021));
+
+    gdb->insertData(thomas);
+    gdb->insertData(tel);
+    gdb->insertData(attendreAppel);
+    gdb->insertData(appel);
+    gdb->insertData(edt);
+
+    Todo *t = nullptr;
+    gdb->deleteData(t);
+    list<Todo> tmp = {};
+    checkTables(nomTest, gdb, tmp);
+}
+
+/**
+ * @brief testDelete1TodoEtInsertionNouveau teste si la méthode d'attribution des ID dans la table Todo est correcte
+ * @param gdb La base de donnée
+ * @param nomTest Le nom du test
+ */
+void testDelete1TodoEtInsertionNouveau(GestionBDD *gdb, string nomTest){
+    Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
+    Interaction tel("rdv par telephone", thomas);
+
+    Todo attendreAppel = Todo("Attendre d'etre rappele", &tel);
+    Todo appel = Todo("Appeler dans 2 jours si il n'y a pas de nouvelle", &tel);
+    Todo edt = Todo("Faire un emploi du temps", &tel, Date(14,12,2021));
+
+    gdb->insertData(thomas);
+    gdb->insertData(tel);
+    gdb->insertData(appel);
+
+    gdb->deleteData(&tel);
+
+    try {
+        gdb->insertData(edt);
+    }  catch (const invalid_argument &e) {
+        cerr << e.what() << endl;
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant a l'interaction" << endl;
+        cout << "L'interaction " << edt << " n'a pas ete creer apres la suppression de tel, verifier les identifiants" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        gdb->clearTables();
+        return;
+    }
+    REUSSI++;
+    gdb->clearTables();
+
+}
+
+/**
+ * @brief testDelete effectue les tests pour supprimer des objets dans la base de donnée
+ * @param gdb La base de donnée
+ */
+void testDelete(GestionBDD *gdb){
+    testDelete1Contact(gdb, "Delete de l'unique contact dans Contact");
+    testDeleteToutContact(gdb, "Delete de tous les Contact");
+    testDelete1ContactEtInsertionNouveau(gdb, "Supression d'un contact puis ajout d'un nouveau pour verifier que les identifiants sont bons");
+    testDelete1Interaction(gdb, "Delete de l'unique interaction dans Interaction");
+    testDeleteTousInteraction(gdb, "Delete de toutes les Interaction");
+    testDelete1InteractionEtInsertionNouveau(gdb, "Supression d'une interaction puis ajout d'un nouveau pour verifier que les identifiants sont bons");
+    testDelete1Todo(gdb, "Delete de l'unique todo dans Todo");
+    testDeleteTousTodo(gdb, "Delete de tous les Todo");
+    testDelete1TodoEtInsertionNouveau(gdb, "Supression d'un todo puis ajout d'un nouveau pour verifier que les identifiants sont bons");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///                                                                    Tests de selection                                                           ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * @brief testSelectStarContact Execute une selection avec * pour recuperer tous les contacts dans la bdd
  * @param gdb La base de donnée
@@ -1069,12 +1317,26 @@ void testSelectPlusieursContactCondition(GestionBDD *gdb, map<string, list<strin
     checkSelect(nomTest, result, contactBDD);
 }
 
-void testSelectUniqueInteractionCondition(GestionBDD *gdb, map<string, list<string>> condition, list<Interaction> interactionBDD, string nomTest){
+/**
+ * @brief testSelectUniqueInteractionCondition teste si il est possible de faire une selection pour récupérer des interactions grace à des conditions
+ * @param gdb La base de donnée
+ * @param condition Les conditions pour avoir 1 seule interaction
+ * @param interactionBDD Les interactions que l'on est censé récupérer
+ * @param nomTest Le nom du test
+ */
+void testSelectInteractionCondition(GestionBDD *gdb, map<string, list<string>> condition, list<Interaction> interactionBDD, string nomTest){
     list<Interaction> res = gdb->selectQueryInteraction(condition);
     checkSelect(nomTest, res, interactionBDD);
 }
 
-void testSelectUniqueTodoCondition(GestionBDD *gdb, map<string, list<string>> condition, list<Todo> todoBDD, string nomTest){
+/**
+ * @brief testSelectUniqueTodoCondition teste si il est possible de faire une selection pour récupérer des todo grace à des conditions
+ * @param gdb La base de donnée
+ * @param condition La condition pour avoir 1 seul Todo
+ * @param todoBDD Les todos que l'on est censé récupérer
+ * @param nomTest Le nom du test
+ */
+void testSelectTodoCondition(GestionBDD *gdb, map<string, list<string>> condition, list<Todo> todoBDD, string nomTest){
     list<Todo> res = gdb->selectQueryTodo(condition);
     checkSelect(nomTest, res, todoBDD);
 }
@@ -1131,14 +1393,14 @@ void testSelect(GestionBDD *gdb){
 
     testSelectPlusieursContactCondition(gdb, {{"nom", {"Ratu", "Siba"}}}, {thomas, jules}, "Select avec des conditions sur 2 contact differents");
 
-    testSelectUniqueInteractionCondition(gdb, {{"contenu", {"rdv aujourd''hui par tel., RAS"}}}, {tel}, "Select Interaction avec condition sur le contenu");
-    testSelectUniqueInteractionCondition(gdb, {{"idContact", {"1"}}}, {tel, meeting}, "Select Interaction avec condition sur le contact");
-    testSelectUniqueInteractionCondition(gdb, {{"id", {"1"}}}, {tel}, "Select Interaction avec condition sur l'id");
+    testSelectInteractionCondition(gdb, {{"contenu", {"rdv aujourd''hui par tel., RAS"}}}, {tel}, "Select Interaction avec condition sur le contenu");
+    testSelectInteractionCondition(gdb, {{"idContact", {"1"}}}, {tel, meeting}, "Select Interaction avec condition sur le contact");
+    testSelectInteractionCondition(gdb, {{"id", {"1"}}}, {tel}, "Select Interaction avec condition sur l'id");
 
-    testSelectUniqueTodoCondition(gdb, {{"contenu", {"Attendre d''etre rappele"}}}, {attendreAppel}, "Select Todo avec condition sur le contenu");
-    testSelectUniqueTodoCondition(gdb, {{"deadline", {attendreAppel.getDeadline().affichage()}}}, {attendreAppel, appel}, "Select Todo avec condition sur la date");
-    testSelectUniqueTodoCondition(gdb, {{"idInteraction", {"1"}}}, {attendreAppel, appel}, "Select Todo avec condition sur l'id de l'interaction qui vaut 1");
-    testSelectUniqueTodoCondition(gdb, {{"idInteraction", {"2"}}}, {edt}, "Select Todo avec condition sur l'id de l'interaction qui vaut 2");
+    testSelectTodoCondition(gdb, {{"contenu", {"Attendre d''etre rappele"}}}, {attendreAppel}, "Select Todo avec condition sur le contenu");
+    testSelectTodoCondition(gdb, {{"deadline", {attendreAppel.getDeadline().affichage()}}}, {attendreAppel, appel}, "Select Todo avec condition sur la date");
+    testSelectTodoCondition(gdb, {{"idInteraction", {"1"}}}, {attendreAppel, appel}, "Select Todo avec condition sur l'id de l'interaction qui vaut 1");
+    testSelectTodoCondition(gdb, {{"idInteraction", {"2"}}}, {edt}, "Select Todo avec condition sur l'id de l'interaction qui vaut 2");
 
     //testSelectUniqueTodoCondition(gdb, {{"idContact", {"1"}}}, lTodoBDD, "Select Todo avec condition sur l'id du contact qui vaut 1");
 
@@ -1210,6 +1472,10 @@ void testUpdate(GestionBDD *gdb){
 ///                                                                    Tests de requete spéciales                                                   ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief testNombreContact teste pour savoir si il est possible de compter le nombre d'éléments dans Contact
+ * @param gdb La base de donnée
+ */
 void testNombreContact(GestionBDD *gdb){
     Contact p1 = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
     Contact p2 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
@@ -1227,6 +1493,10 @@ void testNombreContact(GestionBDD *gdb){
     gdb->clearTables();
 }
 
+/**
+ * @brief testInteractionEntreDeuxDates teste si il est possible de recuperer les interactions entre 2 dates
+ * @param gdb La base de donnée
+ */
 void testInteractionEntreDeuxDates(GestionBDD *gdb){
     Contact p1 = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
     Contact p2 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
@@ -1259,6 +1529,10 @@ void testInteractionEntreDeuxDates(GestionBDD *gdb){
 
 }
 
+/**
+ * @brief testTodoEntreDeuxDatesPourUnContact teste si il est possible de recuperer les todos d'un contact qui sont compris entre 2 dates
+ * @param gdb La base de donnée
+ */
 void testTodoEntreDeuxDatesPourUnContact(GestionBDD *gdb){
     Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
     Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
@@ -1296,6 +1570,10 @@ void testTodoEntreDeuxDatesPourUnContact(GestionBDD *gdb){
     checkSelect("Todo entre 10 et 21 decembre 2021 de thomas", res, {confirmer, retard});
 }
 
+/**
+ * @brief testTodoEntreDeuxDatesPourTousContact teste si il est possible de recuperer les todos de tous les contacts qui sont compris entre 2 dates
+ * @param gdb La base de donnée
+ */
 void testTodoEntreDeuxDatesPourTousContact(GestionBDD *gdb){
     Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
     Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
@@ -1322,7 +1600,7 @@ void testTodoEntreDeuxDatesPourTousContact(GestionBDD *gdb){
     list<Contact> lContact = {thomas, jules};
     list<Interaction> lInter = {tel, meeting, compta, recap, presentation, edt};
     list<Todo> lTodo = {todoCompta, rappeler, confirmer, todoEdt, retard};
-    for (auto it : lContact)
+    for (auto& it : lContact)
         gdb->insertData(it);
     for (auto it : lInter)
         gdb->insertData(it);
@@ -1333,6 +1611,10 @@ void testTodoEntreDeuxDatesPourTousContact(GestionBDD *gdb){
     checkSelect("Todo entre 10 et 21 decembre de thomas", res, {confirmer, todoEdt, retard});
 }
 
+/**
+ * @brief testRequetesSpeciales effectue les tests concernant les requetes speciales demandees par le sujet
+ * @param gdb La base de donnée
+ */
 void testRequetesSpeciales(GestionBDD *gdb){
     testNombreContact(gdb);
     testInteractionEntreDeuxDates(gdb);
@@ -1353,6 +1635,7 @@ void testsDB(GestionBDD *gdb){
     testInsert(gdb);
     testSelect(gdb);
     testUpdate(gdb);
+    testDelete(gdb);
     testRequetesSpeciales(gdb);
     gdb->getDb().close();
 }
@@ -1373,7 +1656,7 @@ int main(int argc, char* argv[])
     QApplication a(argc, argv);
     MainWindow w;
     tests(w.getDb());
-    w.show();
-    return a.exec();
-    //return 0;
+    //w.show();
+    //return a.exec();
+    return 0;
 }
