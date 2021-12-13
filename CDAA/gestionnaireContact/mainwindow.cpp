@@ -16,10 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     this->gestCont = new GestionContacts();
-    Contact* c1 = new Contact("moi", "toi", "entre", "0625142514", "D:\\Images\\iconediscord.jpg", "mail@mail.com");
-    Contact* c2 = new Contact("Nous galaga", "Vous", "psy", "0636253625", "D:\\Images\\iconediscordgit.jpg", "mail@mail.com");
-    Contact* c3 = new Contact("papi", "mami", "psy", "0669586958", "", "mail@mail.com");
-    Contact* c4 = new Contact("pipi", "caca", "entre", "0647584758", "", "mail@mail.com");
+    Contact* c1 = new Contact("Jhon", "Doe", "Anonyme", "0625142514", "D:\\Images\\iconediscord.jpg", "jhonDoe@gmail.com");
+    Contact* c2 = new Contact("Jean Patrick", "François", "LaFrance", "0636253625", "D:\\Images\\iconediscordgit.jpg", "PatrickFrancois@wanadoo.fr");
+    Contact* c3 = new Contact("Vincent", "Catherine", "Anonyme", "0669586958", "", "VincentCatherine@gmail.com");
+    Contact* c4 = new Contact("Bruel", "Patrick", "Sony Music Entertainment", "0647584758", "", "bruel@mail.com");
     gestCont->addContact(*c1);
     gestCont->addContact(*c2);
     gestCont->addContact(*c3);
