@@ -1095,6 +1095,12 @@ void testSelect(GestionBDD *gdb){
     gdb->clearTables();
 }
 
+/**
+ * @brief testUpdateChangementNomContact teste de changer tous les contacts
+ * @param gdb La base de donnée
+ * @param nomTable Le nom de la table
+ * @param modifications La modification à faire
+ */
 void testUpdateChangementNomContact(GestionBDD *gdb, string nomTable, map<string, string> modifications){
     Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
     Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
@@ -1107,6 +1113,13 @@ void testUpdateChangementNomContact(GestionBDD *gdb, string nomTable, map<string
     gdb->clearTables();
 }
 
+/**
+ * @brief testUpdateChangementNomThomas test une update sur le contact Thomas uniquement
+ * @param gdb La base de donnée
+ * @param nomTable Le nom de la table
+ * @param modifications La modification à faire
+ * @param conditions Les conditions pour ne modifier que Thomas
+ */
 void testUpdateChangementNomThomas(GestionBDD *gdb, string nomTable, map<string, string> modifications, map<string, list<string>> conditions){
     Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
     Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
@@ -1118,6 +1131,10 @@ void testUpdateChangementNomThomas(GestionBDD *gdb, string nomTable, map<string,
     gdb->clearTables();
 }
 
+/**
+ * @brief testUpdate Les tests pour les updates dans SQL
+ * @param gdb La base de donnée
+ */
 void testUpdate(GestionBDD *gdb){
     map<string, string> modif;
     modif["Prenom"] = "Thomy";
@@ -1126,6 +1143,59 @@ void testUpdate(GestionBDD *gdb){
     map<string, list<string>> conditions;
     conditions["Nom"] = {"Ratu"};
     testUpdateChangementNomThomas(gdb, "Contact", modif, conditions);
+}
+
+void testNombreContact(GestionBDD *gdb){
+    Contact p1 = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    Contact p2 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+    Contact p3 = Contact("Florian", "Polier", "Netsle", "06 42 57 98 31", "photoFlorian.jpg", "florian.polier@mail.com");
+    Contact p4 = Contact("Mathias", "Fareau", "Axe", "06 52 46 80 13", "photoMathias.jpg", "mathias.flareau@mail.com");
+    gdb->insertData(p1);
+    gdb->insertData(p2);
+    gdb->insertData(p3);
+    gdb->insertData(p4);
+    int nbContact = gdb->countTable("Contact");
+    if (nbContact == 4)
+        REUSSI++;
+    else
+        RATE++;
+}
+
+void testInteractionEntreDeuxDates(GestionBDD *gdb){
+    Contact p1 = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    Contact p2 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+
+    Interaction tel("rdv par telephone", p1);
+    Interaction meeting("meeting avec les devs", p2);
+    Interaction compta("demande d'info pour la comptabilite", p1);
+    Interaction recap("recap de la journee", p1);
+    Interaction presentation("presentation du projet", p2);
+    Interaction edt("creation de l'emploi du temps", p2);
+
+    tel.setDateCreation(Date(1, 2, 2021));
+    meeting.setDateCreation(Date(16, 11, 2021));
+    compta.setDateCreation(Date(20, 12, 2021));
+    recap.setDateCreation(Date(3, 3, 2022));
+    presentation.setDateCreation(Date(12, 12, 2021));
+    edt.setDateCreation(Date(15, 12, 2021));
+
+    gdb->insertData(p1);
+    gdb->insertData(p2);
+    gdb->insertData(tel);
+    gdb->insertData(meeting);
+    gdb->insertData(compta);
+    gdb->insertData(recap);
+    gdb->insertData(presentation);
+    gdb->insertData(edt);
+
+    list<Interaction> res = gdb->selectInteractionEntreDeuxDates(Date(1, 12, 2021), Date(1, 1, 2022));
+    checkSelect("Selection d'interaction comprise entre 2 dates", res, {compta, presentation, edt});
+
+}
+
+void testRequetesSpeciales(GestionBDD *gdb){
+    testNombreContact(gdb);
+    testInteractionEntreDeuxDates(gdb);
 }
 
 /**
@@ -1137,6 +1207,7 @@ void testsDB(GestionBDD *gdb){
     testInsert(gdb);
     testSelect(gdb);
     testUpdate(gdb);
+    testRequetesSpeciales(gdb);
     gdb->getDb().close();
 }
 

@@ -17,6 +17,7 @@ void GestionBDD::connexionBDD()
     if(!db.open())
         throw invalid_argument("Pas de connexion BDD!");
 }
+
 GestionBDD::~GestionBDD(){
 }
 
@@ -40,16 +41,16 @@ void GestionBDD::createTables(){
                               "id integer PRIMARY KEY,"
                               "contenu varchar(255) NOT NULL,"
                               "date varchar(255) NOT NULL,"
-                              "idContact integer NOT NULL"
-                              //"CONSTRAINT cle_etrangere FOREIGN KEY(contact) REFERENCES Contact(id) ON DELETE CASCADE"
+                              "idContact integer NOT NULL,"
+                              "CONSTRAINT cle_etrangere FOREIGN KEY(idContact) REFERENCES Contact(id) ON DELETE CASCADE"
                               " )";
 
     string tableTodo = "CREATE TABLE IF NOT EXISTS Todo( "
                        "id integer PRIMARY KEY,"
                        "contenu varchar(255) NOT NULL,"
                        "deadline varchar(255) NOT NULL,"
-                       "idInteraction integer"
-                       //"CONSTRAINT cle_etrangere FOREIGN KEY(interaction) REFERENCES Interaction(id) ON DELETE CASCADE"
+                       "idInteraction integer,"
+                       "CONSTRAINT cle_etrangere FOREIGN KEY(idInteraction) REFERENCES Interaction(id) ON DELETE CASCADE"
                        " );";
 
     QSqlQuery qContact;
@@ -290,4 +291,47 @@ void GestionBDD::updateData(string nomTable, map<string, string> modifications, 
         if (!qUpdate.exec())
             throw invalid_argument("Impossible de modifier la table " + nomTable);
     }
+}
+
+int GestionBDD::countTable(string nomTable){
+    QSqlQuery qSelectCount;
+    if (nomTable == "Contact")
+        qSelectCount.prepare(QString("SELECT COUNT(Nom) FROM %1").arg(QString::fromStdString(nomTable)));
+    else if (nomTable == "Interaction")
+        qSelectCount.prepare(QString("SELECT COUNT(Contenu) FROM %1").arg(QString::fromStdString(nomTable)));
+    else if (nomTable == "Todo")
+        qSelectCount.prepare(QString("SELECT COUNT(Contenu) FROM %1").arg(QString::fromStdString(nomTable)));
+    else
+        throw invalid_argument("La table " + nomTable + " n'existe pas, il est donc impossible de compter ses lignes");
+    if (!qSelectCount.exec())
+        throw invalid_argument("Impossible de compter les " + nomTable);
+    qSelectCount.next();
+    int res = qSelectCount.value(0).toInt();
+    return res;
+}
+
+list<Interaction> GestionBDD::selectInteractionEntreDeuxDates(Date d1, Date d2){
+    QSqlQuery qSelectInteraction;
+    qSelectInteraction.prepare("SELECT contenu, date, idContact FROM Interaction");
+    list<Interaction> res;
+    if (!qSelectInteraction.exec())
+        throw invalid_argument("Impossible de recuperer les interactions enter 2 dates");
+    for (int i = 0; i < this->countTable("Interaction"); i++){
+        qSelectInteraction.next();
+        QString qStringDateInteraction = qSelectInteraction.value(1).toString();
+        QStringList contenuDateInteraction = qStringDateInteraction.split("/");
+        int j = contenuDateInteraction.at(0).toInt();
+        int m = contenuDateInteraction.at(1).toInt();
+        int a = contenuDateInteraction.at(2).toInt();
+        Date dateInteraction = Date(j, m, a);
+        if ((d1 < d2 && !(dateInteraction < d1) && dateInteraction < d2) ||
+                (d2 < d1 && !(dateInteraction < d2) && dateInteraction < d1)){
+            map<string, list<string>> map = {{"id", {qSelectInteraction.value(2).toString().toStdString()}}};
+            Contact c = selectQueryContact(map).front();
+            Interaction interaction(qSelectInteraction.value(0).toString().toStdString(), c);
+            interaction.setDateCreation(dateInteraction);
+            res.push_back(interaction);
+        }
+    }
+    return res;
 }

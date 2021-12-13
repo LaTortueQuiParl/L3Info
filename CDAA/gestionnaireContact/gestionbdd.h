@@ -82,6 +82,10 @@ public:
     list<Todo> selectQueryTodo(map<string, list<string>> condition = {});
 
     void updateData(string nomTable, map<string, string> modifications, map<string, list<string>> conditions = {});
+
+    int countTable(string nomTable);
+
+    list<Interaction> selectInteractionEntreDeuxDates(Date d1, Date d2);
 };
 
 #endif // GESTIONBDD_H
