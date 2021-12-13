@@ -336,7 +336,7 @@ void testContact(){
     ExceptionTestOutputFormat("contact sans prenom", {"Nom", "", "Entreprise", "06 52 48 61 34", "photo.jpg", "mail"});
     ExceptionTestOutputFormat("contact sans entreprise", {"Nom", "Prenom", "", "06 52 48 61 34", "photo.jpg", "mail"});
     ExceptionTestOutputFormat("contact sans numero", {"Nom", "Prenom", "Entreprise", "", "photo.jpg", "mail"});
-    ExceptionTestOutputFormat("contact sans photo", {"Nom", "Prenom", "Entreprise", "06 52 48 61 34", "", "mail"});
+    //ExceptionTestOutputFormat("contact sans photo", {"Nom", "Prenom", "Entreprise", "06 52 48 61 34", "", "mail"});
     ExceptionTestOutputFormat("contact sans mail", {"Nom", "Prenom", "Entreprise", "06 52 48 61 34", "photo.jpg", ""});
 
     ExceptionTestOutputFormat("numero a 8 chiffres", {"Nom", "Prenom", "Entreprise", "06 48 61 34", "photo.jpg", "mail"});
@@ -1316,10 +1316,10 @@ void testTodoEntreDeuxDatesPourTousContact(GestionBDD *gdb){
     edt.setDateCreation(Date(15, 12, 2021));
 
     Todo todoCompta = Todo("faire compta", &compta, Date(8, 1, 2022));
-    Todo rappeler = Todo("Rappeler", &tel, Date(16, 10, 2021));
+    Todo rappeler = Todo("Rappeler", &tel, Date(16, 10, 2022));
     Todo confirmer = Todo("confirmer commande n°xyz", &tel);
     Todo todoEdt = Todo("faire l'emploi du temps", &meeting, Date(15, 12, 2021));
-    Todo retard = Todo("Finir ce qui n'a pas ete fini dans la journee", &recap, Date(13, 12, 2021));
+    Todo retard = Todo("Finir ce qui n'a pas ete fini dans la journee", &recap, Date(14, 12, 2021));
 
     list<Contact> lContact = {thomas, jules};
     list<Interaction> lInter = {tel, meeting, compta, recap, presentation, edt};
@@ -1375,8 +1375,8 @@ int main(int argc, char* argv[])
     QApplication a(argc, argv);
     MainWindow w;
     //AjoutContactDialog aj;
-    //tests(w.getDb());
-    w.show();
-    return a.exec();
-    //return 0;
+    tests(w.getDb());
+    //w.show();
+    //return a.exec();
+    return 0;
 }

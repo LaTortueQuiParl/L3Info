@@ -182,7 +182,11 @@ QString craftSelect(string table, map<string, list<string>> mapConditions = {}){
             return QString("SELECT contenu, deadline, idInteraction FROM %1").arg(QString::fromStdString(table));
 
     } else if (QmapConditions.contains("idContact") && table=="Todo"){
-        return QString("SELECT contenu, deadline, idInteraction FROM Todo, Contact WHERE idContact=Contact.id");
+        QSqlQuery selectInteractionContact;
+        selectInteractionContact.prepare(QString("SELECT idInteraction FROM Interaction WHERE idContact='%1'").arg(QString::fromStdString(mapConditions.at("idContact").front())));
+        if (!selectInteractionContact.exec())
+            throw invalid_argument("impossible de recupere les interactions liees au contact");
+        return QString("SELECT contenu, deadline, idInteraction FROM Todo WHERE idTodo='%1'").arg(selectInteractionContact.value(0).toString());
     } else {
         QMapIterator<string, list<string>> condition(QmapConditions);
         while (condition.hasNext()){
