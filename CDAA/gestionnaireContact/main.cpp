@@ -290,6 +290,10 @@ void ExceptionTestOutputFormat(string testName, string contenu, Interaction *i, 
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                    Tests objets                                                                 ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * @brief testContact Test des différentes méthodes de Contact.
  */
@@ -371,6 +375,14 @@ void testContact(){
 
     p.setTelephone("06 451 3 4579");
     TestOutputFormat(classTest, "numero ou il y a un espace au mauvais endroit et il en manque 1", p.getTelephone(), "06 45 13 45 79");
+
+    /*
+    Contact p2 = Contact("Nom2", "Prenom2", "Entreprise2", "06 48 31 55 46", "photo.jpg", "mail");
+    Interaction i2 = Interaction("rdv demain par tél., RAS", p2);
+    p.getInteractions().addInteraction(i2);
+    cout << p.getInteractions().getInteractions().front()->getContenu();
+    TestOutputFormat(classTest, "ajout d'une interaction dans le contact", p.getInteractions().getInteractions().front()->getContenu(), i.getContenu());
+    */
 }
 
 /**
@@ -711,6 +723,92 @@ void testsObjets(){
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                    Base de donnée                                                               ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table contact
+ * @param nomTest Le nom du test que l'on effectue
+ * @param resSelect Le résultat du select
+ * @param listeContact Les contacts que le sélect devrait renvoyer
+ */
+void checkSelect(string nomTest, list<Contact> resSelect, list<Contact> listeContact){
+    if (resSelect.size() != listeContact.size()){
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test: " << nomTest << endl << "La selection contient moins de contact que ce qui a ete insere" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        return;
+    }
+    for (list<Contact>::iterator select = resSelect.begin(), contact = listeContact.begin(); select != resSelect.end(); select++, contact++){
+        if (!(*select == *contact)){
+            RATE++;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas le contact" << endl;
+            cout << "Select:  " << *select << endl << "Contact: " << *contact << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            return;
+        }
+    }
+    REUSSI++;
+}
+
+/**
+ * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table interaction
+ * @param nomTest Le nom du test que l'on effectue
+ * @param resSelect Le résultat du select
+ * @param listeInteraction Les Interactions que le sélect devrait renvoyer
+ */
+void checkSelect(string nomTest, list<Interaction> resSelect, list<Interaction> listInteraction){
+    if (resSelect.size() != listInteraction.size()){
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test: " << nomTest << endl << "La selection contient moins d'interaction que ce qui a ete insere" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        return;
+    }
+    for (list<Interaction>::iterator select = resSelect.begin(), interaction = listInteraction.begin(); select != resSelect.end(); select++, interaction++){
+
+        if ((*select).getContenu() != (*interaction).getContenu() || !((*select).getDateCreation() == (*interaction).getDateCreation())){
+            RATE++;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas l'interaction" << endl;
+            cout << "Select:  " << *select << endl << "Interaction: " << *interaction << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            return;
+        }
+    }
+    REUSSI++;
+}
+
+/**
+ * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table todo
+ * @param nomTest Le nom du test que l'on effectue
+ * @param resSelect Le résultat du select
+ * @param listeTodo Les Todos que le sélect devrait renvoyer
+ */
+void checkSelect(string nomTest, list<Todo> resSelect, list<Todo> listeTodo){
+    if (resSelect.size() != listeTodo.size()){
+        RATE++;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Fail du test: " << nomTest << endl << "La selection contient moins de todo que ce qui a ete insere" << endl;
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+        return;
+    }
+    for (list<Todo>::iterator select = resSelect.begin(), todo = listeTodo.begin(); select != resSelect.end(); select++, todo++){
+        if (!(*select == *todo)){
+            RATE++;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas le todo" << endl;
+            cout << "Select:  " << *select << endl << "Todo: " << *todo << endl;
+            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+            return;
+        }
+    }
+    REUSSI++;
+}
+
 /**
  * @brief checkTables permet de vérifier de l'insertion d'un Contact dans la base de donnée en faisant un select manuellement dessus et le comparant à ce qui a été inséré
  * @param nomTest Le nom du test
@@ -718,21 +816,29 @@ void testsObjets(){
  * @param lContenu La liste de contact insérée
  */
 void checkTables(string nomTest, GestionBDD *gdb, list<Contact> lContenu){
-    QSqlQuery q("SELECT * FROM Contact");
+    QSqlQuery q("SELECT nom, prenom, entreprise, telephone, photo, mail FROM Contact");
     if (!q.exec())
         throw invalid_argument("Impossible de faire un select sur la table Contact");
     else{
-        for (list<Contact>::iterator c = lContenu.begin(); q.next() == true; c++){
-            if (q.value(1).toString().toStdString() != c->getNom() ||
-                q.value(2).toString().toStdString() != c->getPrenom() ||
-                q.value(3).toString().toStdString() != c->getEntreprise() ||
-                q.value(4).toString().toStdString() != c->getTelephone() ||
-                q.value(5).toString().toStdString() != c->getPhoto() ||
-                q.value(6).toString().toStdString() != c->getMail()
+        for (auto c = lContenu.begin(); q.next() == true; c++){
+            //cout << "Dans le " + nomTest + " " << endl << "Il y a " + to_string(gdb->countTable("Contact")) + " element dans la table Contact" << endl << *c << endl;
+            if (q.value(0).toString().toStdString() != c->getNom() ||
+                q.value(1).toString().toStdString() != c->getPrenom() ||
+                q.value(2).toString().toStdString() != c->getEntreprise() ||
+                q.value(3).toString().toStdString() != c->getTelephone() ||
+                q.value(4).toString().toStdString() != c->getPhoto() ||
+                q.value(5).toString().toStdString() != c->getMail()
                     ){
                 RATE++;
                 cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
                 cout << "Fail du test " << nomTest << " : La table ne contient pas d'element correspondant au contact" << endl;
+                cout << "query || contact" << endl;
+                cout << q.value(0).toString().toStdString() << " || " << c->getNom() << endl;
+                cout << q.value(1).toString().toStdString() << " || " << c->getPrenom() << endl;
+                cout << q.value(2).toString().toStdString() << " || " << c->getEntreprise() << endl;
+                cout << q.value(3).toString().toStdString() << " || " << c->getTelephone() << endl;
+                cout << q.value(4).toString().toStdString() << " || " << c->getPhoto() << endl;
+                cout << q.value(5).toString().toStdString() << " || " << c->getMail() << endl;
                 cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
                 return;
             }
@@ -810,6 +916,10 @@ void checkTables(string nomTest, GestionBDD *gdb, list<Todo> lTodo){
     REUSSI++;
     gdb->clearTables(); // Il faut nettoyer les tables sinon les éléments de la liste ne correspondent pas à ceux de la table et faussent les résultats
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                    Tests d'insertions                                                           ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * @brief unitTestInsert Test sur 1 insert dans Contact
@@ -900,88 +1010,9 @@ void testInsert(GestionBDD *gdb){
     testMultipleInsertTodo(gdb, {attendreAppel, appel});
 }
 
-/**
- * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table contact
- * @param nomTest Le nom du test que l'on effectue
- * @param resSelect Le résultat du select
- * @param listeContact Les contacts que le sélect devrait renvoyer
- */
-void checkSelect(string nomTest, list<Contact> resSelect, list<Contact> listeContact){
-    if (resSelect.size() != listeContact.size()){
-        RATE++;
-        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        cout << "Fail du test: " << nomTest << endl << "La selection contient moins de contact que ce qui a ete insere" << endl;
-        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        return;
-    }
-    for (list<Contact>::iterator select = resSelect.begin(), contact = listeContact.begin(); select != resSelect.end(); select++, contact++){
-        if (!(*select == *contact)){
-            RATE++;
-            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas le contact" << endl;
-            cout << "Select:  " << *select << endl << "Contact: " << *contact << endl;
-            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            return;
-        }
-    }
-    REUSSI++;
-}
-
-/**
- * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table interaction
- * @param nomTest Le nom du test que l'on effectue
- * @param resSelect Le résultat du select
- * @param listeInteraction Les Interactions que le sélect devrait renvoyer
- */
-void checkSelect(string nomTest, list<Interaction> resSelect, list<Interaction> listInteraction){
-    if (resSelect.size() != listInteraction.size()){
-        RATE++;
-        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        cout << "Fail du test: " << nomTest << endl << "La selection contient moins d'interaction que ce qui a ete insere" << endl;
-        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        return;
-    }
-    for (list<Interaction>::iterator select = resSelect.begin(), interaction = listInteraction.begin(); select != resSelect.end(); select++, interaction++){
-
-        if ((*select).getContenu() != (*interaction).getContenu() || !((*select).getDateCreation() == (*interaction).getDateCreation())){
-            RATE++;
-            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas l'interaction" << endl;
-            cout << "Select:  " << *select << endl << "Interaction: " << *interaction << endl;
-            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            return;
-        }
-    }
-    REUSSI++;
-}
-
-/**
- * @brief checkSelect permet de vérifier la bonne sélection d'un sélect dans la table todo
- * @param nomTest Le nom du test que l'on effectue
- * @param resSelect Le résultat du select
- * @param listeTodo Les Todos que le sélect devrait renvoyer
- */
-void checkSelect(string nomTest, list<Todo> resSelect, list<Todo> listeTodo){
-    if (resSelect.size() != listeTodo.size()){
-        RATE++;
-        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        cout << "Fail du test: " << nomTest << endl << "La selection contient moins de todo que ce qui a ete insere" << endl;
-        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        return;
-    }
-    for (list<Todo>::iterator select = resSelect.begin(), todo = listeTodo.begin(); select != resSelect.end(); select++, todo++){
-        if (!(*select == *todo)){
-            RATE++;
-            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            cout << "Fail du test: " << nomTest << endl << "Le select ne contient pas le todo" << endl;
-            cout << "Select:  " << *select << endl << "Todo: " << *todo << endl;
-            cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-            return;
-        }
-    }
-    REUSSI++;
-}
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                    Tests de selection                                                           ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * @brief testSelectStarContact Execute une selection avec * pour recuperer tous les contacts dans la bdd
  * @param gdb La base de donnée
@@ -990,13 +1021,6 @@ void checkSelect(string nomTest, list<Todo> resSelect, list<Todo> listeTodo){
 void testSelectStar(GestionBDD *gdb, list<Contact> contactBDD){
     list<Contact> result = gdb->selectQueryContact();
     checkSelect("Select tout de Contact sans condition", result, contactBDD);
-    /*
-        list<C> result = gdb->selectQueryInteraction();
-        checkSelect("Select tout de Interaction sans condition", result, objetBDD);
-        list<Todo> result = gdb->selectQueryTodo(table);
-        checkSelect("Select tout de Todo sans condition", result, objetBDD);
-    }
-    */
 }
 
 /**
@@ -1045,6 +1069,16 @@ void testSelectPlusieursContactCondition(GestionBDD *gdb, map<string, list<strin
     checkSelect(nomTest, result, contactBDD);
 }
 
+void testSelectUniqueInteractionCondition(GestionBDD *gdb, map<string, list<string>> condition, list<Interaction> interactionBDD, string nomTest){
+    list<Interaction> res = gdb->selectQueryInteraction(condition);
+    checkSelect(nomTest, res, interactionBDD);
+}
+
+void testSelectUniqueTodoCondition(GestionBDD *gdb, map<string, list<string>> condition, list<Todo> todoBDD, string nomTest){
+    list<Todo> res = gdb->selectQueryTodo(condition);
+    checkSelect(nomTest, res, todoBDD);
+}
+
 /**
  * @brief testSelect sont les tests qui concernent les selections
  * @param gdb La base de donnée
@@ -1055,16 +1089,20 @@ void testSelect(GestionBDD *gdb){
     list<Contact> lContactBDD = {thomas};
 
     Interaction tel = Interaction("rdv aujourd'hui par tel., RAS", thomas);
-    list<Interaction> lInteractionBDD = {tel};
+    Interaction meeting = Interaction("meeting avec les devs", thomas);
+    list<Interaction> lInteractionBDD = {tel, meeting};
 
     Todo attendreAppel = Todo("Attendre d'etre rappele", &tel);
     Todo appel = Todo("Appeler dans 2 jours si il n'y a pas de nouvelle", &tel);
-    list<Todo> lTodoBDD = {attendreAppel, appel};
+    Todo edt = Todo("Faire un emploi du temps", &meeting, Date(14,12,2021));
+    list<Todo> lTodoBDD = {attendreAppel, appel, edt};
 
     gdb->insertData(thomas);
     gdb->insertData(tel);
+    gdb->insertData(meeting);
     gdb->insertData(attendreAppel);
     gdb->insertData(appel);
+    gdb->insertData(edt);
 
     testSelectStar(gdb, lContactBDD);
 
@@ -1092,8 +1130,24 @@ void testSelect(GestionBDD *gdb){
     testSelectUniqueContactCondition(gdb, {{"id", {"1"}}}, {thomas}, "Select avec condition sur l'id");
 
     testSelectPlusieursContactCondition(gdb, {{"nom", {"Ratu", "Siba"}}}, {thomas, jules}, "Select avec des conditions sur 2 contact differents");
+
+    testSelectUniqueInteractionCondition(gdb, {{"contenu", {"rdv aujourd''hui par tel., RAS"}}}, {tel}, "Select Interaction avec condition sur le contenu");
+    testSelectUniqueInteractionCondition(gdb, {{"idContact", {"1"}}}, {tel, meeting}, "Select Interaction avec condition sur le contact");
+    testSelectUniqueInteractionCondition(gdb, {{"id", {"1"}}}, {tel}, "Select Interaction avec condition sur l'id");
+
+    testSelectUniqueTodoCondition(gdb, {{"contenu", {"Attendre d''etre rappele"}}}, {attendreAppel}, "Select Todo avec condition sur le contenu");
+    testSelectUniqueTodoCondition(gdb, {{"deadline", {attendreAppel.getDeadline().affichage()}}}, {attendreAppel, appel}, "Select Todo avec condition sur la date");
+    testSelectUniqueTodoCondition(gdb, {{"idInteraction", {"1"}}}, {attendreAppel, appel}, "Select Todo avec condition sur l'id de l'interaction qui vaut 1");
+    testSelectUniqueTodoCondition(gdb, {{"idInteraction", {"2"}}}, {edt}, "Select Todo avec condition sur l'id de l'interaction qui vaut 2");
+
+    //testSelectUniqueTodoCondition(gdb, {{"idContact", {"1"}}}, lTodoBDD, "Select Todo avec condition sur l'id du contact qui vaut 1");
+
     gdb->clearTables();
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                    Tests de modification                                                        ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * @brief testUpdateChangementNomContact teste de changer tous les contacts
@@ -1101,16 +1155,21 @@ void testSelect(GestionBDD *gdb){
  * @param nomTable Le nom de la table
  * @param modifications La modification à faire
  */
-void testUpdateChangementNomContact(GestionBDD *gdb, string nomTable, map<string, string> modifications){
+void testUpdateChangementNomContact(GestionBDD *gdb){
     Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
     Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+
+    map<string, string> modif;
+    modif["Prenom"] = "Thomy";
+
     gdb->insertData(thomas);
     gdb->insertData(jules);
-    gdb->updateData(nomTable, modifications);
+    gdb->updateData("Contact", modif);
+
     thomas.setPrenom("Thomy");
     jules.setPrenom("Thomy");
+
     checkTables("Changement du nom de tous les contacts en Thomy", gdb, {thomas, jules});
-    gdb->clearTables();
 }
 
 /**
@@ -1120,15 +1179,22 @@ void testUpdateChangementNomContact(GestionBDD *gdb, string nomTable, map<string
  * @param modifications La modification à faire
  * @param conditions Les conditions pour ne modifier que Thomas
  */
-void testUpdateChangementNomThomas(GestionBDD *gdb, string nomTable, map<string, string> modifications, map<string, list<string>> conditions){
+void testUpdateChangementNomThomas(GestionBDD *gdb){
     Contact thomas = Contact("Ratu", "Thomas", "Total", "06 52 48 61 34", "photoThomas.jpg", "thomas.ratu@mail.com");
     Contact jules = Contact("Siba", "Jules", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+
+    map<string, string> modif;
+    modif["Prenom"] = "Thomy";
+    map<string, list<string>> conditions;
+    conditions["Nom"] = {"Ratu"};
+
     gdb->insertData(thomas);
     gdb->insertData(jules);
-    gdb->updateData(nomTable, modifications, conditions);
+    gdb->updateData("Contact", modif, conditions);
+
     thomas.setPrenom("Thomy");
+
     checkTables("Changement du nom de Thomas en Thomy", gdb, {thomas, jules});
-    gdb->clearTables();
 }
 
 /**
@@ -1136,14 +1202,13 @@ void testUpdateChangementNomThomas(GestionBDD *gdb, string nomTable, map<string,
  * @param gdb La base de donnée
  */
 void testUpdate(GestionBDD *gdb){
-    map<string, string> modif;
-    modif["Prenom"] = "Thomy";
-    testUpdateChangementNomContact(gdb, "Contact", modif);
-
-    map<string, list<string>> conditions;
-    conditions["Nom"] = {"Ratu"};
-    testUpdateChangementNomThomas(gdb, "Contact", modif, conditions);
+    testUpdateChangementNomContact(gdb);
+    testUpdateChangementNomThomas(gdb);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                    Tests de requete spéciales                                                   ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void testNombreContact(GestionBDD *gdb){
     Contact p1 = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
@@ -1159,6 +1224,7 @@ void testNombreContact(GestionBDD *gdb){
         REUSSI++;
     else
         RATE++;
+    gdb->clearTables();
 }
 
 void testInteractionEntreDeuxDates(GestionBDD *gdb){
@@ -1193,10 +1259,90 @@ void testInteractionEntreDeuxDates(GestionBDD *gdb){
 
 }
 
+void testTodoEntreDeuxDatesPourUnContact(GestionBDD *gdb){
+    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+
+    Interaction tel("rdv par telephone", thomas);
+    Interaction compta("demande d'info pour la comptabilite", thomas);
+    Interaction recap("recap de la journee", thomas);
+    Interaction meeting("meeting avec les devs", jules);
+    Interaction presentation("presentation du projet", jules);
+    Interaction edt("creation de l'emploi du temps", jules);
+
+    tel.setDateCreation(Date(10, 10, 2021));
+    compta.setDateCreation(Date(20, 12, 2021));
+    meeting.setDateCreation(Date(16, 11, 2021));
+    presentation.setDateCreation(Date(12, 12, 2021));
+    edt.setDateCreation(Date(15, 12, 2021));
+
+    Todo todoCompta = Todo("faire compta", &compta, Date(8, 1, 2022));
+    Todo rappeler = Todo("Rappeler", &tel, Date(16, 10, 2022));
+    Todo confirmer = Todo("confirmer commande n°xyz", &tel);
+    Todo todoEdt = Todo("faire l'emploi du temps", &meeting, Date(15, 12, 2021));
+    Todo retard = Todo("Finir ce qui n'a pas ete fini dans la journee", &recap, Date(14, 12, 2021));
+
+    list<Contact> lContact = {thomas, jules};
+    list<Interaction> lInter = {tel, meeting, compta, recap, presentation, edt};
+    list<Todo> lTodo = {todoCompta, rappeler, confirmer, todoEdt, retard};
+    for (auto &it : lContact)
+        gdb->insertData(it);
+    for (auto &it : lInter)
+        gdb->insertData(it);
+    for (auto &it : lTodo)
+        gdb->insertData(it);
+
+    list<Todo> res = gdb->selectTodoEntreDeuxDatesPourContact(Date(10, 12, 2021), Date(21, 12, 2021), &thomas);
+    checkSelect("Todo entre 10 et 21 decembre 2021 de thomas", res, {confirmer, retard});
+}
+
+void testTodoEntreDeuxDatesPourTousContact(GestionBDD *gdb){
+    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+
+    Interaction tel("rdv par telephone", thomas);
+    Interaction compta("demande d'info pour la comptabilite", thomas);
+    Interaction recap("recap de la journee", thomas);
+    Interaction meeting("meeting avec les devs", jules);
+    Interaction presentation("presentation du projet", jules);
+    Interaction edt("creation de l'emploi du temps", jules);
+
+    tel.setDateCreation(Date(10, 10, 2021));
+    compta.setDateCreation(Date(20, 12, 2021));
+    meeting.setDateCreation(Date(16, 11, 2021));
+    presentation.setDateCreation(Date(12, 12, 2021));
+    edt.setDateCreation(Date(15, 12, 2021));
+
+    Todo todoCompta = Todo("faire compta", &compta, Date(8, 1, 2022));
+    Todo rappeler = Todo("Rappeler", &tel, Date(16, 10, 2021));
+    Todo confirmer = Todo("confirmer commande n°xyz", &tel);
+    Todo todoEdt = Todo("faire l'emploi du temps", &meeting, Date(15, 12, 2021));
+    Todo retard = Todo("Finir ce qui n'a pas ete fini dans la journee", &recap, Date(13, 12, 2021));
+
+    list<Contact> lContact = {thomas, jules};
+    list<Interaction> lInter = {tel, meeting, compta, recap, presentation, edt};
+    list<Todo> lTodo = {todoCompta, rappeler, confirmer, todoEdt, retard};
+    for (auto it : lContact)
+        gdb->insertData(it);
+    for (auto it : lInter)
+        gdb->insertData(it);
+    for (auto it : lTodo)
+        gdb->insertData(it);
+
+    list<Todo> res = gdb->selectTodoEntreDeuxDatesPourContact(Date(10, 12, 2021), Date(21, 12, 2021));
+    checkSelect("Todo entre 10 et 21 decembre de thomas", res, {confirmer, todoEdt, retard});
+}
+
 void testRequetesSpeciales(GestionBDD *gdb){
     testNombreContact(gdb);
     testInteractionEntreDeuxDates(gdb);
+    //testTodoEntreDeuxDatesPourUnContact(gdb);
+    //testTodoEntreDeuxDatesPourTousContact(gdb);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                    Main                                                                         ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * @brief testsDB Les tests sur la partie base de donnée
@@ -1217,7 +1363,7 @@ void testsDB(GestionBDD *gdb){
  */
 void tests(GestionBDD *gdb){
     testsDB(gdb);
-    //testsObjets();
+    testsObjets();
     cout << "Nombre de tests: " + to_string(RATE + REUSSI) + "\nNombre de tests valides: " + to_string(REUSSI)
                   + "\nNombre de tests rate: " + to_string(RATE) << endl;
 }

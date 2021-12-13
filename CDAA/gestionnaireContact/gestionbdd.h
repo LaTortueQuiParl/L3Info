@@ -86,6 +86,7 @@ public:
     int countTable(string nomTable);
 
     list<Interaction> selectInteractionEntreDeuxDates(Date d1, Date d2);
+    list<Todo> selectTodoEntreDeuxDatesPourContact(Date d1, Date d2, Contact *contact = nullptr);
 };
 
 #endif // GESTIONBDD_H

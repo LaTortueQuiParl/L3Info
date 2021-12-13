@@ -31,6 +31,11 @@ void GestionContacts::addContact(Contact &c){
         return;
     }
     for(auto v=this->listContact.begin() ; v!=this->listContact.end(); v++){
+        if ((*v)->getTelephone() == c.getTelephone()){
+            throw invalid_argument("ce contact { "
+                                   + c.getNom() + " " + c.getPrenom()
+                                   + " } a le meme numero de telephone qu'un autre contact dans la liste");
+        }
         if (**v == c){
             throw invalid_argument("ce contact { "
                                    + c.getNom() + " " + c.getPrenom()

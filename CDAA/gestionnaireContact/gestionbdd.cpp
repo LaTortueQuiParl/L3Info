@@ -32,7 +32,7 @@ void GestionBDD::createTables(){
                           "nom varchar(255) NOT NULL,"
                           "prenom varchar(255) NOT NULL,"
                           "entreprise varchar(255) NOT NULL,"
-                          "telephone integer NOT NULL,"
+                          "telephone integer NOT NULL UNIQUE,"
                           "photo varchar(255) NOT NULL,"
                           "mail varchar(255) NOT NULL"
                           " )";
@@ -170,7 +170,7 @@ void GestionBDD::insertData(Todo t){
     }
 }
 
-QString craftSelect(string table, map<string, list<string>> mapConditions){
+QString craftSelect(string table, map<string, list<string>> mapConditions = {}){
     QMap<string, list<string>> QmapConditions(mapConditions);
     QString conditions = "";
     if (QmapConditions.empty() == true){
@@ -180,6 +180,9 @@ QString craftSelect(string table, map<string, list<string>> mapConditions){
             return QString("SELECT contenu, date, idContact FROM %1").arg(QString::fromStdString(table));
         else if (table == "Todo")
             return QString("SELECT contenu, deadline, idInteraction FROM %1").arg(QString::fromStdString(table));
+
+    } else if (QmapConditions.contains("idContact") && table=="Todo"){
+        return QString("SELECT contenu, deadline, idInteraction FROM Todo, Contact WHERE idContact=Contact.id");
     } else {
         QMapIterator<string, list<string>> condition(QmapConditions);
         while (condition.hasNext()){
@@ -197,8 +200,10 @@ QString craftSelect(string table, map<string, list<string>> mapConditions){
         return QString("SELECT nom, prenom, entreprise, telephone, photo, mail FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions);
     else if (table == "Interaction")
         return QString("SELECT contenu, date, idContact FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions);
-    else
+    else if (table == "Todo")
         return QString("SELECT contenu, deadline, idInteraction FROM %1 WHERE %2").arg(QString::fromStdString(table), conditions);
+    else
+        throw invalid_argument("Impossible de faire une selection sur une table qui n'existe pas dans la base de donnee");
 }
 
 list<Contact> GestionBDD::selectQueryContact(map<string, list<string>> mapConditions){
@@ -225,7 +230,8 @@ list<Interaction> GestionBDD::selectQueryInteraction(map<string, list<string>> m
     QSqlQuery qSelect;
     QString select = craftSelect("Interaction", mapConditions);
     list<Interaction> res;
-    if (!qSelect.exec(select)){
+    qSelect.prepare(select);
+    if (!qSelect.exec()){
         throw invalid_argument("Impossible d'executer le select : " + select.toStdString());
     } else {
         while (qSelect.next()){
@@ -251,8 +257,17 @@ list<Todo> GestionBDD::selectQueryTodo(map<string, list<string>> mapConditions){
             map<string, list<string>> mapIdInteraction;
             mapIdInteraction["id"] = {qSelect.value(2).toString().toStdString()};
             Interaction todoInteraction = selectQueryInteraction(mapIdInteraction).front();
-            Todo t(qSelect.value(0).toString().toStdString(), &todoInteraction);
-            res.push_back(t);
+            QStringList listDeadline = qSelect.value(1).toString().split("/");
+            Date deadline = Date(listDeadline.at(0).toInt(), listDeadline.at(1).toInt(), listDeadline.at(2).toInt());
+            Date ajd = Date();
+            if (deadline == ajd){
+                Todo t = Todo(qSelect.value(0).toString().toStdString(), &todoInteraction);
+                res.push_back(t);
+            }
+            else{
+                Todo t = Todo(qSelect.value(0).toString().toStdString(), &todoInteraction, deadline);
+                res.push_back(t);
+            }
         }
     }
     return res;
@@ -334,4 +349,15 @@ list<Interaction> GestionBDD::selectInteractionEntreDeuxDates(Date d1, Date d2){
         }
     }
     return res;
+}
+
+list<Todo> GestionBDD::selectTodoEntreDeuxDatesPourContact(Date d1, Date d2, Contact *contact){
+    QSqlQuery qSelectTodo;
+    Contact tmp = Contact();
+    if (!(contact == nullptr)){
+        qSelectTodo.prepare("SELECT contenu, deadline, idInteraction FROM Todo WHERE :conditions");
+    } else {
+        qSelectTodo.prepare("SELECT contenu, deadline, idInteraction FROM Todo");
+    }
+    return {};
 }
