@@ -3,13 +3,12 @@
 #include <QFileDialog>
 #include <QDebug>
 
-AjoutContactDialog::AjoutContactDialog(QWidget *parent, GestionContacts* gestCont, GestionBDD* bdd) :
+AjoutContactDialog::AjoutContactDialog(QWidget *parent, GestionContacts* gestCont) :
     QDialog(parent),
     ui(new Ui::AjoutContactDialog)
 {
     ui->setupUi(this);
     gesCont = gestCont;
-    baseDD = bdd;
 
     QObject::connect(ui->ajoutPPbutton,SIGNAL(clicked()),this,SLOT(AjoutPPButton()));
     QObject::connect(ui->validAjoutContactButton,SIGNAL(clicked()),this,SLOT(ValidAjoutContactButton()));
@@ -56,7 +55,6 @@ void AjoutContactDialog::ValidAjoutContactButton()
         c->setPhoto(img.toStdString());
 
         this->gesCont->addContact(*c);
-        baseDD->insertData(*c);
     }
     this->clearFenetre();
     this->close();
