@@ -9,6 +9,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ajoutcontactdialog.cpp \
+    ajoutinteractiondialog.cpp \
     contact.cpp \
     gestioncontacts.cpp \
     gestioninteractions.cpp \
@@ -21,6 +23,8 @@ SOURCES += \
     gestionbdd.cpp
 
 HEADERS += \
+    ajoutcontactdialog.h \
+    ajoutinteractiondialog.h \
     contact.h \
     gestioncontacts.h \
     gestioninteractions.h \
@@ -32,6 +36,8 @@ HEADERS += \
     gestionbdd.h
 
 FORMS += \
+    ajoutcontactdialog.ui \
+    ajoutinteractiondialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

@@ -20,10 +20,9 @@ class Contact
 {
 private:
     string nom, prenom, entreprise, mail, telephone, photo;
-    GestionInteractions gestionInteractions;
+    GestionInteractions* gestionInteractions;
     Date dateCrea;
     Date dernModif;
-
 
 public:
     Contact();
@@ -83,7 +82,7 @@ public:
      * @brief getInteractions renvoie l'objet gestionInteractions qui contient toutes les interactions de ce contact
      * @return l'objet gestionInteraction
      */
-    GestionInteractions getInteractions();
+    GestionInteractions* getInteractions();
 
     /**
      * @brief setNom modifie le nom du contact.

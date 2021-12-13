@@ -10,6 +10,8 @@
 #include "mainwindow.h"
 #include <QApplication>
 
+#include "ajoutcontactdialog.h"
+
 using namespace std;
 
 int RATE = 0; // Nombre de tests rate
@@ -1372,8 +1374,9 @@ int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    tests(w.getDb());
-    //w.show();
-    //return a.exec();
-    return 0;
+    //AjoutContactDialog aj;
+    //tests(w.getDb());
+    w.show();
+    return a.exec();
+    //return 0;
 }
