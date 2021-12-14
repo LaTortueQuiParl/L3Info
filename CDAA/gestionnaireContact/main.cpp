@@ -415,8 +415,8 @@ void testInteraction(){
 
     Interaction i2 = Interaction("apel aujourd'hui par tél., interessant", p);
 
-    i2.setDateCreation(Date(25, 12, 2021)); // Ne devrait pas lancer d'exception
-    TestOutputFormat(classTest, "comparaison entre une intreaction créée aujourd'hui et une le 25/12/2021", i<i2, true);
+    i2.setDateCreation(Date(25, 12, 2022)); // Ne devrait pas lancer d'exception
+    TestOutputFormat(classTest, "comparaison entre une intreaction créée aujourd'hui et une le 25/12/2022", i<i2, true);
 
     ExceptionTestOutputFormat("interaction qui n'a pas de contenu", "", &p);
 
@@ -480,26 +480,26 @@ void testDate(){
     TestOutputFormat(classTest, "Initialisation par defaut, mois de la date courante", d.getMois(), date->tm_mon + 1);
     TestOutputFormat(classTest, "Initialisation par defaut, jour de la date courante", d.getJour(), date->tm_mday);
 
-    Date noel2021 = Date(25, 12, 2021);
-    TestOutputFormat(classTest, "Initialisation custom, annee de noel 2021", noel2021.getAnnee(), 2021);
-    TestOutputFormat(classTest, "Initialisation custom, mois de noel 2021", noel2021.getMois(), 12);
-    TestOutputFormat(classTest, "Initialisation custom, jour de noel 2021", noel2021.getJour(), 25);
+    Date noel2022 = Date(25, 12, 2022);
+    TestOutputFormat(classTest, "Initialisation custom, annee de noel 2022", noel2022.getAnnee(), 2022);
+    TestOutputFormat(classTest, "Initialisation custom, mois de noel 2022", noel2022.getMois(), 12);
+    TestOutputFormat(classTest, "Initialisation custom, jour de noel 2022", noel2022.getJour(), 25);
 
-    Date nouvelAn2022 = Date(01, 01, 2022);
-    TestOutputFormat(classTest, "comparaison entre la date de noel 2021 et nouvel an 2022", noel2021 < nouvelAn2022, true);
-    TestOutputFormat(classTest, "comparaison entre nouvel an 2022 et la date de noel 2021", nouvelAn2022 < noel2021, false);
+    Date nouvelAn2023 = Date(01, 01, 2023);
+    TestOutputFormat(classTest, "comparaison entre la date de noel 2022 et nouvel an 2023", noel2022 < nouvelAn2023, true);
+    TestOutputFormat(classTest, "comparaison entre nouvel an 2023 et la date de noel 2022", nouvelAn2023 < noel2022, false);
 
-    Date premierFevrier2022 = Date(01, 02, 2022);
-    TestOutputFormat(classTest, "comparaison entre 01/02/2022 et 01/01/2022", nouvelAn2022 < premierFevrier2022, true);
+    Date premierFevrier2023 = Date(01, 02, 2023);
+    TestOutputFormat(classTest, "comparaison entre 01/02/2023 et 01/01/2023", nouvelAn2023 < premierFevrier2023, true);
 
-    Date deuxJanvier2022 = Date(2, 1, 2022);
-    TestOutputFormat(classTest, "comparaison entre 01/01/2022 et 02/01/2022", nouvelAn2022 < deuxJanvier2022, true);
+    Date deuxJanvier2023 = Date(2, 1, 2023);
+    TestOutputFormat(classTest, "comparaison entre 01/01/2023 et 02/01/2023", nouvelAn2023 < deuxJanvier2023, true);
 
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {32, 1, 2021});
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {4, 45, 2021});
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {30, 2, 2021});
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {29, 2, 2022});
-    ExceptionTestOutputFormat("Creation de la date 32/01/2021", {31, 4, 2022});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2022", {32, 1, 2022});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2022", {4, 45, 2022});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2022", {30, 2, 2022});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2022", {29, 2, 2023});
+    ExceptionTestOutputFormat("Creation de la date 32/01/2022", {31, 4, 2023});
 }
 
 /**
@@ -531,7 +531,7 @@ void testGestionContacts(){
     TestOutputFormat(classTest, "remplacement de la liste par une nouvelle qui a 2 contact ayant la meme date de creation", gc.getContacts(), lp1);
 
     Contact pers2 = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
-    pers2.setDateCrea(Date(25, 12, 2022));
+    pers2.setDateCrea(Date(25, 12, 2023));
     list<Contact*> lp2 = {&p1, &pers2};
     gc.setContacts(lp2);
     TestOutputFormat(classTest, "remplacement de la liste par une nouvelle qui a 2 contact ayant deux dates de creation differentes, triee", gc.getContacts(), lp2);
@@ -573,7 +573,7 @@ void testGestionContacts(){
 
     gc.supprContact(p2);
     Contact p7 = Contact("Alexandre", "Nirula", "Yamaha", "06 98 46 20 38", "photoAlexandre.jpg", "alexandre.nirula@mail.com");
-    p7.setDateCrea(Date(25,12,2021));
+    p7.setDateCrea(Date(25,12,2022));
     gc.addContact(p7);
     gc.addContact(p2);
     TestOutputFormat(classTest, "insertion d'un contact avec une date de creation plus avancees que les autres contact", gc.getContacts(), {&p1, &p3, &p2, &p7});
@@ -625,7 +625,7 @@ void testGestionInteractions(){
     ExceptionTestOutputFormat("suppression d'une interaction qui n'est pas dans la liste", &i4, &gi, "suppr");
     TestOutputFormat(classTest, "verification que la suppression d'une interaction qui n'est pas dans la liste ne la modifie pas", gi.getInteractions(), {&i2, &i1});
 
-    i2.setDateCreation(Date(25, 12, 2021));
+    i2.setDateCreation(Date(25, 12, 2022));
     list<Interaction*> li = {&i1, &i2};
     gi.setInteractions(li);
     TestOutputFormat(classTest, "remplacement de la liste par une liste d'interaction triee", gi.getInteractions(), li);
@@ -638,7 +638,7 @@ void testGestionInteractions(){
     TestOutputFormat(classTest, "remplacement de la liste par une liste d'interaction non triee", gi.getInteractions(), li2);
 
     Interaction i5 = Interaction("travailler", p1);
-    i5.setDateCreation(Date(24, 12, 2021));
+    i5.setDateCreation(Date(24, 12, 2022));
     gi.addInteraction(i5);
     TestOutputFormat(classTest, "ajout d'une interaction qui n'a pas ete creee en dernier", gi.getInteractions(), {&i1, &i5, &i2});
 }
@@ -653,7 +653,7 @@ void testGestionTodos(){
     GestionTodos gt = GestionTodos();
     Todo t = Todo("manger", &i);
     Todo t1 = Todo("boire", &i);
-    //const Date hier = Date(24, 10, 2021);
+    //const Date hier = Date(24, 10, 2022);
     Todo t2 = Todo("dormir", &i);
 
     TestOutputFormat(classTest, "recuperation de la list apres initialisation", gt.getTodos(), {});
@@ -672,7 +672,7 @@ void testGestionTodos(){
     TestOutputFormat(classTest, "remplacement de la liste des todos", gt.getTodos(), {&t2, &t1});
 
     try {
-        t2.setDeadline(Date(25, 12, 2021));
+        t2.setDeadline(Date(25, 12, 2022));
     }  catch (const invalid_argument &e) {
         cerr << e.what() << endl;
     }
@@ -680,7 +680,7 @@ void testGestionTodos(){
 
     Todo t3 = Todo("boire", &i);
     try {
-        t3.setDeadline(Date(25, 12, 2021));
+        t3.setDeadline(Date(25, 12, 2022));
         gt.addTodo(t3);
     }  catch (const invalid_argument &e) {
         cerr << e.what() << endl;
@@ -698,7 +698,7 @@ void testGestionTodos(){
     ExceptionTestOutputFormat("suppression d'un todo qui n'est pas dans la liste mais qui a les memes attribu qu'un todo dans la liste", &t4, &gt, "suppr");
     TestOutputFormat(classTest, "verification que la suppression d'un element qui n'est pas dans la liste mais qui a les memes attributs qu'un todo dans la listene la modifie pas", gt.getTodos(), {&t1, &t2, &t3});
 
-    t5.setDeadline(Date(25,12,2021));
+    t5.setDeadline(Date(25,12,2022));
     list<Todo*> lt = {&t4, &t5};
     gt.setTodos(lt);
     TestOutputFormat(classTest, "remplacement de la liste de todo par une liste de todo triee", gt.getTodos(), lt);
@@ -710,7 +710,7 @@ void testGestionTodos(){
     });
     TestOutputFormat(classTest, "remplacement de la liste de todo par une liste de todo non triee", gt.getTodos(), lt2);
 
-    Todo t6 = Todo("revenir", &i, Date(24,12,2021));
+    Todo t6 = Todo("revenir", &i, Date(24,12,2022));
     gt.addTodo(t6);
     TestOutputFormat(classTest, "ajout d'un todo qui n'a pas la deadline la plus vieille", gt.getTodos(), {&t4, &t6, &t5});
 }
@@ -1191,7 +1191,7 @@ void testDeleteTousTodo(GestionBDD *gdb, string nomTest){
 
     Todo attendreAppel = Todo("Attendre d'etre rappele", &tel);
     Todo appel = Todo("Appeler dans 2 jours si il n'y a pas de nouvelle", &tel);
-    Todo edt = Todo("Faire un emploi du temps", &tel, Date(14,12,2021));
+    Todo edt = Todo("Faire un emploi du temps", &tel, Date(14,12,2022));
 
     gdb->insertData(thomas);
     gdb->insertData(tel);
@@ -1216,7 +1216,7 @@ void testDelete1TodoEtInsertionNouveau(GestionBDD *gdb, string nomTest){
 
     Todo attendreAppel = Todo("Attendre d'etre rappele", &tel);
     Todo appel = Todo("Appeler dans 2 jours si il n'y a pas de nouvelle", &tel);
-    Todo edt = Todo("Faire un emploi du temps", &tel, Date(14,12,2021));
+    Todo edt = Todo("Faire un emploi du temps", &tel, Date(14,12,2022));
 
     gdb->insertData(thomas);
     gdb->insertData(tel);
@@ -1356,7 +1356,7 @@ void testSelect(GestionBDD *gdb){
 
     Todo attendreAppel = Todo("Attendre d'etre rappele", &tel);
     Todo appel = Todo("Appeler dans 2 jours si il n'y a pas de nouvelle", &tel);
-    Todo edt = Todo("Faire un emploi du temps", &meeting, Date(14,12,2021));
+    Todo edt = Todo("Faire un emploi du temps", &meeting, Date(14,12,2022));
     list<Todo> lTodoBDD = {attendreAppel, appel, edt};
 
     gdb->insertData(thomas);
@@ -1508,12 +1508,12 @@ void testInteractionEntreDeuxDates(GestionBDD *gdb){
     Interaction presentation("presentation du projet", p2);
     Interaction edt("creation de l'emploi du temps", p2);
 
-    tel.setDateCreation(Date(1, 2, 2021));
-    meeting.setDateCreation(Date(16, 11, 2021));
-    compta.setDateCreation(Date(20, 12, 2021));
-    recap.setDateCreation(Date(3, 3, 2022));
-    presentation.setDateCreation(Date(12, 12, 2021));
-    edt.setDateCreation(Date(15, 12, 2021));
+    tel.setDateCreation(Date(1, 2, 2022));
+    meeting.setDateCreation(Date(16, 11, 2022));
+    compta.setDateCreation(Date(20, 12, 2022));
+    recap.setDateCreation(Date(3, 3, 2023));
+    presentation.setDateCreation(Date(12, 12, 2022));
+    edt.setDateCreation(Date(15, 12, 2022));
 
     gdb->insertData(p1);
     gdb->insertData(p2);
@@ -1524,50 +1524,9 @@ void testInteractionEntreDeuxDates(GestionBDD *gdb){
     gdb->insertData(presentation);
     gdb->insertData(edt);
 
-    list<Interaction> res = gdb->selectInteractionEntreDeuxDates(Date(1, 12, 2021), Date(1, 1, 2022));
+    list<Interaction> res = gdb->selectInteractionEntreDeuxDates(Date(1, 12, 2022), Date(1, 1, 2023));
     checkSelect("Selection d'interaction comprise entre 2 dates", res, {compta, presentation, edt});
 
-}
-
-/**
- * @brief testTodoEntreDeuxDatesPourUnContact teste si il est possible de recuperer les todos d'un contact qui sont compris entre 2 dates
- * @param gdb La base de donnée
- */
-void testTodoEntreDeuxDatesPourUnContact(GestionBDD *gdb){
-    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
-    Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
-
-    Interaction tel("rdv par telephone", thomas);
-    Interaction compta("demande d'info pour la comptabilite", thomas);
-    Interaction recap("recap de la journee", thomas);
-    Interaction meeting("meeting avec les devs", jules);
-    Interaction presentation("presentation du projet", jules);
-    Interaction edt("creation de l'emploi du temps", jules);
-
-    tel.setDateCreation(Date(10, 10, 2021));
-    compta.setDateCreation(Date(20, 12, 2021));
-    meeting.setDateCreation(Date(16, 11, 2021));
-    presentation.setDateCreation(Date(12, 12, 2021));
-    edt.setDateCreation(Date(15, 12, 2021));
-
-    Todo todoCompta = Todo("faire compta", &compta, Date(8, 1, 2022));
-    Todo rappeler = Todo("Rappeler", &tel, Date(16, 10, 2022));
-    Todo confirmer = Todo("confirmer commande n°xyz", &tel);
-    Todo todoEdt = Todo("faire l'emploi du temps", &meeting, Date(15, 12, 2021));
-    Todo retard = Todo("Finir ce qui n'a pas ete fini dans la journee", &recap, Date(14, 12, 2021));
-
-    list<Contact> lContact = {thomas, jules};
-    list<Interaction> lInter = {tel, meeting, compta, recap, presentation, edt};
-    list<Todo> lTodo = {todoCompta, rappeler, confirmer, todoEdt, retard};
-    for (auto &it : lContact)
-        gdb->insertData(it);
-    for (auto &it : lInter)
-        gdb->insertData(it);
-    for (auto &it : lTodo)
-        gdb->insertData(it);
-
-    list<Todo> res = gdb->selectTodoEntreDeuxDatesPourContact(Date(10, 12, 2021), Date(21, 12, 2021), &thomas);
-    checkSelect("Todo entre 10 et 21 decembre 2021 de thomas", res, {confirmer, retard});
 }
 
 /**
@@ -1585,30 +1544,73 @@ void testTodoEntreDeuxDatesPourTousContact(GestionBDD *gdb){
     Interaction presentation("presentation du projet", jules);
     Interaction edt("creation de l'emploi du temps", jules);
 
-    tel.setDateCreation(Date(10, 10, 2021));
-    compta.setDateCreation(Date(20, 12, 2021));
-    meeting.setDateCreation(Date(16, 11, 2021));
-    presentation.setDateCreation(Date(12, 12, 2021));
-    edt.setDateCreation(Date(15, 12, 2021));
+    tel.setDateCreation(Date(10, 10, 2022));
+    compta.setDateCreation(Date(20, 12, 2022));
+    meeting.setDateCreation(Date(16, 11, 2022));
+    presentation.setDateCreation(Date(12, 12, 2022));
+    edt.setDateCreation(Date(15, 12, 2022));
 
-    Todo todoCompta = Todo("faire compta", &compta, Date(8, 1, 2022));
-    Todo rappeler = Todo("Rappeler", &tel, Date(16, 10, 2021));
+    Todo todoCompta = Todo("faire compta", &compta, Date(8, 1, 2023));
+    Todo rappeler = Todo("Rappeler", &tel, Date(16, 10, 2022));
     Todo confirmer = Todo("confirmer commande n°xyz", &tel);
-    Todo todoEdt = Todo("faire l'emploi du temps", &meeting, Date(15, 12, 2021));
-    Todo retard = Todo("Finir ce qui n'a pas ete fini dans la journee", &recap, Date(13, 12, 2021));
+    Todo todoEdt = Todo("faire l'emploi du temps", &meeting, Date(15, 12, 2022));
+    Todo retard = Todo("Finir ce qui n'a pas ete fini dans la journee", &recap, Date(13, 12, 2022));
 
     list<Contact> lContact = {thomas, jules};
     list<Interaction> lInter = {tel, meeting, compta, recap, presentation, edt};
     list<Todo> lTodo = {todoCompta, rappeler, confirmer, todoEdt, retard};
     for (auto& it : lContact)
         gdb->insertData(it);
-    for (auto it : lInter)
+    for (auto& it : lInter)
         gdb->insertData(it);
-    for (auto it : lTodo)
+    for (auto& it : lTodo)
         gdb->insertData(it);
 
-    list<Todo> res = gdb->selectTodoEntreDeuxDatesPourContact(Date(10, 12, 2021), Date(21, 12, 2021));
-    checkSelect("Todo entre 10 et 21 decembre de thomas", res, {confirmer, todoEdt, retard});
+    list<Todo> res = gdb->selectTodoEntreDeuxDatesPourContact(Date(10, 12, 2022), Date(21, 12, 2022));
+    checkSelect("Todo entre 10 et 21 decembre de thomas", res, {todoEdt, retard});
+    gdb->clearTables();
+}
+
+/**
+ * @brief testTodoEntreDeuxDatesPourUnContact teste si il est possible de recuperer les todos d'un contact qui sont compris entre 2 dates
+ * @param gdb La base de donnée
+ */
+void testTodoEntreDeuxDatesPourUnContact(GestionBDD *gdb){
+    Contact thomas = Contact("Thomas", "Ratu", "Total", "06 52 48 61 34", "photoThoms.jpg", "thomas.rate@mail.com");
+    Contact jules = Contact("Jules", "Siba", "Cafe", "06 46 87 31 57", "photoJules.jpg", "jules.siba@mail.com");
+
+    Interaction tel("rdv par telephone", thomas);
+    Interaction compta("demande d'info pour la comptabilite", thomas);
+    Interaction recap("recap de la journee", thomas);
+    Interaction meeting("meeting avec les devs", jules);
+    Interaction presentation("presentation du projet", jules);
+    Interaction edt("creation de l'emploi du temps", jules);
+
+    tel.setDateCreation(Date(10, 10, 2022));
+    compta.setDateCreation(Date(20, 12, 2022));
+    meeting.setDateCreation(Date(16, 11, 2022));
+    presentation.setDateCreation(Date(12, 12, 2022));
+    edt.setDateCreation(Date(15, 12, 2022));
+
+    Todo todoCompta = Todo("faire compta", &compta, Date(8, 1, 2023));
+    Todo rappeler = Todo("Rappeler", &tel, Date(16, 10, 2023));
+    Todo confirmer = Todo("confirmer commande n xyz", &tel);
+    Todo todoEdt = Todo("faire l'emploi du temps", &meeting, Date(15, 12, 2022));
+    Todo retard = Todo("Finir ce qui n'a pas ete fini dans la journee", &recap, Date(14, 12, 2022));
+
+    list<Contact> lContact = {thomas, jules};
+    list<Interaction> lInter = {tel, meeting, compta, recap, presentation, edt};
+    list<Todo> lTodo = {todoCompta, rappeler, confirmer, todoEdt, retard};
+    for (auto &it : lContact)
+        gdb->insertData(it);
+    for (auto &it : lInter)
+        gdb->insertData(it);
+    for (auto &it : lTodo)
+        gdb->insertData(it);
+
+    list<Todo> res = gdb->selectTodoEntreDeuxDatesPourContact(Date(10, 12, 2021), Date(21, 12, 2022), &thomas);
+    checkSelect("Todo entre 10 et 21 decembre 2022 de thomas", res, {confirmer, retard});
+    gdb->clearTables();
 }
 
 /**
@@ -1618,8 +1620,8 @@ void testTodoEntreDeuxDatesPourTousContact(GestionBDD *gdb){
 void testRequetesSpeciales(GestionBDD *gdb){
     testNombreContact(gdb);
     testInteractionEntreDeuxDates(gdb);
-    //testTodoEntreDeuxDatesPourUnContact(gdb);
-    //testTodoEntreDeuxDatesPourTousContact(gdb);
+    testTodoEntreDeuxDatesPourTousContact(gdb);
+    testTodoEntreDeuxDatesPourUnContact(gdb);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

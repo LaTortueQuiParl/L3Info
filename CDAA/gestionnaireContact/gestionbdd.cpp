@@ -116,7 +116,7 @@ void GestionBDD::createTables(){
     string tableInteraction = "CREATE TABLE IF NOT EXISTS Interaction( "
                               "id integer PRIMARY KEY,"
                               "contenu varchar(255) NOT NULL,"
-                              "date varchar(255) NOT NULL,"
+                              "dates varchar(255) NOT NULL,"
                               "idContact integer NOT NULL,"
                               "CONSTRAINT cle_etrangere FOREIGN KEY(idContact) REFERENCES Contact(id) ON DELETE CASCADE"
                               " )";
@@ -322,6 +322,23 @@ list<Interaction> GestionBDD::selectQueryInteraction(map<string, list<string>> m
     return res;
 }
 
+Todo craftTodo(GestionBDD *gdb, QSqlQuery qSelect){
+    map<string, list<string>> mapIdInteraction;
+    mapIdInteraction["id"] = {qSelect.value(2).toString().toStdString()};
+    Interaction todoInteraction = gdb->selectQueryInteraction(mapIdInteraction).front();
+    QStringList listDeadline = qSelect.value(1).toString().split("/");
+    Date deadline = Date(listDeadline.at(0).toInt(), listDeadline.at(1).toInt(), listDeadline.at(2).toInt());
+    Date ajd = Date();
+    if (deadline == ajd){
+        Todo t = Todo(qSelect.value(0).toString().toStdString(), &todoInteraction);
+        return t;
+    }
+    else{
+        Todo t = Todo(qSelect.value(0).toString().toStdString(), &todoInteraction, deadline);
+        return t;
+    }
+}
+
 list<Todo> GestionBDD::selectQueryTodo(map<string, list<string>> mapConditions){
     QSqlQuery qSelect;
     QString select = craftSelect("Todo", mapConditions);
@@ -330,20 +347,7 @@ list<Todo> GestionBDD::selectQueryTodo(map<string, list<string>> mapConditions){
         throw invalid_argument("Impossible d'executer le select : " + select.toStdString());
     } else {
         while (qSelect.next()){
-            map<string, list<string>> mapIdInteraction;
-            mapIdInteraction["id"] = {qSelect.value(2).toString().toStdString()};
-            Interaction todoInteraction = selectQueryInteraction(mapIdInteraction).front();
-            QStringList listDeadline = qSelect.value(1).toString().split("/");
-            Date deadline = Date(listDeadline.at(0).toInt(), listDeadline.at(1).toInt(), listDeadline.at(2).toInt());
-            Date ajd = Date();
-            if (deadline == ajd){
-                Todo t = Todo(qSelect.value(0).toString().toStdString(), &todoInteraction);
-                res.push_back(t);
-            }
-            else{
-                Todo t = Todo(qSelect.value(0).toString().toStdString(), &todoInteraction, deadline);
-                res.push_back(t);
-            }
+            res.push_back(craftTodo(this, qSelect));
         }
     }
     return res;
@@ -399,12 +403,32 @@ list<Interaction> GestionBDD::selectInteractionEntreDeuxDates(Date d1, Date d2){
 }
 
 list<Todo> GestionBDD::selectTodoEntreDeuxDatesPourContact(Date d1, Date d2, Contact *contact){
+    list<Todo> res = {};
     QSqlQuery qSelectTodo;
-    Contact tmp = Contact();
-    if (!(contact == nullptr)){
-        qSelectTodo.prepare("SELECT contenu, deadline, idInteraction FROM Todo WHERE :conditions");
+    if (contact == nullptr){
+        qSelectTodo.prepare(craftSelect("Todo"));
     } else {
-        qSelectTodo.prepare("SELECT contenu, deadline, idInteraction FROM Todo");
+        qSelectTodo.prepare("SELECT Todo.contenu, deadline, idInteraction FROM Todo, Interaction, Contact WHERE Todo.idInteraction=Interaction.id AND Interaction.idContact=Contact.id AND "
+                            "nom=:nom AND prenom=:prenom AND entreprise=:entreprise AND telephone=:telephone AND photo=:photo AND mail=mail");
+        qSelectTodo.bindValue(":nom", QString::fromStdString(contact->getNom()));
+        qSelectTodo.bindValue(":prenom", QString::fromStdString(contact->getPrenom()));
+        qSelectTodo.bindValue(":entreprise", QString::fromStdString(contact->getEntreprise()));
+        qSelectTodo.bindValue(":telephone", QString::fromStdString(contact->getTelephone()));
+        qSelectTodo.bindValue(":photo", QString::fromStdString(contact->getPhoto()));
+        qSelectTodo.bindValue(":mail", QString::fromStdString(contact->getMail()));
     }
-    return {};
+    if (!qSelectTodo.exec()){
+        throw invalid_argument("Impossible de recuper les todo entre Deux dates");
+    } else {
+        while(qSelectTodo.next()) {
+            QStringList listDeadline = qSelectTodo.value(1).toString().split("/");
+            Date deadline = Date(listDeadline.at(0).toInt(), listDeadline.at(1).toInt(), listDeadline.at(2).toInt());
+            if (d1 < d2) {
+                if (deadline < d2 && d1 < deadline){
+                    res.push_back(craftTodo(this, qSelectTodo));
+                }
+            }
+        }
+    }
+    return res;
 }
