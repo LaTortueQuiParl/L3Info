@@ -14,7 +14,7 @@ typedef struct
 }joueur;
 
 
-joueur* NewJoueur(int isHumain);
+joueur* NewJoueur(int isHumain, char* pseu, unsigned int i);
 void destroyJoueur(joueur* j);
 void ajoutCarteMain(joueur* j, unsigned int carte);
 void jouer(joueur* j);

@@ -30,6 +30,14 @@ check: $(TEST) $(SRC)
 debug: main.c $(SRC)
 	$(CC) $(DEBUGFLAGS) $(INC) $^ -o $(BINDEBUG)
 
+serv: serveur.c $(SRC)
+	$(CC) $(DEBUGFLAGS) $(INC) -pthread $^ -o Serveur
+	./Serveur
+
+client: client.c
+	$(CC) $(DEBUGFLAGS) $(INC) $^ -o Client
+	./Client
+
 clean:
 	rm $(OBJ) $(BIN)
 

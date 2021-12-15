@@ -13,7 +13,7 @@ typedef struct {
     joueur** listeJoueur; // Liste des joueurs
 }gestionnaireJeu;
 
-gestionnaireJeu* initGestionJeu();
+const gestionnaireJeu* initGestionJeu();
 void AjoutJoueur(gestionnaireJeu* gj, joueur* j);
 void destroyGestionnaire(gestionnaireJeu* gj);
 void initCartes(joueur* j);

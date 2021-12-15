@@ -1,20 +1,11 @@
-#include "joueur.h"
+#include "../Header/joueur.h"
 
 
-joueur* NewJoueur(int isHumain){
+joueur* NewJoueur(int isHumain, char* pseu, unsigned int i){
     joueur* j = (joueur*) calloc(1,sizeof(joueur));
-    j->pseudo = (unsigned char*) calloc(8,sizeof(unsigned char));
-    if(isHumain == 0){
-        sprintf(j->pseudo,"bot n%d",botId);
-        j->id = botId;
-        botId++;
-    }else{
-        printf("Veuillez entrer votre pseudo : ");
-        scanf("%s", j->pseudo);
-        j->id = joueurId;
-    }
+    j->pseudo = pseu;
     j->nbCartes = 0;
-
+    j->id = i;
     return j;
 }
 

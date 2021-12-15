@@ -1,7 +1,7 @@
 #include "gestionjeu.h"
 #include <time.h>
 
-gestionnaireJeu* initGestionJeu(){
+const gestionnaireJeu* initGestionJeu(){
     gestionnaireJeu* gj = (gestionnaireJeu*) calloc(1,sizeof(gestionnaireJeu));
     gj->deck = (int*) calloc(100,sizeof(int));
     for(int i=0; i<100 ; i++){
