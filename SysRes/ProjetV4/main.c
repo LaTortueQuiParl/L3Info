@@ -3,6 +3,9 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 typedef struct GestionDuJeu{
     int perdu;
@@ -17,14 +20,28 @@ void *thread_Joueur(void* arg){
 
     while (gestDuJeu->joueurcourant->nbCartes>0)
     {
-        int rnd = rand()%4;
-        sleep(rnd);
+        if(gestDuJeu->joueurcourant->humain == 0){
+            int rnd = rand()%4+1;
+            sleep(rnd);
 
-        printf("%s JOUE !\n", gestDuJeu->joueurcourant->pseudo);
-        gestDuJeu->perdu = jeu(gestDuJeu->joueurcourant, gestDuJeu->gj);
-        if(gestDuJeu->perdu == 0){
-            printf("%s Sort du jeu.\n",gestDuJeu->joueurcourant->pseudo);    
-            pthread_exit(EXIT_SUCCESS);        
+            printf("%s JOUE %d !\n", gestDuJeu->joueurcourant->pseudo, gestDuJeu->joueurcourant->cartesEnMain[0]);
+            gestDuJeu->perdu = jeu(gestDuJeu->joueurcourant, gestDuJeu->gj);
+            if(gestDuJeu->perdu == 0){
+                printf("%s Sort du jeu.\n",gestDuJeu->joueurcourant->pseudo);    
+                pthread_exit(EXIT_SUCCESS);        
+            }
+        }else{
+            char joue[256];
+            printf("Tapez j pour jouer\n");
+            scanf("%s", joue);
+            if(!strncmp(joue, "j", 1)){
+                printf("%s JOUE %d !\n", gestDuJeu->joueurcourant->pseudo, gestDuJeu->joueurcourant->cartesEnMain[0]);
+                gestDuJeu->perdu = jeu(gestDuJeu->joueurcourant, gestDuJeu->gj);
+                if(gestDuJeu->perdu == 0){
+                    printf("%s Sort du jeu.\n",gestDuJeu->joueurcourant->pseudo);    
+                    pthread_exit(EXIT_SUCCESS);        
+                }
+            }
         }
     }
     
@@ -39,7 +56,7 @@ int main(void){
 
     joueur* j1 = NewJoueur("TOTO", 0, 1);
     joueur* j2 = NewJoueur("Jean", 0, 2);
-    joueur* j3 = NewJoueur("Mark", 0, 3);
+    joueur* j3 = NewJoueur("Mark", 1, 3);
 
     AjoutJoueur(gj,j1);
     AjoutJoueur(gj,j2);
