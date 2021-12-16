@@ -56,7 +56,12 @@ int main(void){
 
     joueur* j1 = NewJoueur("TOTO", 0, 1);
     joueur* j2 = NewJoueur("Jean", 0, 2);
-    joueur* j3 = NewJoueur("Mark", 1, 3);
+
+    char pseu[10];
+    printf("Entrez Votre pseudo : \n");
+    scanf("%s", pseu);
+
+    joueur* j3 = NewJoueur(pseu, 1, 3);
 
     AjoutJoueur(gj,j1);
     AjoutJoueur(gj,j2);
