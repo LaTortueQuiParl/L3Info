@@ -1,0 +1,8 @@
+﻿---
+IncludeBlocks: Regroup
+KeepEmptyLinesAtTheStartOfBlocks: 'false'
+MaxEmptyLinesToKeep: '1'
+PointerAlignment: Left
+SortIncludes: 'true'
+
+...

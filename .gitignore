@@ -1,8 +1,10 @@
 CDAA/gestionnaireContact/gestionnaireContact.pro.user*
-CDAA/gestionnaireContact/html/
-CDAA/gestionnaireContact/latex/
+CDAA/gestionnaireContact/Doxygen/html/
+CDAA/gestionnaireContact/Doxygen/latex/
 CDAA/build*/
 CDAA/gestionnaireContact/Doxyfile.bak
 SysRes/projet/game
 SysRes/projet/test
 SysRes/projet/debug
+
+SysRes/ProjetV4/Sources/
