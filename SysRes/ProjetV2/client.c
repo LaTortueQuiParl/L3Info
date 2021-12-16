@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 int main(void){
 
@@ -25,6 +26,7 @@ int main(void){
 
     int connexion_statut = connect(socketClient, (const struct sockaddr *)&addrServer, sizeof(addrServer));
     if(connexion_statut == -1){
+        printf("Value of : %d\n", errno);
         printf("Il y a eu une erreur lors de la connexion de votre socket.\n\n");
     }
 
@@ -39,7 +41,7 @@ int main(void){
     send(socketClient, &response, sizeof(response), 0);
 
     recv(socketClient, &msgduserveur, sizeof(msgduserveur), 0);
-    //test
+
     while(1)
     {
     

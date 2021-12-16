@@ -10,7 +10,7 @@ typedef struct {
     unsigned int manche;
     unsigned int nbManche;
     unsigned int nbJoueurs;
-    joueur* listeJoueur; // Liste des joueurs
+    joueur** listeJoueur; // Liste des joueurs
 }gestionnaireJeu;
 
 gestionnaireJeu* initGestionJeu();
@@ -20,4 +20,4 @@ void initCartes(joueur* j);
 
 void distribuer(gestionnaireJeu* gj);
 
-void jeu(gestionnaireJeu* gj);
+int jeu(joueur* j, gestionnaireJeu* gj);

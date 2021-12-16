@@ -1,12 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-extern unsigned int botId;
-extern unsigned int joueurId;
-
 typedef struct
 {
-    unsigned char* pseudo;
+    char* pseudo;
     int humain; //0 : Bot ;; 1 : Humain
     unsigned int nbCartes;
     int* cartesEnMain;
@@ -14,7 +11,7 @@ typedef struct
 }joueur;
 
 
-joueur* NewJoueur(int isHumain, char* pseu, unsigned int i);
-void destroyJoueur(joueur j);
+joueur* NewJoueur(char* pseu, int isHumain, unsigned int identifiant);
+void destroyJoueur(joueur* j);
 void ajoutCarteMain(joueur* j, unsigned int carte);
 void jouer(joueur* j);

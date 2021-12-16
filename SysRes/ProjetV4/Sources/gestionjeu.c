@@ -1,4 +1,4 @@
-#include "gestionjeu.h"
+#include "../Header/gestionjeu.h"
 #include <time.h>
 
 gestionnaireJeu* initGestionJeu(){
@@ -12,23 +12,14 @@ gestionnaireJeu* initGestionJeu(){
     gj->manche = 0;
     gj->nbManche = 0;
     gj->nbJoueurs = 0;
-    gj->listeJoueur = (joueur*) calloc(256,sizeof(joueur));
+    gj->listeJoueur = (joueur**) calloc(256,sizeof(joueur*));
     
     return gj;
 }
 
 void AjoutJoueur(gestionnaireJeu* gj, joueur* j){
-    gj->listeJoueur[gj->nbJoueurs] = *j;
+    gj->listeJoueur[gj->nbJoueurs] = j;
     gj->nbJoueurs++;
-    /*if(gj->nbJoueurs<=1){
-        perror("Il n'y a pas assez de joueurs.");
-    }else if(gj->nbJoueurs == 2){
-        gj->nbManche = 12;
-    }else if(gj->nbJoueurs == 3){
-        gj->nbManche = 10;
-    }else if(gj->nbJoueurs == 4){
-        gj->nbManche = 8;
-    }*/
 }
 
 void destroyGestionnaire(gestionnaireJeu* gj){
@@ -44,10 +35,13 @@ void destroyGestionnaire(gestionnaireJeu* gj){
 
 void distribuer(gestionnaireJeu* gj){
     srand(time(NULL));
-    printf("%s", gj->listeJoueur[0].pseudo);
-    /*for(int jou=0 ; jou<gj->nbJoueurs; jou++){
+
+    int cartedistrib[gj->nbJoueurs*gj->manche];
+
+    for(int jou=0 ; jou<gj->nbJoueurs; jou++){
         gj->listeJoueur[jou]->cartesEnMain = (int*) calloc(gj->manche,sizeof(int));
     }
+    int k=0;
     for(int i=0 ; i<gj->manche ; i++){
         for(int j=0 ; j<gj->nbJoueurs ; j++){
             int cartedistribuee = rand() % 100;
@@ -57,12 +51,41 @@ void distribuer(gestionnaireJeu* gj){
             }
 
             ajoutCarteMain(gj->listeJoueur[j], gj->deck[cartedistribuee]);
+
+            cartedistrib[k] = gj->deck[cartedistribuee];
+            gj->ordreJeu[k] = gj->listeJoueur[j]->id;
+            k++;
+
             gj->deck[cartedistribuee] = -1;
             
         }
-    }*/
+    }
+    for(int i=0; i<(gj->nbJoueurs*gj->manche)-1; i++){
+        for(int j=i+1; j<(gj->nbJoueurs*gj->manche); j++){
+            if(cartedistrib[i]>cartedistrib[j]){
+                int c = cartedistrib[i];
+                cartedistrib[i] = cartedistrib[j];
+                cartedistrib[j] = c;
+                int ji = gj->ordreJeu[i];
+                gj->ordreJeu[i] = gj->ordreJeu[j];
+                gj->ordreJeu[j] = ji; 
+            }
+        }
+    }
 }
 
-void jeu(gestionnaireJeu* gj){
-    
+int jeu(joueur*j, gestionnaireJeu* gj){
+    int i = 0;
+    while(gj->ordreJeu[i]==-1){
+        i++;
+    }
+    if(gj->ordreJeu[i] == j->id){
+        gj->cartePosee[i] = j->cartesEnMain[0];
+        jouer(j);
+        gj->ordreJeu[i] = -1;
+        return 1;
+    }else{
+        printf("%s Vous a fait perdre !\n", j->pseudo);
+        return 0;
+    }
 }

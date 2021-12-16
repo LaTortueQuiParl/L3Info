@@ -11,15 +11,16 @@
 
 #include "gestionjeu.h"
 
-typdef struct GestionClient{
-    int socket;
-    gestionnaireJeu* gj;
+typedef struct CreationJoueur{
+    pthread_t sok;
     int idClient;
-}GestionClient;
+    int socket;
+    gestionnaireJeu* gestionJeu;
+}CreationJoueur;
 
 void *creationJoueur(void *arg){
-    GestionClient* gestClie = arg;
-    int socket = (int*)gestClie->socket;
+    CreationJoueur* creaJoueur = arg;
+    int socket = creaJoueur->socket;
     char message_Serveur[256] = "Quel est votre pseudo ?\n";
     char reponse_Client[256];
 
@@ -27,8 +28,15 @@ void *creationJoueur(void *arg){
 
     recv(socket, &reponse_Client, sizeof(reponse_Client), 0);
 
-    joueur* j = NewJoueur(1,reponse_Client, idClient);
-    idClient++;
+    joueur* j = NewJoueur(1,reponse_Client, creaJoueur->idClient);
+
+    printf("%s | %ld\n", j->pseudo, strlen(j->pseudo));
+    AjoutJoueur(creaJoueur->gestionJeu, j);
+    printf("%s | %ld\n", creaJoueur->gestionJeu->listeJoueur[0].pseudo, strlen(creaJoueur->gestionJeu->listeJoueur[0].pseudo));
+    printf("%d\n", creaJoueur->sok);
+    if(creaJoueur->sok == 2){
+        printf("%s | %ld\n", creaJoueur->gestionJeu->listeJoueur[1].pseudo, strlen(creaJoueur->gestionJeu->listeJoueur[1].pseudo));    
+    }
 
     printf("Le joueur %s s'est connecte\n", j->pseudo);
 
@@ -36,7 +44,7 @@ void *creationJoueur(void *arg){
 
     send(socket, msgMenu, sizeof(msgMenu), 0);
 
-    char choixClient[256];
+    /*char choixClient[256];
     while(1){
         recv(socket, &choixClient, sizeof(choixClient), 0);
         if(!strcmp(choixClient, "1")){
@@ -46,20 +54,20 @@ void *creationJoueur(void *arg){
             printf("%s nous quitte ! (ce salaud)\n",j->pseudo);
             break;
         }
-    }
+    }*/
 
     close(socket);
-    free(arg);
+    //free(creaJoueur);
     pthread_exit(NULL);
+    return creaJoueur;
 }
 
 int main(void){
     //char message_Serveur[256] = "Quel est votre pseudo ?";
     //char reponse_Client[256];
 
-    pthread_t clientThread;
-    int idCli = 1;
-    gestionnaireJeu* gestJeu = initGestionJeu();
+    int ID_CLIENT = 1;
+    gestionnaireJeu* THE_MIND_GAME = initGestionJeu();
 
     //Création du socket Serveur
     int socketServeur = socket(AF_INET,SOCK_STREAM, 0);
@@ -76,23 +84,47 @@ int main(void){
     //Le serveur se met sur écoute et peut avoir jusqu'à 5 clients en attente.
     listen(socketServeur, 5);
 
-    while(theMindGame->nbJoueurs<5){
+    int nbJ;
+    printf("Entrez le nombre de joueur : ");
+    scanf("%u", &nbJ);
+
+    CreationJoueur* creaJoueur = (CreationJoueur*)calloc(nbJ,sizeof(creaJoueur));
+
+    for(int i=0; i<nbJ; i++){
         int socketClient;
         socketClient = accept(socketServeur, NULL, NULL);
         printf("accept\n");
 
         printf("Client: %d\n", socketClient);
-
-        GestionClient* gestionClient = (GestionClient*)malloc(sizeof(GestionClient));
         
-        gestionClient->socket = socketClient;
-        gestionClient->idClient = idCli;
-        gestionClient->gj = gestJeu;
-        idCli++;
-
+        creaJoueur[i].socket = socketClient;
+        creaJoueur[i].idClient = ID_CLIENT;
+        ID_CLIENT++;
+        creaJoueur[i].gestionJeu = THE_MIND_GAME;
+        creaJoueur[i].sok = i+1;
+        //printf("Pthread : %d\n", creaJoueur[i].sok);
         
-        pthread_create(&clientThread, NULL, creationJoueur, gestionClient);
+        pthread_create(&creaJoueur[i].sok, NULL, &creationJoueur, &creaJoueur[i]);
+
     }
+
+    for(int i=0; i<nbJ; i++){
+        pthread_join(creaJoueur[i].sok, NULL);
+    }
+
+    printf("Il y a assez de joueur, la partie peut commencer");
+
+    THE_MIND_GAME->manche = 1;
+
+    distribuer(THE_MIND_GAME);
+
+    /*for(int i=0; i<THE_MIND_GAME->nbJoueurs; i++){
+        printf("%s\n", THE_MIND_GAME->listeJoueur[i]->pseudo);
+        for(int j=0; j<THE_MIND_GAME->manche; j++){
+            printf("%d | ", THE_MIND_GAME->listeJoueur[i]->cartesEnMain[j]);
+        }
+    }*/
+
     /*
     //On accepte la connexion du/des client(s)
     int socketClient;

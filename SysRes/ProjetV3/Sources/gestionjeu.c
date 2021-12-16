@@ -1,4 +1,4 @@
-#include "gestionjeu.h"
+#include "../Header/gestionjeu.h"
 #include <time.h>
 
 gestionnaireJeu* initGestionJeu(){
@@ -12,23 +12,14 @@ gestionnaireJeu* initGestionJeu(){
     gj->manche = 0;
     gj->nbManche = 0;
     gj->nbJoueurs = 0;
-    gj->listeJoueur = (joueur*) calloc(256,sizeof(joueur));
+    gj->listeJoueur = (joueur**) calloc(10,sizeof(joueur*));
     
     return gj;
 }
 
 void AjoutJoueur(gestionnaireJeu* gj, joueur* j){
-    gj->listeJoueur[gj->nbJoueurs] = *j;
+    gj->listeJoueur[gj->nbJoueurs] = j;
     gj->nbJoueurs++;
-    /*if(gj->nbJoueurs<=1){
-        perror("Il n'y a pas assez de joueurs.");
-    }else if(gj->nbJoueurs == 2){
-        gj->nbManche = 12;
-    }else if(gj->nbJoueurs == 3){
-        gj->nbManche = 10;
-    }else if(gj->nbJoueurs == 4){
-        gj->nbManche = 8;
-    }*/
 }
 
 void destroyGestionnaire(gestionnaireJeu* gj){
@@ -44,10 +35,12 @@ void destroyGestionnaire(gestionnaireJeu* gj){
 
 void distribuer(gestionnaireJeu* gj){
     srand(time(NULL));
-    printf("%s", gj->listeJoueur[0].pseudo);
-    /*for(int jou=0 ; jou<gj->nbJoueurs; jou++){
+    int carteDistrib[gj->nbJoueurs*gj->manche];
+    joueur joueursassoc[gj->nbJoueurs*gj->manche];
+    for(int jou=0 ; jou<gj->nbJoueurs; jou++){
         gj->listeJoueur[jou]->cartesEnMain = (int*) calloc(gj->manche,sizeof(int));
     }
+    int k=0;
     for(int i=0 ; i<gj->manche ; i++){
         for(int j=0 ; j<gj->nbJoueurs ; j++){
             int cartedistribuee = rand() % 100;
@@ -57,10 +50,31 @@ void distribuer(gestionnaireJeu* gj){
             }
 
             ajoutCarteMain(gj->listeJoueur[j], gj->deck[cartedistribuee]);
+            carteDistrib[k] = cartedistribuee;
+            joueursassoc[k] = *gj->listeJoueur[j];
             gj->deck[cartedistribuee] = -1;
-            
+            k++;
         }
-    }*/
+    }
+
+    int c;
+    joueur intermediare;
+
+    for(int i=0;i<((gj->nbJoueurs*gj->manche));i++){
+        for(int k=i+1;k<(gj->nbJoueurs*gj->manche);k++){
+            if ( carteDistrib[i] > carteDistrib[k] ) {
+                c = carteDistrib[i];
+                carteDistrib[i] = carteDistrib[k];
+                carteDistrib[k] = c;
+                intermediare = joueursassoc[i];
+                joueursassoc[k] = intermediare;
+            }
+        }
+    }
+    for(int i=0;i<((gj->nbJoueurs*gj->manche)-1);i++){
+        gj->ordreJeu[i] = joueursassoc[i].id;    
+    }
+
 }
 
 void jeu(gestionnaireJeu* gj){
