@@ -1,0 +1,28 @@
+<?XML version="1.0" encodage="UTF-8"?>
+<!DOCTYPE r´epertoire SYSTEM "repertoire.dtd">
+<Catalog>
+    <Book id="bk101" nbPage="325" image="book1.png" lang="fr">
+       <Author>Garghentini, Davide</Author>
+       <Title>XML Developer's Guide</Title>
+       <Genre>Computer</Genre>
+       <Price>44.95</Price>
+       <PublishDate>2000-10-01</PublishDate>
+       <Description>An in-depth look at creating applications
+       with XML.</Description>
+       <!-- Je ne sais pas si on doit mettre une balise <comment> ou bien si c'est autre chose (il pourrait y en avoir plusieurs)-->
+       <Comment>Ce livre n'est pas mal !</Comment>
+    </Book>
+    <Book id="bk102" nbPage="85" image="book2.png" lang="en">
+       <Author>Garcia, Debra</Author>
+       <Title>Midnight Rain</Title>
+       <Genre>Fantasy</Genre>
+       <Price>5.95</Price>
+       <PublishDate>2000-12-16</PublishDate>
+       <Description>A former architect battles corporate zombies,
+       an evil sorceress, and her own childhood to become queen
+       of the world.</Description>
+       <!-- Pareil ici...-->
+       <Comment>Ce livre est horrible ! je veux me crever les yeux !</Comment>
+       <Comment>Je recommande.</Comment>
+    </Book>
+ </Catalog>

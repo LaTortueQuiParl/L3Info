@@ -1,0 +1,14 @@
+//Récuperer tous les livres :
+/Catalog/Book/
+
+//Récuperer les livres français :
+/Catalog/Book[@lang="fr"]/
+
+//Récuperer Les livres par le titre :
+/Catalog/Book[/Title="TitreCherché"]/
+
+//Chercher les livres par genre:
+/Catalog/Book[/Genre="GenreCherché"]/
+
+//Chercher les livres par prix:
+/Catalog/Book[/Price>10 and Price<20]

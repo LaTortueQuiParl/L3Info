@@ -1,0 +1,13 @@
+<!ELEMENT catalog (Book+)>
+<!ELEMENT Book (Author,Title,Genre,Price,PublishDate,Description?,Comment*)>
+<!ATTLIST Book id ID #REQUIRED>
+<!ATTLIST Book nbPage CDATA #REQUIRED>
+<!ATTLIST Book image CDATA #IMPLIED>
+<!ATTLIST Book lang CDATA #REQUIRED>
+<!ELEMENT Author (#PCDATA)>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT Genre (#PCDATA)>
+<!ELEMENT Price (#PCDATA)>
+<!ELEMENT PublishDate (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT Comment (#PCDATA)>
