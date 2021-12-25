@@ -1,11 +1,12 @@
 <?XML version="1.0" encodage="UTF-8"?>
-<!DOCTYPE r´epertoire SYSTEM "repertoire.dtd">
+<!DOCTYPE repertoire SYSTEM "repertoire.dtd">
 <Catalog>
     <Book id="bk101" nbPage="325" image="book1.png" lang="fr">
        <Author>Garghentini, Davide</Author>
        <Title>XML Developer's Guide</Title>
        <Genre>Computer</Genre>
        <Price>44.95</Price>
+       <Quantity>8</Quantity>
        <PublishDate>2000-10-01</PublishDate>
        <Description>An in-depth look at creating applications
        with XML.</Description>
@@ -17,6 +18,7 @@
        <Title>Midnight Rain</Title>
        <Genre>Fantasy</Genre>
        <Price>5.95</Price>
+       <Quantity>5</Quantity>
        <PublishDate>2000-12-16</PublishDate>
        <Description>A former architect battles corporate zombies,
        an evil sorceress, and her own childhood to become queen

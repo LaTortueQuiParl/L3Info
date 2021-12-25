@@ -1,0 +1,27 @@
+<?XML version="1.0" encodage="UTF-8"?>
+<!DOCTYPE repertoire SYSTEM "repertoire.dtd">
+<Clients>
+    <Client id="0854125">
+        <Name>Bouchard</Name>
+        <FirstName>Théo</FirstName>
+        <Naissance>05/02/1965</Naissance>
+        <Phone>XXXXXXXXXX</Phone>
+        <Address>
+            <Numero>25</Numero>
+            <NomRue>Rue de la 57ème Licorne</NomRue>
+            <CodePostal>78564</CodePostal>
+            <Ville>Pays du Nuage</Ville>
+        </Address>
+        <mail>mail@mail.com</mail>
+        <Nationality>French</Nationality>
+    </Client>
+    <Client>
+        <Name>Doe</Name>
+        <FirstName>Jhon</FirstName>
+        <Naissance>Unknow</Naissance>
+        <Phone>Anonym</Phone>
+        <Address>He'll found you !</Address>
+        <mail>secretAgent@jesuisunagentsecret.com</mail>
+        <Nationality>Germany</Nationality>
+    </Client>
+</Clients>
