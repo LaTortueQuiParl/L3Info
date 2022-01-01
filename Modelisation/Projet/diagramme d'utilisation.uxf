@@ -4,8 +4,8 @@
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>430</x>
-      <y>490</y>
+      <x>20</x>
+      <y>530</y>
       <w>80</w>
       <h>110</h>
     </coordinates>
@@ -15,197 +15,178 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>680</x>
-      <y>380</y>
-      <w>120</w>
+      <x>270</x>
+      <y>750</y>
+      <w>160</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>Rechercher
-bg=white</panel_attributes>
+    <panel_attributes>Rechercher un ouvrage
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>490</x>
-      <y>410</y>
-      <w>240</w>
-      <h>140</h>
+      <x>80</x>
+      <y>560</y>
+      <w>250</w>
+      <h>210</h>
     </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;120.0;220.0;10.0</additional_attributes>
+    <panel_attributes>
+layer=0</panel_attributes>
+    <additional_attributes>10.0;10.0;227.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>490</x>
-      <y>430</y>
-      <w>420</w>
-      <h>120</h>
+      <x>80</x>
+      <y>560</y>
+      <w>520</w>
+      <h>190</h>
     </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;100.0;400.0;10.0</additional_attributes>
+    <panel_attributes>
+layer=0</panel_attributes>
+    <additional_attributes>10.0;10.0;500.0;170.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>890</x>
-      <y>420</y>
+      <x>540</x>
+      <y>730</y>
       <w>140</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>Selectioner un article
-bg=white</panel_attributes>
+    <panel_attributes>Découvrir un article
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>960</x>
-      <y>640</y>
-      <w>140</w>
-      <h>40</h>
+      <x>430</x>
+      <y>470</y>
+      <w>130</w>
+      <h>50</h>
     </coordinates>
-    <panel_attributes>Commander
-bg=white</panel_attributes>
+    <panel_attributes>Effectuer un
+payement
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>490</x>
-      <y>520</y>
-      <w>490</w>
-      <h>160</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;10.0;470.0;140.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>930</x>
-      <y>780</y>
+      <x>400</x>
+      <y>390</y>
       <w>190</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>Saisir ses coordonnées
 de paiement
-bg=white</panel_attributes>
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>490</x>
-      <y>520</y>
-      <w>460</w>
-      <h>310</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;10.0;440.0;290.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>520</x>
-      <y>870</y>
-      <w>140</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Suivre sa commande
-bg=white</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>730</x>
-      <y>830</y>
-      <w>140</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Modifier sa commande
-bg=white</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>600</x>
-      <y>360</y>
-      <w>100</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>80.0;40.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
       <x>510</x>
-      <y>330</y>
+      <y>270</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Suivre sa
+commande
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>500</x>
+      <y>190</y>
+      <w>140</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Modifier sa
+commande
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>150</x>
+      <y>800</y>
       <w>110</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>Rechercher
 par thèmes
-bg=white</panel_attributes>
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>680</x>
-      <y>280</y>
+      <x>290</x>
+      <y>820</y>
       <w>120</w>
-      <h>50</h>
+      <h>60</h>
     </coordinates>
     <panel_attributes>Rechercher
 avec mots-clés
-bg=white</panel_attributes>
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>730</x>
-      <y>320</y>
+      <x>340</x>
+      <y>780</y>
       <w>30</w>
-      <h>80</h>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>850</x>
-      <y>330</y>
+      <x>430</x>
+      <y>810</y>
       <w>120</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>Rechercher
-par autheur
-bg=white</panel_attributes>
+par auteur
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>790</x>
-      <y>360</y>
-      <w>100</w>
-      <h>60</h>
+      <x>420</x>
+      <y>760</y>
+      <w>70</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;40.0;80.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;50.0;50.0</additional_attributes>
   </element>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>430</x>
-      <y>150</y>
+      <x>20</x>
+      <y>110</y>
       <w>80</w>
       <h>110</h>
     </coordinates>
@@ -215,202 +196,577 @@ bg=white</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>580</x>
-      <y>180</y>
+      <x>170</x>
+      <y>140</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>vendre un article
-bg=white</panel_attributes>
+    <panel_attributes>Vendre un article
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>500</x>
-      <y>180</y>
-      <w>100</w>
+      <x>80</x>
+      <y>140</y>
+      <w>110</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+    <panel_attributes>
+layer=0</panel_attributes>
+    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>180</y>
-      <w>100</w>
+      <x>280</x>
+      <y>140</y>
+      <w>350</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-&lt;&lt;include&gt;&gt;</panel_attributes>
-    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>330.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>770</x>
-      <y>180</y>
+      <x>610</x>
+      <y>140</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>Présenter l'article
-bg=white</panel_attributes>
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>770</x>
-      <y>80</y>
+      <x>500</x>
+      <y>60</y>
       <w>110</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>Fournir une
 image
-bg=white</panel_attributes>
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>820</x>
-      <y>120</y>
-      <w>30</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>880</x>
-      <y>150</y>
+      <x>560</x>
+      <y>100</y>
       <w>80</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;50.0;60.0;10.0</additional_attributes>
+    <additional_attributes>60.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>90</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>930</x>
-      <y>120</y>
+      <x>630</x>
+      <y>50</y>
       <w>80</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>Fixer un
 prix
-bg=white</panel_attributes>
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>920</x>
-      <y>250</y>
+      <x>740</x>
+      <y>60</y>
       <w>110</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>Donner une
 description
-bg=white</panel_attributes>
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>860</x>
-      <y>560</y>
-      <w>140</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Commenter un article
-bg=white</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>490</x>
-      <y>520</y>
-      <w>390</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;10.0;370.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>990</x>
-      <y>500</y>
-      <w>120</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-&lt;&lt;include&gt;&gt;</panel_attributes>
-    <additional_attributes>100.0;10.0;10.0;80.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>1080</x>
-      <y>480</y>
-      <w>140</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>S'identifier
-bg=white</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>490</x>
-      <y>490</y>
-      <w>610</w>
+      <x>190</x>
+      <y>450</y>
+      <w>130</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;40.0;590.0;10.0</additional_attributes>
+    <panel_attributes>Commenter un
+ouvrage
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1040</x>
-      <y>510</y>
-      <w>130</w>
-      <h>150</h>
+      <x>240</x>
+      <y>320</y>
+      <w>120</w>
+      <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-&lt;&lt;include&gt;&gt;</panel_attributes>
-    <additional_attributes>90.0;10.0;10.0;130.0</additional_attributes>
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>55.0;10.0;18.0;135.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>230</x>
+      <y>280</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>S'identifier
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>870</x>
-      <y>200</y>
-      <w>80</w>
+      <x>710</x>
+      <y>90</y>
+      <w>70</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;60.0;60.0</additional_attributes>
+    <additional_attributes>10.0;60.0;50.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1820</x>
-      <y>240</y>
+      <x>930</x>
+      <y>90</y>
+      <w>500</w>
+      <h>370</h>
+    </coordinates>
+    <panel_attributes>Les acteurs:
+Vendeur, celui qui met des ouvrages à disposition pour pouvoir les rechercher
+Interanaute, celui qui recherche les ouvrages
+--
+Les Fonctionalités d'un internaute:
+Rechercher un ouvrage (par thèmes, mots-clés, auteur)
+
+Découvrir un article (l'image associée, le prix, les commentaires)
+
+Mettre un article dans son panier
+Effectuer un payement
+Passer une commande (Modifier les quantités d'ouvrage dans le panier)
+
+Saisir ses coordonnées de paiement
+Suivre sa commande
+Modifier sa commande (si elle est récente)
+
+S'identifier
+Commenter un article
+--
+Les Fonctionalités d'un vendeur:
+Vendre un article
+Présenter l'article (fournir une image, fixer un prix, donner une description)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>140</x>
+      <y>10</y>
+      <w>760</w>
+      <h>940</h>
+    </coordinates>
+    <panel_attributes>Application Web
+--
+bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>710</x>
+      <y>840</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Découvrir l'image
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>750</y>
+      <w>90</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>520</x>
+      <y>870</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Découvrir le prix
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>730</x>
+      <y>680</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Découvrir les
+commentaires
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>690</y>
+      <w>90</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;50.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>760</y>
+      <w>50</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>30.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>320</x>
+      <y>170</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Mettre un article
+dans son panier
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>320</x>
+      <y>210</y>
+      <w>100</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>15.0;70.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>700</x>
+      <y>380</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Passer une
+commande
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>550</x>
+      <y>600</y>
       <w>140</w>
       <h>70</h>
     </coordinates>
-    <panel_attributes>Note..
-bg=blue</panel_attributes>
+    <panel_attributes>Modifier les
+quantités d'ouvrages
+dans le panier
+bg=white
+layer=1</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>730</x>
+      <y>540</y>
+      <w>150</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Avoir au moins
+un ouvrage dans
+le panier
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>300</y>
+      <w>380</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>10.0;10.0;355.0;92.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>430</y>
+      <w>150</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>10.0;170.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>770</x>
+      <y>430</y>
+      <w>110</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>40.0;113.0;15.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>320</x>
+      <y>310</y>
+      <w>150</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>15.0;17.0;130.0;87.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>390</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>10.0;30.0;120.0;17.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>620</x>
+      <y>200</y>
+      <w>130</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>105.0;90.0;10.0;17.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>80</x>
+      <y>290</y>
+      <w>170</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>
+layer=0</panel_attributes>
+    <additional_attributes>10.0;280.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>170</y>
+      <w>110</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>60.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>200</x>
+      <y>760</y>
+      <w>90</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>50</x>
+      <y>200</y>
+      <w>30</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;320.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>280</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;17.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>410</y>
+      <w>190</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>15.0;80.0;170.0;17.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>270</y>
+      <w>90</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>70.0;30.0;10.0;17.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>710</x>
+      <y>280</y>
+      <w>150</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Avoir passé
+une commande
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>500</y>
+      <w>110</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>15.0;80.0;40.0;17.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>360</x>
+      <y>570</y>
+      <w>130</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Saisir ses
+coordonnées
+de paiement
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>200</y>
+      <w>170</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;
+layer=0</panel_attributes>
+    <additional_attributes>10.0;90.0;150.0;17.0</additional_attributes>
   </element>
 </diagram>
