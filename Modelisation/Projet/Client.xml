@@ -15,10 +15,11 @@
         <Mail>mail@mail.com</Mail>
         <Nationalite>French</Nationalite>
         <Historique>
+            <!-- L'id fait référence aux livres dans Book.xml-->
             <Livre id ="bk101"/>
         </Historique>
     </Client>
-    <Client>
+    <Client id="0854126">
         <Name>Doe</Name>
         <Prenom>Jhon</Prenom>
         <Naissance>Unknow</Naissance>

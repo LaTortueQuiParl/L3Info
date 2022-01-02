@@ -1,14 +1,20 @@
-//Récuperer tous les livres :
-/Catalog/Book/
+//Récuperer tous les livres : 1
+/Catalogue/Livre/
 
-//Récuperer les livres français :
-/Catalog/Book[@lang="fr"]/
+//Récuperer les livres français : 2
+/Catalogue/Livre[@lang="fr"]/
 
-//Récuperer Les livres par le titre :
-/Catalog/Book[Title="TitreCherché"]/
+//Récuperer Les livres par le titre : 3
+/Catalogue/Livre[Titre="Midnight Rain"]/
 
-//Chercher les livres par genre:
-/Catalog/Book[contains(/Genre,"GenreCherché")]/
+//Chercher les livres par genre: 4
+/Catalogue/Livre[contains(/Genre,"Action")]/
 
-//Chercher les livres par prix:
-/Catalog/Book[Prix>10 and Prix<20]
+//Chercher les livres par prix: 5
+/Catalogue/Livre[Prix>10 and Prix<20]/
+
+//Chercher l'identifiant du livre "Guide XML" 6
+/Catalogue/Livre[Titre = "Guide XML"]/@id/
+
+//Chercher le nom des clients qui ont commandé au moins 2 livres: 7
+/Clients/Client[count(Historique/Livre)>=2]/Nom
