@@ -7,7 +7,7 @@
       <x>810</x>
       <y>90</y>
       <w>460</w>
-      <h>370</h>
+      <h>400</h>
     </coordinates>
     <panel_attributes>Utilisateur
 --
@@ -33,6 +33,7 @@ nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
 + suivreCommande() : void
 + commenterArticle(in article : Article, in commentaire : string) : void
 + passerCommande() : void
+- déconnexion() : void
 + &lt;&lt; destroy &gt;&gt; ~Utilisateur()</panel_attributes>
     <additional_attributes/>
   </element>
@@ -42,14 +43,17 @@ nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
       <x>230</x>
       <y>50</y>
       <w>430</w>
-      <h>140</h>
+      <h>150</h>
     </coordinates>
     <panel_attributes>Vendeur
 --
 --
 + &lt;&lt; create &gt;&gt; Vendeur(id : int, nom : string, prenom : string,
 nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
+- getMotDePasse() : string
+- getCoordonneePayement() : int[*]
 + mettreEnVente(in article : Article, in catalogue : Catalogue) : void
+- déconnexion() : void
 + &lt;&lt; destroy &gt;&gt; ~Vendeur()</panel_attributes>
     <additional_attributes/>
   </element>
@@ -84,7 +88,7 @@ nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
 + &lt;&lt; create &gt;&gt; Article(id : int, nom : string, description : string,
 photo : string, prix : int, commentaire : string[*])
 + getId() : int
-+ getNom) : string
++ getNom() : string
 + getDescription() : string
 + getPhoto() : string
 + getPrix() : int
@@ -96,18 +100,17 @@ photo : string, prix : int, commentaire : string[*])
     <id>UMLClass</id>
     <coordinates>
       <x>950</x>
-      <y>550</y>
+      <y>590</y>
       <w>320</w>
-      <h>130</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Catalogue
 --
 - Articles: Article[*]
-- taille: int
 --
-+ &lt;&lt; create &gt;&gt; Catalogue(article : Article, taille : int)
-+ getArticles() : Article[*]
-+ getTaille() : int
++ &lt;&lt; create &gt;&gt; Catalogue(article : Article)
++ getArticle(in idArticle : int) : Article
++ getArticle(in nomArticle : string) : Article[*]
 + &lt;&lt; destroy &gt;&gt; ~Catalogue()</panel_attributes>
     <additional_attributes/>
   </element>
@@ -116,70 +119,74 @@ photo : string, prix : int, commentaire : string[*])
     <coordinates>
       <x>220</x>
       <y>220</y>
-      <w>250</w>
-      <h>180</h>
+      <w>290</w>
+      <h>240</h>
     </coordinates>
     <panel_attributes>Panier
 --
 - Articles: Article[*]
-- prixTotal: int
-- taille: int
+- prixTotal: int = 0
 --
 + &lt;&lt; create &gt;&gt; Panier(articles : Articles[*],
-prixTotal : int, taille : int)
+prixTotal : int = 0)
 + getArticles() : Article[*]
 + getPrixTotal() : int
-+ getTaille() : int
++ incrémenterPrix(in prix : int) : void
++ ajoutArticle(in article : Article) : void
++ demanderCoordonnéePayemenet() : void
++ demanderPrix(in nomArticle : string) : void
++ validerCommande() : string
++ refuserCommande() : string
 + &lt;&lt; destroy &gt;&gt; ~Panier()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>460</x>
+      <x>500</x>
       <y>250</y>
-      <w>370</w>
+      <w>330</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..*
 m2=1
 &lt; A un</panel_attributes>
-    <additional_attributes>350.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>310.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>520</x>
-      <y>670</y>
+      <y>700</y>
       <w>720</w>
-      <h>270</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=0..*
 &lt; Contient</panel_attributes>
-    <additional_attributes>630.0;10.0;630.0;240.0;10.0;240.0</additional_attributes>
+    <additional_attributes>630.0;10.0;630.0;210.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>730</x>
-      <y>550</y>
+      <y>590</y>
       <w>240</w>
-      <h>60</h>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..*
 m2=1
 Consulte &gt;</panel_attributes>
-    <additional_attributes>10.0;30.0;220.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>310</x>
-      <y>430</y>
+      <y>480</y>
       <w>430</w>
       <h>180</h>
     </coordinates>
@@ -192,7 +199,7 @@ nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
 + rechercherArticle(in idArticle : int) : Article
 + rechercherArticle(in nomArticle : string) : Article
 + découvrirArticle(in article : Article) : void
-+ connexion(in nomUtilisateur : string, in motDePasse : string) : void
+- connexion(in nomUtilisateur : string, in motDePasse : string) : void
 + inscription() : void
 + &lt;&lt; destroy &gt;&gt; ~Internaute()</panel_attributes>
     <additional_attributes/>
@@ -201,47 +208,47 @@ nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
     <id>Relation</id>
     <coordinates>
       <x>730</x>
-      <y>450</y>
+      <y>480</y>
       <w>280</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;260.0;60.0;260.0;10.0</additional_attributes>
+    <additional_attributes>10.0;70.0;260.0;70.0;260.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>400</x>
-      <y>600</y>
+      <y>650</y>
       <w>70</w>
-      <h>130</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>240</x>
-      <y>390</y>
+      <y>450</y>
       <w>70</w>
-      <h>340</h>
+      <h>280</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;320.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;260.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>520</x>
-      <y>670</y>
+      <y>700</y>
       <w>560</w>
-      <h>200</h>
+      <h>170</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;180.0;540.0;180.0;540.0;10.0</additional_attributes>
+    <additional_attributes>10.0;150.0;540.0;150.0;540.0;10.0</additional_attributes>
   </element>
 </diagram>
