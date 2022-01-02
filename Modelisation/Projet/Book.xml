@@ -1,30 +1,30 @@
 <?XML version="1.0" encodage="UTF-8"?>
-<!DOCTYPE repertoire SYSTEM "repertoire.dtd">
-<Catalog>
-    <Book id="bk101" nbPage="325" image="book1.png" lang="fr">
-       <Author>Garghentini, Davide</Author>
-       <Title>XML Developer's Guide</Title>
+<!DOCTYPE repertoire SYSTEM "BookDTD.dtd">
+<Catalogue>
+    <Livre id="bk101" nbPage="325" image="Livre1.png" lang="fr">
+       <Auteur>Garghentini, Davide</Auteur>
+       <Titre>XML Developer's Guide</Titre>
        <Genre>Computer</Genre>
-       <Price>44.95</Price>
-       <Quantity>8</Quantity>
-       <PublishDate>2000-10-01</PublishDate>
+       <Prix>44.95</Prix>
+       <Quantite>8</Quantite>
+       <DateSortie>2000-10-01</DateSortie>
        <Description>An in-depth look at creating applications
        with XML.</Description>
-       <!-- Je ne sais pas si on doit mettre une balise <comment> ou bien si c'est autre chose (il pourrait y en avoir plusieurs)-->
-       <Comment>Ce livre n'est pas mal !</Comment>
-    </Book>
-    <Book id="bk102" nbPage="85" image="book2.png" lang="en">
-       <Author>Garcia, Debra</Author>
-       <Title>Midnight Rain</Title>
+       <!-- Je ne sais pas si on doit mettre une balise <Commentaires> ou bien si c'est autre chose (il pourrait y en avoir plusieurs)-->
+       <Commentaires>Ce livre n'est pas mal !</Commentaires>
+    </Livre>
+    <Livre id="bk102" nbPage="85" image="Livre2.png" lang="en">
+       <Auteur>Garcia, Debra</Auteur>
+       <Titre>Midnight Rain</Titre>
        <Genre>Fantasy</Genre>
-       <Price>5.95</Price>
-       <Quantity>5</Quantity>
-       <PublishDate>2000-12-16</PublishDate>
+       <Prix>5.95</Prix>
+       <Quantite>5</Quantite>
+       <DateSortie>2000-12-16</DateSortie>
        <Description>A former architect battles corporate zombies,
        an evil sorceress, and her own childhood to become queen
        of the world.</Description>
        <!-- Pareil ici...-->
-       <Comment>Ce livre est horrible ! je veux me crever les yeux !</Comment>
-       <Comment>Je recommande.</Comment>
-    </Book>
- </Catalog>
+       <Commentaires>Ce livre est horrible ! je veux me crever les yeux !</Commentaires>
+       <Commentaires>Je recommande.</Commentaires>
+    </Livre>
+ </Catalogue>

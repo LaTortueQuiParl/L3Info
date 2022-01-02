@@ -5,10 +5,10 @@
 /Catalog/Book[@lang="fr"]/
 
 //Récuperer Les livres par le titre :
-/Catalog/Book[/Title="TitreCherché"]/
+/Catalog/Book[Title="TitreCherché"]/
 
 //Chercher les livres par genre:
-/Catalog/Book[/Genre="GenreCherché"]/
+/Catalog/Book[contains(/Genre,"GenreCherché")]/
 
 //Chercher les livres par prix:
-/Catalog/Book[/Price>10 and Price<20]
+/Catalog/Book[Prix>10 and Prix<20]

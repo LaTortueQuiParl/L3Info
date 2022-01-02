@@ -1,27 +1,38 @@
 <?XML version="1.0" encodage="UTF-8"?>
-<!DOCTYPE repertoire SYSTEM "repertoire.dtd">
+<!DOCTYPE repertoire SYSTEM "ClientDTD.dtd">
 <Clients>
     <Client id="0854125">
-        <Name>Bouchard</Name>
-        <FirstName>Théo</FirstName>
+        <Nom>Bouchard</Nom>
+        <Prenom>Théo</Prenom>
         <Naissance>05/02/1965</Naissance>
-        <Phone>XXXXXXXXXX</Phone>
-        <Address>
+        <Telephone>XXXXXXXXXX</Telephone>
+        <Adresse>
             <Numero>25</Numero>
             <NomRue>Rue de la 57ème Licorne</NomRue>
             <CodePostal>78564</CodePostal>
             <Ville>Pays du Nuage</Ville>
-        </Address>
-        <mail>mail@mail.com</mail>
-        <Nationality>French</Nationality>
+        </Adresse>
+        <Mail>mail@mail.com</Mail>
+        <Nationalite>French</Nationalite>
+        <Historique>
+            <Livre id ="bk101"/>
+        </Historique>
     </Client>
     <Client>
         <Name>Doe</Name>
-        <FirstName>Jhon</FirstName>
+        <Prenom>Jhon</Prenom>
         <Naissance>Unknow</Naissance>
-        <Phone>Anonym</Phone>
-        <Address>He'll found you !</Address>
-        <mail>secretAgent@jesuisunagentsecret.com</mail>
-        <Nationality>Germany</Nationality>
+        <Telephone>Anonym</Telephone>
+        <Adresse>
+            <NomRue>He'll found you !</NomRue>
+            <CodePostal>25007</CodePostal>
+            <Ville>NoWhere</Ville>
+        </Adresse>
+        <Mail>secretAgent@Iamasecretagent.com</Mail>
+        <Nationalite>English</Nationalite>
+        <Historique>
+            <Livre id ="bk101"/>
+            <Livre id ="bk102"/>
+        </Historique>
     </Client>
 </Clients>
