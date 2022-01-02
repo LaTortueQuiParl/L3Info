@@ -20,8 +20,8 @@
       <w>306</w>
       <h>45</h>
     </coordinates>
-    <panel_attributes>Mise dans le panier de 1 article chargeur de Jean
-puis commande des articles
+    <panel_attributes>Mise dans le panier de l'ouvrage 'Le Petit Prince' de la part de Jean
+puis commande de l'ouvrage
 bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
@@ -100,7 +100,7 @@ bg=blue</panel_attributes>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-rechercherArticle('chargeur')</panel_attributes>
+rechercherOuvrage('Le Petit Prince')</panel_attributes>
     <additional_attributes>860.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
@@ -123,20 +123,20 @@ rechercherArticle('chargeur')</panel_attributes>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-      chargeurs = getArticle('chargeur')</panel_attributes>
+      livres = getOuvrage('Le Petit Prince')</panel_attributes>
     <additional_attributes>10.0;20.0;860.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
+      <x>108</x>
       <y>360</y>
-      <w>234</w>
+      <w>261</w>
       <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-découvrirArticle(chargeur)</panel_attributes>
-    <additional_attributes>240.0;50.0;10.0;50.0;10.0;10.0;240.0;10.0</additional_attributes>
+LePetitPrince = découvrirOuvrage(livres)</panel_attributes>
+    <additional_attributes>270.0;50.0;10.0;50.0;10.0;10.0;270.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -147,7 +147,8 @@ découvrirArticle(chargeur)</panel_attributes>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-ajouterArticlepanier(chargeur)</panel_attributes>
+ajouterOuvragePanier(LePetitPrince)
+group=1</panel_attributes>
     <additional_attributes>320.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
@@ -177,22 +178,22 @@ ajouterArticlepanier(chargeur)</panel_attributes>
     <coordinates>
       <x>657</x>
       <y>423</y>
-      <w>198</w>
+      <w>234</w>
       <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-ajoutArticle(chargeur)</panel_attributes>
+ajoutOuvrage(LePetitPrince)</panel_attributes>
     <additional_attributes>10.0;50.0;60.0;50.0;60.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>855</x>
+      <x>837</x>
       <y>126</y>
-      <w>117</w>
+      <w>153</w>
       <h>27</h>
     </coordinates>
-    <panel_attributes>Chargeur:Article</panel_attributes>
+    <panel_attributes>Le Petit Prince:Ouvrage</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -226,7 +227,7 @@ ajoutArticle(chargeur)</panel_attributes>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-demanderPrix('chargueur')</panel_attributes>
+demanderPrix(LePetitPrince)</panel_attributes>
     <additional_attributes>270.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
@@ -246,11 +247,11 @@ prix = getPrix()</panel_attributes>
     <coordinates>
       <x>657</x>
       <y>531</y>
-      <w>189</w>
+      <w>225</w>
       <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-incrémenterPrix(prix)</panel_attributes>
+incrémenterPrixPanier(prix)</panel_attributes>
     <additional_attributes>10.0;50.0;60.0;50.0;60.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
@@ -349,9 +350,9 @@ validé = validerCommande()</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>279</x>
+      <x>297</x>
       <y>765</y>
-      <w>441</w>
+      <w>405</w>
       <h>162</h>
     </coordinates>
     <panel_attributes>Alt
@@ -388,7 +389,7 @@ refusé = refuserCommande()</panel_attributes>
     </coordinates>
     <panel_attributes>Opt
 --
-[catalogue contient au moins 1 chargeur]
+[catalogue contient au moins 1 exemplaire de l'ouvrage recherché]
 fg=red
 bg=cyan</panel_attributes>
     <additional_attributes/>
