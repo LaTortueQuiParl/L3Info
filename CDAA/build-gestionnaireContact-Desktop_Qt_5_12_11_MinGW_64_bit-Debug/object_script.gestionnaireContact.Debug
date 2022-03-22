@@ -1,0 +1,12 @@
+debug/contact.o
+debug/dialog.o
+debug/gestioncontacts.o
+debug/gestioninteractions.o
+debug/gestiontodos.o
+debug/interaction.o
+debug/main.o
+debug/mainwindow.o
+debug/todo.o
+debug/date.o
+debug/moc_dialog.o
+debug/moc_mainwindow.o

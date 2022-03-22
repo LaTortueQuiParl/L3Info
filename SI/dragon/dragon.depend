@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1635605861 source:/home3/dp065247/Documents/travail/perso/SI/dragon/dragon.cpp
+	<cstdio>
+	<cstdlib>
+	<GL/freeglut.h>
+	<jpeglib.h>
+	<math.h>
+	<iostream>
+	<jerror.h>
+
+1635604149 /home3/dp065247/Documents/travail/perso/SI/dragon/include/Point.h
+
+1636938112 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/dragon.cpp
+	<cstdio>
+	<cstdlib>
+	<GL/freeglut.h>
+	<jpeglib.h>
+	<math.h>
+	<iostream>
+	<jerror.h>
+	"Point.h"
+
+1636726986 /home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/include/Point.h
+
+1636726655 /home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/include/Cylindre.h
+	"Point.h"
+	<cstdio>
+	<cstdlib>
+	<GL/freeglut.h>
+	<jpeglib.h>
+	<math.h>
+	<iostream>
+	<jerror.h>
+	<vector>
+
+1636726458 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/src/Cylindre.cpp
+	"Cylindre.h"
+
+1636725438 source:/home2/ym186975/Documents/ProjetS5/L3Info/SI/dragon/src/Point.cpp
+	"Point.h"
+
