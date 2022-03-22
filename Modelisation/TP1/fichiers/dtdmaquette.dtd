@@ -1,0 +1,21 @@
+<!ELEMENT formations (formation)>
+<!ELEMENT formation (libelle, annee, semestre+)>
+<!ATTLIST formation code_etape ID #REQUIRED>
+<!ELEMENT libelle (#PCDATA)>
+<!ELEMENT annee (#PCDATA)>
+<!ELEMENT semestre (UE*)>
+<!ATTLIST semestre ID ID #REQUIRED>
+<!ELEMENT UE (libelle*,matiere+)>
+<!ATTLIST UE ID ID #REQUIRED>
+<!ATTLIST UE type CDATA #IMPLIED>
+<!ELEMENT matiere (libelle?,syllabus?,cours*,ects,evaluation*)>
+<!ELEMENT syllabus (#PCDATA)>
+<!ELEMENT cours (cm,td,tp)>
+<!ELEMENT cm (#PCDATA)>
+<!ELEMENT td (#PCDATA)>
+<!ELEMENT tp (#PCDATA)>
+<!ELEMENT ects (#PCDATA)>
+<!ELEMENT evaluation (ct?,ep?,cc?)>
+<!ELEMENT ct (#PCDATA)>
+<!ELEMENT ep (#PCDATA)>
+<!ELEMENT cc (#PCDATA)>

@@ -1,0 +1,20 @@
+<!ELEMENT oiseaux (espece*)>
+<!ELEMENT espece (ordre,famille,nomScientifique,synonymes,biometrie,distribution,statut)>
+<!ATTLIST espece nom CDATA #REQUIRED>
+<!ATTLIST espece chant CDATA #IMPLIED>
+<!ATTLIST espece image CDATA #IMPLIED>
+<!ATTLIST espece video CDATA #IMPLIED>
+<!ELEMENT ordre (#PCDATA)>
+<!ELEMENT famille (#PCDATA)>
+<!ELEMENT nomScientifique (#PCDATA)>
+<!ELEMENT synonymes (synonyme*)>
+<!ELEMENT synonyme (#PCDATA)>
+<!ELEMENT biometrie (taille?,envergure?,poids?,longevite?)>
+<!ELEMENT taille (#PCDATA)>
+<!ELEMENT envergure (#PCDATA)>
+<!ELEMENT poids (#PCDATA)>
+<!ELEMENT longevite (#PCDATA)>
+<!ELEMENT distribution (#PCDATA)>
+<!ELEMENT statut (#PCDATA)>
+
+

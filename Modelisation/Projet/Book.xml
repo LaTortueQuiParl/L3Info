@@ -1,0 +1,30 @@
+<?XML version="1.0" encodage="UTF-8"?>
+<!DOCTYPE repertoire SYSTEM "BookDTD.dtd">
+<Catalogue>
+    <Livre id="bk101" nbPage="325" image="Livre1.png" lang="fr">
+       <Auteur>Garghentini</Auteur>
+       <Auteur>David</Auteur>
+       <Titre>Guide XML</Titre>
+       <Genre>Computer</Genre>
+       <Prix>44.95</Prix>
+       <Quantite>8</Quantite>
+       <DateSortie>01/10/2000</DateSortie>
+       <Description>Guide sur la création de fichiers xml</Description>
+       <!-- Je ne sais pas si on doit mettre une balise <Commentaires> ou bien si c'est autre chose (il pourrait y en avoir plusieurs)-->
+       <Commentaires>Ce livre n'est pas mal !</Commentaires>
+    </Livre>
+    <Livre id="bk102" nbPage="85" image="Livre2.png" lang="en">
+       <Auteur>Garcia</Auteur>
+       <Titre>Midnight Rain</Titre>
+       <Genre>Fantasy, Action</Genre>
+       <Prix>5.95</Prix>
+       <Quantite>5</Quantite>
+       <DateSortie>16/12/2020</DateSortie>
+       <Description>A former architect battles corporate zombies,
+       an evil sorceress, and her own childhood to become queen
+       of the world.</Description>
+       <!-- Pareil ici...-->
+       <Commentaires>Illisible pour un débutant</Commentaires>
+       <Commentaires>Je recommande.</Commentaires>
+    </Livre>
+ </Catalogue>

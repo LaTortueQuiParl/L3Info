@@ -1,0 +1,17 @@
+<!ELEMENT Clients (Client*)>
+<!ELEMENT Client (Nom,Prenom,Naissance,Telephone,MotDePasse,Adresse,Mail,Historique?)>
+<!ATTLIST Client id ID #REQUIRED>
+<!ELEMENT Nom (#PCDATA)>
+<!ELEMENT Prenom (#PCDATA)>
+<!ELEMENT Naissance (#PCDATA)>
+<!ELEMENT Telephone (#PCDATA)>
+<!ELEMENT MotDePasse (#PCDATA)>
+<!ELEMENT Adresse (Numero?,NomRue,CodePostal,Ville)>
+<!ELEMENT Numero (#PCDATA)>
+<!ELEMENT NomRue (#PCDATA)>
+<!ELEMENT CodePostal (#PCDATA)>
+<!ELEMENT Ville (#PCDATA)>
+<!ELEMENT Mail (#PCDATA)>
+<!ELEMENT Historique (Livre*)>
+<!ELEMENT Livre EMPTY>
+<!ATTLIST Livre id ID #REQUIRED>

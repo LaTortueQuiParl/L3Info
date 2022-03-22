@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE formations SYSTEM "dtdmaquette.dtd">
+<formations>
+  <formation code_etape="x7L3INF">
+    <libelle>Licence</libelle>
+    <annee>3</annee>
+    <semestre ID="S5">
+      <UE ID="UE31">
+        <libelle>Outils pour la synthèse et le traitement d'images</libelle>
+        <matiere>
+          <libelle>Outils mathématiques pour l'informatique</libelle>
+          <syllabus>Dans ce cours sera vu l'ensemble des outils de base...</syllabus>
+          <cours>
+            <cm>14</cm>
+            <td>8</td>
+            <tp>8</tp>
+          </cours>
+          <ects>3</ects>
+          <evaluation>
+            <ct>1</ct>
+            <ep>0,5</ep>
+          </evaluation>
+        </matiere>
+        <matiere>
+          <libelle>Synthèse d'images</libelle>
+          <syllabus>Nous aborderons les principes de construction d'images 3D...</syllabus>
+          <cours>
+            <cm>12</cm>
+            <td>10</td>
+            <tp>8</tp>
+          </cours>
+          <ects>0,5</ects>
+          <evaluation>
+            <ct>1</ct>
+          </evaluation>
+        </matiere>
+      </UE>
+      <UE ID="UE32">
+        <libelle>Systèmes et réseaux I</libelle>
+        <matiere>
+          <syllabus>Les réseaux sont ...</syllabus>
+          <cours>
+            <cm>16</cm>
+            <td>18</td>
+            <tp>14</tp>
+          </cours>
+          <ects>6</ects>
+          <evaluation>
+            <ct>1</ct>
+            <ep>0,5</ep>
+          </evaluation>
+        </matiere>
+      </UE>
+    </semestre>
+    <semestre ID="S6">
+      <UE ID="UE33">
+        <libelle>Langages formels et compilation</libelle>
+        <matiere>
+          <syllabus>Dans cette UE,...</syllabus>
+          <cours>
+            <cm>18</cm>
+            <td>20</td>
+            <tp>10</tp>
+          </cours>
+          <ects>6</ects>
+          <evaluation>
+            <ct>1</ct>
+            <cc>0,5</cc>
+          </evaluation>
+        </matiere>
+      </UE>
+      <UE ID="UE35" type="option">
+        <libelle>Option semestrer 6</libelle>
+        <matiere>
+          <libelle>Systèmes et réseaux II</libelle>
+          <syllabus>blabla</syllabus>
+          <cours>
+            <cm>20</cm>
+            <td>14</td>
+            <tp>14</tp>
+          </cours>
+          <ects>6</ects>
+          <evaluation>
+            <ct>1</ct>
+            <ep>0,5</ep>
+            <cc>0,5</cc>
+          </evaluation>
+        </matiere>
+        <matiere>
+          <libelle>Image pour le multimédia</libelle>
+          <syllabus>blablabla</syllabus>
+          <cours>
+            <cm>18</cm>
+            <td>16</td>
+            <tp>14</tp>
+          </cours>
+          <ects>6</ects>
+          <evaluation>
+            <ct>1</ct>
+            <ep>0,5</ep>
+          </evaluation>
+        </matiere>
+      </UE>
+    </semestre>
+  </formation>
+</formations>

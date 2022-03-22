@@ -1,0 +1,14 @@
+<!ELEMENT Catalogue (Livre+)>
+<!ELEMENT Livre (Auteur+,Titre,Genre,Prix,Quantite,DateSortie,Description?,Commentaires*)>
+<!ATTLIST Livre id ID #REQUIRED>
+<!ATTLIST Livre nbPage CDATA #REQUIRED>
+<!ATTLIST Livre image CDATA #IMPLIED>
+<!ATTLIST Livre lang (fr | en) #REQUIRED>
+<!ELEMENT Auteur (#PCDATA)>
+<!ELEMENT Titre (#PCDATA)>
+<!ELEMENT Genre (#PCDATA)>
+<!ELEMENT Prix (#PCDATA)>
+<!ELEMENT Quantite (#PCDATA)>
+<!ELEMENT DateSortie (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT Commentaires (#PCDATA)>

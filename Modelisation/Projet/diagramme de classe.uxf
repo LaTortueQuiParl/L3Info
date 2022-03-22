@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>80</y>
+      <w>500</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>Utilisateur
+--
+- nom: string
+- prenom: string
+- nom d'utilisateur : string
+- mot de passe : string
+- coordonneePayement : int[*]
+--
++ &lt;&lt; create &gt;&gt; Utilisateur(id : int, nom : string, prenom : string,
+nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
++ getId() : int
++ getNom() : string
++ getPrenom() : string
++ getNomUtilisateur() : string
+- getMotDePasse() : string
+- getCoordonneePayement() : int[*]
++ modifierMotDePasse(motDePasse : string) : void
++ modifierCoordonneePayement(coordonneePayement : int[*])
++ ajouterOuvragePanier(in ouvrage : Ouvrage) : void
++ supprimerOuvragePanier(in ouvrage : Ouvrage) : void
++ modifierQuantiteOuvragePanier(in ouvrage : Ouvrage, in quantité : int ) : void
++ suivreCommande() : void
++ commenterOuvrage(in ouvrage : Ouvrage, in commentaire : string) : void
++ passerCommande() : void
+- déconnexion() : void
++ &lt;&lt; destroy &gt;&gt; ~Utilisateur()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>40</y>
+      <w>430</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Vendeur
+--
+--
++ &lt;&lt; create &gt;&gt; Vendeur(id : int, nom : string, prenom : string,
+nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
+- getMotDePasse() : string
+- getCoordonneePayement() : int[*]
++ mettreEnVente(in ouvrage : Ouvrage, in catalogue : Catalogue) : void
+- déconnexion() : void
++ &lt;&lt; destroy &gt;&gt; ~Vendeur()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>130</y>
+      <w>180</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>160.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>730</y>
+      <w>390</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>Ouvrage
+--
+- id: int
+- nom: string
+- description: string
+- photo: string
+- prix: int
+- commentaires: string[*]
+--
++ &lt;&lt; create &gt;&gt; Ouvrage(id : int, nom : string, description : string,
+photo : string, prix : int, commentaire : string[*])
++ getId() : int
++ getNom() : string
++ getDescription() : string
++ getPhoto() : string
++ getPrix() : int
++ getCommentaires() : string[*]
++ &lt;&lt; destroy &gt;&gt; ~Ouvrage()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>860</x>
+      <y>580</y>
+      <w>320</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Catalogue
+--
+- ouvrages: Ouvrage[*]
+--
++ &lt;&lt; create &gt;&gt; Catalogue(ouvrage : Ouvrage)
++ getArticle(in idOuvrage : int) : Ouvrage
++ getArticle(in nomOuvrage : string) : Ouvrage[*]
++ &lt;&lt; destroy &gt;&gt; ~Catalogue()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>210</y>
+      <w>300</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>Panier
+--
+- ouvrages: Ouvrage[*]
+- prixTotal: int = 0
+--
++ &lt;&lt; create &gt;&gt; Panier(ouvrages : Ouvrage[*],
+prixTotal : int = 0)
++ getArticles() : Ouvrage[*]
++ getPrixTotal() : int
++ incrémenterPrixPanier(in prix : int) : void
++ ajoutOuvrage(in ovurage : Ouvrage) : void
++ demanderCoordonnéePayement() : void
++ demanderPrix(in nomOuvrage : string) : void
++ validerCommande() : string
++ refuserCommande() : string
++ &lt;&lt; destroy &gt;&gt; ~Panier()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>240</y>
+      <w>320</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..*
+m2=1
+&lt; A un</panel_attributes>
+    <additional_attributes>300.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>690</y>
+      <w>710</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+&lt; Contient</panel_attributes>
+    <additional_attributes>620.0;10.0;620.0;240.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>580</y>
+      <w>240</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..*
+m2=1
+Consulte &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>470</y>
+      <w>430</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Internaute
+--
+id: int
+--
++ &lt;&lt; create &gt;&gt; Interanaute(id : int, nom : string, prenom : string,
+nomUtilisateur : string, motDePasse : string, coordPayement : int[*])
++ rechercherOuvrage(in thème : string) : Ouvrage
++ rechercherOuvrage(in mots-clés : string[*]) : Ouvrage
++ rechercherOuvrage(in autheur : string) : Ouvrage
++ rechercherOuvrage(in nomOuvrage : string) : Ouvrage
++ découvrirOuvrage(in ouvrage : Ouvrage) : Ouvrage
+- connexion(in nomUtilisateur : string, in motDePasse : string) : void
++ inscription() : void
++ &lt;&lt; destroy &gt;&gt; ~Internaute()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>470</y>
+      <w>280</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;260.0;70.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>670</y>
+      <w>70</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>150</x>
+      <y>440</y>
+      <w>70</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;290.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>690</y>
+      <w>550</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;180.0;530.0;180.0;530.0;10.0</additional_attributes>
+  </element>
+</diagram>
