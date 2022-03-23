@@ -48,11 +48,6 @@ def degen(G):
                 G[i].remove(deleting)
                 deleting.remove(i)
 
-[[1, 2,3],
-[2, 1],
-[1]]
-
-
 
 def main(args = None) -> None:
     np.random.seed(1)
