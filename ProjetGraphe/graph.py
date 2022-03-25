@@ -29,12 +29,23 @@ def genereGraphFromSnap():
 
 def dessinerGraphe():
     pos = nx.get_node_attributes(G,'pos')
-
+    #pos = nx.circular_layout(G, 2)
     nx.draw(G, pos, with_labels=True, font_size=12,font_weight='bold')
 
-    plt.axis("off")
-    plt.show()
-    #plt.savefig("path.png")
+
+    circle1 = plt.Circle((0, 0), 1, fill=False, color = 'red')
+    circle2 = plt.Circle((0, 0), 2, fill=False, color = 'green')
+    circle3 = plt.Circle((0, 0), 3, fill=False, color = 'blue')
+
+    ax = plt.gca()
+
+    ax.add_patch(circle1)
+    ax.add_patch(circle2)
+    ax.add_patch(circle3)
+
+    plt.axis("equal")
+    #plt.show()
+    plt.savefig("path.pdf")
 
 def degenerecence():
     degen = 1
@@ -81,5 +92,3 @@ print(centres)
 modifPos()
 
 dessinerGraphe()
-
-
