@@ -15,21 +15,23 @@ def genereGraphFromSnap():
                 max = int(j)
 
         graph = [i for i in range(max+1)]
+        centres = [-1 for i in range(max+1)]
         G2.add_nodes_from(graph)
-        for k in range (max+1):
-            G.add_node(graph[k], pos=(2*np.cos((k*np.pi)/((max+1)/2)), 2*np.sin((k*np.pi)/((max+1)/2))))
-
+        G.add_nodes_from(graph)
+        
         graph_file.seek(0)
         for line in graph_file.readlines():
             i,j = line.split(" ")
             j.strip("\n")
             G.add_edge(int(i), int(j))
             G2.add_edge(int(i), int(j))
+    return centres, max
 
 def dessinerGraphe():
     pos = nx.get_node_attributes(G,'pos')
 
     nx.draw(G, pos, with_labels=True, font_size=12,font_weight='bold')
+
     plt.axis("off")
     plt.show()
     #plt.savefig("path.png")
@@ -43,6 +45,7 @@ def degenerecence():
             for i in G2.degree():
                 if i[1] <= degen:
                     index.append(i[0])
+                    centres[i[0]] = degen
             for i in index:
                 G2.remove_node(i)
 
@@ -55,15 +58,28 @@ def degenerecence():
         else :
             degen+=1
 
+def modifPos():
+
+    for i in G.nodes():
+        if centres[i] == max(centres):
+            G.nodes[i]['pos'] = ((degenGraph-centres[i]+1)*np.cos((i*np.pi)/((centres.count(max(centres))+1)/2)), (degenGraph-centres[i]+1)*np.sin((i*np.pi)/((centres.count(max(centres))+1)/2)))
+        else:
+            G.nodes[i]['pos'] = ((degenGraph-centres[i]+1)*np.cos((i*np.pi)/((nbnoeuds+1)/2)), (degenGraph-centres[i]+1)*np.sin((i*np.pi)/((nbnoeuds+1)/2)))
+
 
 G = nx.Graph()
 G2 = nx.Graph()
 
-genereGraphFromSnap()
-print("degenerecence = ", degenerecence())
-#dessinerGraphe()
+centres, nbnoeuds = genereGraphFromSnap()
 print(G)
-print(G.degree(0))
-#nx.draw(G)
+degenGraph = degenerecence()
+print("degenerecence = ", degenGraph)
+
+print(G.nodes())
+print(centres)
+
+modifPos()
+
+dessinerGraphe()
 
 
