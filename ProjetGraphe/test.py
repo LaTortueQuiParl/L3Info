@@ -1,4 +1,5 @@
 from asyncore import write
+from nis import match
 import numpy as np
 from graphviz import Graph
 
@@ -33,27 +34,36 @@ def from_snap():
         file.write(dot_graph.source)
     return graph
 
-n = 100
+n = 10
 def write_snap():
     with open("graph.snap", "w") as file:
-        for i in range(100):
-            file.write(f"{np.random.randint(100)} {np.random.randint(100)}\n")
+        for i in range(n):
+            file.write(f"{np.random.randint(n)} {np.random.randint(n)}\n")
 
 
 def degen(G):
-    degen = 0
-    for i in range(len(G)):
-        if len(G[i]) == degen:
-            for deleting in G[i]:
-                G[i].remove(deleting)
-                deleting.remove(i)
+    degen = 1
+    centre = [-1 for i in range(len(G))]
+    while not all([len(v)==0 for v in G]):
+        for i in range(len(G)):
+            if len(G[i]) == degen:
+                centre[i] = degen
+                for deleting in G[i]:
+                    G[i].remove(deleting)
+                    G[deleting].remove(i)
+                    print(f"{deleting=}")
+                    print(f"{i=}")
+        degen+=1
+    return centre
 
 
 def main(args = None) -> None:
-    np.random.seed(1)
-    write_snap()
+    #np.random.seed(2)
+    #write_snap()
     G = from_snap()
-    degen(G)
+    print(f"{G=}")
+    centre = degen(G)
+    print(centre)
 
 
 
