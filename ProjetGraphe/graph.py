@@ -48,7 +48,7 @@ def dessinerGraphe(G, centres):
     plt.axis("equal")
 
     #Affichage direct du graphe
-    plt.show()
+    #plt.show()
     #Enregistrement du graphe au format PDF
     #plt.savefig("path.pdf")
 
@@ -91,13 +91,23 @@ def modifPos(G, degenGraph, centres):
         else:
             G.nodes[i]['pos'] = (rayon*np.cos(alpha2), rayon*np.sin(alpha2))
 
-def colorGlouton(G):
+def sortNodes(centres):
+    #Création d'une liste intermédiaire qui va contenir des listes contenant le sommet qui ont ce centre
+    # ex : inter[1] contient tous les sommets qui sont de centre 2
+    inter = [[] for i in range(0, max(centres))]
+    k = 0
+    for i in centres:
+        # On met dans la liste des centres i (indexée à i-1), le sommet k
+        inter[i-1].append(k)
+        k += 1
+    return sorted([item for sublist in inter for item in sublist], reverse=True)
+
+def colorGlouton(G, centres):
 
     color = [-1 for i in G.nodes()]
 
-    #On parcourt tous les noeuds de notre graphe
-    for i in G.nodes():
-
+    #On parcourt tous les noeuds de notre graphe suivant le numéro de centre décroissant
+    for i in sortNodes(centres):
         #initialisation de la couleur à "0"
         couleur = 0
         #récupération des couleurs des noeuds voisins
@@ -122,12 +132,12 @@ def TestGraphe():
     print("degenerecence = ", degenGraph)
 
     #Calcul de la coloration du graphe G
-    color = colorGlouton(G)
+    color = colorGlouton(G, centres)
     print("nb Couleur utilisés : ", max(color)+1)
 
-    print(G.nodes())
-    print(centres)
-    print(color)
+    print("Graph =", G.nodes())
+    print(f"{centres = }")
+    print(f"{color = }")
 
     modifPos(G, degenGraph, centres)
 
