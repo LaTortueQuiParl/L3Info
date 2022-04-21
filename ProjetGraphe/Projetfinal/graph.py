@@ -38,7 +38,13 @@ def genereGraphFromSnap():
 def dessinerGraphe(G, centres):
     X, Y, size = [G.position[i][1][0] for i in G.nodes], [G.position[i][1][1] for i in G.nodes], [100 for i in G.nodes]
 
-    plt.scatter(X,Y)
+    if max(centres) <= 8:
+        color_cycle= ["red","green","blue","brown","orange","grey","yellow","pink"]
+
+        for i in G.nodes:
+            plt.scatter(G.position[i][1][0], G.position[i][1][1], c=color_cycle[centres[i]])
+    else:
+        plt.scatter(X,Y)
 
     for i in G.nodes:
         plt.text(X[i],Y[i],str(i))
