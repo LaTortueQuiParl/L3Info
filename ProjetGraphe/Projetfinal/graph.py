@@ -110,7 +110,7 @@ def sortNodes(centres):
         # On met dans la liste des centres k (indexée à k-1), le sommet i
         inter[k-1].append(i)
         i += 1
-    return list(reversed([item for sublist in inter for item in list(reversed(sublist))]))
+    return reversed([item for sublist in inter for item in reversed(sublist)])
 
 def colorGlouton(G, centres):
 
