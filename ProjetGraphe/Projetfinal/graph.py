@@ -5,7 +5,7 @@ import copy
 from classGraph import Graph
 
 def genereGraphFromSnap():
-    #Création d'un graphe vide grace à networkx
+    #Création d'un graphe vide à l'aide de la classGraph
     G = Graph()
     #on ouvre le fichier snap
     with open(sys.argv[1], "r") as graph_file:
@@ -89,8 +89,6 @@ def degenerecence(G2):
             degen+=1
 
 def modifPos(G, degenGraph, centres):
-    #NetworkX propose déjà une méthode pour afficher en cercle le graphe, mais on le refais ici
-
     nbnoeuds = max(G.nodes)
     for i in G.nodes:
         rayon = (degenGraph-centres[i]+1)
@@ -106,13 +104,12 @@ def modifPos(G, degenGraph, centres):
 def sortNodes(centres):
     #Création d'une liste intermédiaire qui va contenir des listes contenant le sommet qui ont ce centre
     # ex : inter[1] contient tous les sommets qui sont de centre 2
-    inter = [[] for i in range(0, max(centres))]
-    k = 0
-    for i in centres:
-        # On met dans la liste des centres i (indexée à i-1), le sommet k
-        inter[i-1].append(k)
+    inter = [[] for i in range(0, len(np.unique(centres)))]
+    i = 0
+    for k in centres:
+        # On met dans la liste des centres k (indexée à k-1), le sommet i
+        inter[k-1].append(i)
         k += 1
-    
     return list(reversed([item for sublist in inter for item in list(reversed(sublist))]))
 
 def colorGlouton(G, centres):
