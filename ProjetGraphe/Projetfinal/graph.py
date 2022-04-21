@@ -104,12 +104,12 @@ def modifPos(G, degenGraph, centres):
 def sortNodes(centres):
     #Création d'une liste intermédiaire qui va contenir des listes contenant le sommet qui ont ce centre
     # ex : inter[1] contient tous les sommets qui sont de centre 2
-    inter = [[] for i in range(0, len(np.unique(centres)))]
+    inter = [[] for i in range(0, max(centres))]
     i = 0
     for k in centres:
         # On met dans la liste des centres k (indexée à k-1), le sommet i
         inter[k-1].append(i)
-        k += 1
+        i += 1
     return list(reversed([item for sublist in inter for item in list(reversed(sublist))]))
 
 def colorGlouton(G, centres):
