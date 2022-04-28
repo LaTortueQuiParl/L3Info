@@ -1,6 +1,3 @@
-from pickle import TRUE
-
-
 class Graph:
     def __init__(self):
         self.nodes = []
@@ -27,6 +24,7 @@ class Graph:
                     self.edges.append((n1, n2))
                 else:
                     self.edges.append((n2, n1))
+                #Augmetation des degrés des noeud n1 et n2
                 for i in self.degree:
                     if i[0] == n1:
                         i[1] += 1
